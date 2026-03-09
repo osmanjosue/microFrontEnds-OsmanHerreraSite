@@ -8,13 +8,11 @@
     "backPublic": "C:/Users/05man/Documents/DEV/1-Proyectos/osmanHerreraSiteBackend/dist/public"
   },
   "scripts": {
-    "dev": "tsnd --respawn --clear src/app.ts",
-    "clean": "rimraf dist public",
-    "build:frontend": "cd ../osmanHerreraSite && ng build --output-path ../osmanHerreraSiteBackend/dist/public && robocopy ..\\osmanHerreraSiteBackend\\dist\\public\\browser ..\\osmanHerreraSiteBackend\\dist\\public /E /MOVE /IS /IT /NDL /NFL /NJH /NJS && rd /S /Q ..\\osmanHerreraSiteBackend\\dist\\public\\browser",
-    "build": "tsc",
-    "build:full": "npm run clean && npm run build && npm run build:frontend",
-    "start": "npm run build && node dist/app.js"
-  },
+  "dev": "tsnd --respawn --clear src/app.ts",
+  "clean": "rimraf dist",
+  "build": "tsc",
+  "start": "node dist/app.js"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",

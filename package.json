@@ -1,0 +1,33 @@
+{
+  "name": "microfrontends-osmanherrera-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monorepo for Angular and React portfolio orchestrated by Nginx",
+  "author": "Osman Herrera",
+  "license": "ISC",
+  "workspaces": [
+    "osmanHerreraSite",
+    "osmanHerreraSiteBackend",
+    "osmanHerreraSiteReact"
+  ],
+  "scripts": {
+  "install:all": "npm install",
+  "clean": "rm -rf **/node_modules **/dist",
+  
+  "build:angular": "npm run build --prefix osmanHerreraSite -- --base-href /angular/",
+  "build:react": "npm run build --prefix osmanHerreraSiteReact -- --base /react/",
+  "build:backend": "npm run build --prefix osmanHerreraSiteBackend",
+  
+  "build:all": "npm run build:angular && npm run build:react && npm run build:backend",
+  
+  "start:backend": "pm2 restart osmanHerreraSiteBackend || pm2 start osmanHerreraSiteBackend/index.js --name osmanHerreraSiteBackend"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osmanjosue/microFrontEnds-OsmanHerreraSite.git"
+  },
+  "bugs": {
+    "url": "https://github.com/osmanjosue/microFrontEnds-OsmanHerreraSite/issues"
+  },
+  "homepage": "https://github.com/osmanjosue/microFrontEnds-OsmanHerreraSite#readme"
+}
