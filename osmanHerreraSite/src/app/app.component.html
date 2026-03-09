@@ -1,0 +1,299 @@
+<!-- <iframe
+  style="border: 1px solid rgba(0, 0, 0, 0.1)"
+  width="100%"
+  height="2450"
+  src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FI3vCB15rvT47ATr94EOwLE%2FosmanherreraSite%3Ftype%3Ddesign%26node-id%3D9%253A66%26mode%3Ddesign%26t%3Dzz8FquhmokkdFkOO-1"
+  allowfullscreen
+></iframe> -->
+<section class="navbar">
+  <div class="navbarContainer">
+    <div class="icono-n-name">
+      <i class="OHicono"></i>
+      <h2 class="navbarOsmanDev">osmanherrera.dev</h2>
+    </div>
+    <h2 class="navbarOsmanDev">Bienvenido</h2>
+  </div>
+</section>
+
+<section style="position: relative; width: 100%">
+  <p class="introMessage">
+    Me encuentro trabajando en proyectos que ire agregando a este sitio.
+  </p>
+</section>
+
+<section class="profile">
+  <div class="cardProfile">
+    <div class="profilePicture__iconButtons">
+      <div class="profilePicture">
+        <img src="/assets/images/IMG_20230209_080358.jpg" />
+      </div>
+      <div class="iconButtons">
+        <a
+          *ngFor="let icons of socialIcons; index as i"
+          [href]="icons.address"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><span
+            class="icon-mask"
+            [style.--icon-url]="'url(' + icons.icon + ')'"
+          ></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="sectionTitle">
+      <div>
+        <h2>Osman Herrera</h2>
+      </div>
+      <div class="sectionTitle_name_CV">
+        <div>
+          <div class="label_icon">
+            <p>Desarrollador FullStack!</p>
+          </div>
+          <div>
+            <div class="label_icon">
+              <p>Diseñador Gráfico!</p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="CV_button"
+          title="Este es mi currículo actualizado en formato PDF"
+        >
+          <a
+            href="https://raw.githubusercontent.com/osmanjosue/pdfCv/d3122180d29d9b5bf0b7acca4c33b7af8264304e/CV_oherrera_dev_eng_2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            download="CV_osmanherrera_dev_2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-cv"
+          >
+            <span
+              class="icon-mask"
+              style="
+                --icon-url: url(&quot;/assets/icons/Download_icon.svg&quot;);
+              "
+            ></span>
+          </a>
+        </div>
+        <!-- <div
+          class="CV_button"
+          title="Este es mi currículo actualizado en formato PDF"
+        >
+          <a target="_blank" rel="noopener noreferrer"
+            ><img
+              class="contactLogo colorTheme"
+              src="/assets/icons/Download_icon.svg"
+          /></a>
+        </div> -->
+      </div>
+      <hr style="width: 100%" />
+      <div class="aboutMe">
+        <p>
+          ¡Hola! Soy desarrollador web independiente y me considero un eterno
+          aprendiz. Más allá de dominar una herramienta específica, mi verdadera
+          fortaleza es una lógica de programación sólida y la capacidad de
+          aprender lo que sea necesario para hacer realidad tu proyecto. Me
+          mantengo siempre actualizado para ofrecerte soluciones ágiles,
+          funcionales y modernas.
+        </p>
+      </div>
+    </div>
+    <hr class="linea-hr" />
+  </div>
+</section>
+
+<section class="webSections">
+  <div class="sectionCurriculum sectionTitle">
+    <h2>Habilidades</h2>
+  </div>
+  <div class="technologies">
+    <a *ngFor="let technology of technologies">
+      <span
+        class="skillLogo icon-mask"
+        [style.--icon-url]="
+          'url(/assets/icons/technologies-' + technology.title + '.svg)'
+        "
+        alt=""
+      ></span>
+      <p class="technologyName">{{ technology.title }}</p>
+    </a>
+  </div>
+</section>
+<section class="webSections">
+  <div class="sectionCurriculum sectionTitle">
+    <h2>Formación</h2>
+  </div>
+
+  <div class="allFormation">
+    <p>Universidad Tecnológica de Honduras</p>
+    <div class="formation-n-date">
+      <li>
+        Técnico Universitario en Desarrollo de Aplicaciones Computacionales.
+      </li>
+      <p>(Estudiando Actualmente)</p>
+    </div>
+  </div>
+
+  <div class="allFormation" *ngFor="let certificate of certificates">
+    <div class="certificatePlatform">
+      <p>Certificado {{ certificate.platform }}</p>
+      <a
+        href="{{ certificate.link }}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span
+          class="colorTheme linkExterno icon-mask"
+          [style.--icon-url]="'url(/assets/icons/linkExterno.svg)'"
+        ></span>
+      </a>
+    </div>
+    <div class="formation-n-date">
+      <li>
+        {{ certificate.title }}
+      </li>
+      <p>
+        <span class="colorTheme">{{ certificate.month }}-</span>
+        <span>{{ certificate.date }}</span>
+      </p>
+    </div>
+  </div>
+</section>
+<!-- =========================== Experience start =========================== -->
+<section>
+  <div class="sectionCurriculum sectionTitle">
+    <h2>Experiencia</h2>
+  </div>
+  <div class="experiences">
+    <div class="experience_card">
+      <div class="experience">
+        <p>
+          Desarrollador <span class="colorTheme">web</span> en Fundación
+          Prolancho
+        </p>
+        <p class="colorTheme">2023-2026</p>
+      </div>
+
+      <div class="iconButtons__experience">
+        <div class="label_icon">
+          <p>Repositorio del Proyecto</p>
+          <a
+            href="https://github.com/osmanjosue/fundacionProlanchoSiteFrontAndBack"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span
+              class="icon-mask"
+              [style.--icon-url]="'url(/assets/icons/technologies-GitHub.svg)'"
+            ></span>
+          </a>
+        </div>
+        <div class="label_icon">
+          <p>Sitio Web</p>
+          <a
+            href="https://www.fundacionprolancho.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span
+              class="contactLogo colorTheme icon-mask"
+              [style.--icon-url]="'url(/assets/icons/website.svg)'"
+            ></span>
+          </a>
+        </div>
+      </div>
+
+      <ul class="experienceDetails padding-ul">
+        <li>
+          Desarrollo del sitio web con Angular15 de frontEnd y NodeJs para el
+          desarrollo de su API, base de datos con MongoDB y utilizando
+          cloudinary para el manejo de las imágenes.
+        </li>
+        <li>
+          Autenticado con JWT desde el lado del servidor y validación de
+          credenciales para envío de un menú diferente para su administración.
+        </li>
+        <li>
+          Pagina alojada en una capa EC2 en AWS usando:
+          <ul class="padding-ul">
+            <li>Ubuntu como S.O.</li>
+            <li>
+              NGINX como servidor web gestionando las solicitudes HTTP
+              entrantes.
+            </li>
+            <li>
+              PM2 como administrador de procesos de la aplicación de NodeJS.
+            </li>
+          </ul>
+        </li>
+        <li>
+          Actualmente trabajando en nuevas características a pedido de la
+          organización.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="experiences">
+    <div class="experience_card">
+      <div class="experience">
+        <p>
+          Diseñador <span class="colorTheme">Gráfico</span>/ Coordinar de
+          lanzamiento de <span class="colorTheme">Productos</span>
+        </p>
+        <p class="colorTheme">2012-2023</p>
+      </div>
+      <div class="iconButtons__experience">
+        <div class="label_icon">
+          <p>Pagina de Facebook</p>
+          <a
+            href="https://www.facebook.com/beomegusta/"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span
+              class="contactLogo icon-mask"
+              [style.--icon-url]="'url(/assets/icons/facebook.svg)'"
+            ></span>
+          </a>
+        </div>
+
+        <div class="label_icon">
+          <p>Sitio Web</p>
+          <a
+            ><span
+              class="contactLogo colorTheme icon-mask"
+              [style.--icon-url]="'url(/assets/icons/website.svg)'"
+            ></span
+          ></a>
+        </div>
+      </div>
+      <ul class="experienceDetails padding-ul">
+        <li>Encargado del diseño, creación y desarrollo de ilustraciones.</li>
+        <li>
+          Separación de colores para técnicas de estampado (serigrafía y
+          sublimación).
+        </li>
+        <li>
+          Coordinación y manejo del personal para:
+          <ul class="padding-ul">
+            <li>Cumplimiento de los objetivos de producción.</li>
+            <li>
+              Lanzamiento de nuevos productos con fechas puntuales basados en
+              metas pre-establecidas entre los colaboradores de la empresa.
+            </li>
+          </ul>
+        </li>
+        <li>
+          Actualmente trabajando en nuevas características a pedido de la
+          organización.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- =========================== Experience end =========================== -->
+<section>
+  <h2 class="sectionCurriculum sectionTitle">Contacto</h2>
+  <app-footer></app-footer>
+  <div class="final"></div>
+</section>

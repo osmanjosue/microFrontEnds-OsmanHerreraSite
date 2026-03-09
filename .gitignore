@@ -1,0 +1,50 @@
+# ==========================================
+# 1. ESENCIALES Y SEGURIDAD (Global)
+# ==========================================
+# Dependencias
+**/node_modules/
+
+# Variables de entorno y secretos (¡NUNCA SUBIR!)
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+*.pem
+*.key
+*.pub
+
+# Archivos de sistema y logs
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==========================================
+# 2. COMPILACIÓN Y SALIDA (Universal para Monorepo)
+# ==========================================
+# Ignora cualquier carpeta dist, out o build en cualquier subdirectorio
+**/dist/
+**/dist-browser/
+**/out/
+**/build/
+
+# Específicos de Angular y Vite (Cachés de desarrollo)
+**/.angular/
+**/.vite/
+.cache/
+.sourcemaps/
+.metadata/
+
+# ==========================================
+# 3. HERRAMIENTAS DE DESARROLLO (Azure/VS Code)
+# ==========================================
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.code-workspace
+
+# Ignorar assets copiados en builds (por si acaso fallara el filtro de dist)
+**/src/assets/temp/

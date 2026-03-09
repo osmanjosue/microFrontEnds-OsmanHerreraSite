@@ -1,0 +1,68 @@
+<footer class="footerSections">
+  <div class="footerSection footerSection-first">
+    <h3>Ponte en Contacto</h3>
+    <p style="margin: 10px;">Aquí tienes varias maneras conocerme o ponerte en contacto:</p>
+    <div class="contactMethod">
+      <span class="contactLogo2 icon-mask" [style.--icon-url]="'url(/assets/icons/social3.svg)'" ></span>
+      <p>contact&#64;osmanherrera.dev</p>
+    </div>
+    <div class="contactMethod">
+      <span class="contactLogo2  icon-mask" [style.--icon-url]="'url(/assets/icons/social1.svg)'" ></span>
+      <p>https://www.linkedin.com/in/osmanherrera/</p>
+    </div>
+    <div class="contactMethod">
+      <span class="contactLogo2  icon-mask" [style.--icon-url]="'url(/assets/icons/social4.svg)' " ></span>
+      <p>https://github.com/osmanjosue</p>
+    </div>
+  </div>
+  <div class="footerSection footerSection-second" [class.inhabilitarDiv]="this.formSubmitted">
+    <form
+      class="formFlex"
+      autocomplete="on"
+      [formGroup]="contactForm"
+      (ngSubmit)="enviarFormularioContacto()"
+    >
+      <div class="formFields">
+        <label for="name">Nombre/Empresa:</label>
+        <input
+          type="text"
+          placeholder="nombre"
+          name="name"
+          formControlName="nombre"
+        />
+      </div>
+
+      <div class="formFields">
+        <label for="email">Correo:</label>
+        <input
+          type="email"
+          placeholder="correo"
+          name="email"
+          formControlName="correoElectronico"
+        />
+      </div>
+      <div class="formFields">
+        <label for="content">Cuerpo Mensaje:</label>
+        <textarea
+          name="content"
+          rows="10"
+          placeholder="Mensaje a enviar"
+          formControlName="content"
+        ></textarea>
+
+        <small *ngIf="this.contactForm.invalid"
+          >El botón se habilita al tener los campos correctos para su
+          envío</small
+        >
+      </div>
+
+      <button
+        class="formButton"
+        type="submit"
+        [disabled]="this.contactForm.invalid"
+      >
+        Enviar
+      </button>
+    </form>
+  </div>
+</footer>
