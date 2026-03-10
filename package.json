@@ -20,7 +20,7 @@
   
   "build:all": "npm run build:angular && npm run build:react && npm run build:backend",
   
-  "start:backend": "pm2 restart osmanHerreraSiteBackend || pm2 start osmanHerreraSiteBackend/index.js --name osmanHerreraSiteBackend"
+  "start:backend": "pm2 restart oherrera-api || pm2 start osmanHerreraSiteBackend/dist/app.js --name oherrera-api"
 },
   "repository": {
     "type": "git",
