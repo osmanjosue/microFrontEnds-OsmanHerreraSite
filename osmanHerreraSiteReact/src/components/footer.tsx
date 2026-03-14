@@ -11,7 +11,6 @@ interface ContactFormData {
 export const Footer = () => {
   const { isSending, sendEmail } = useContactForm();
 
-  // Configuración del formulario (equivalente a FormBuilder)
   const {
     register,
     handleSubmit,
@@ -27,113 +26,106 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="footerSections">
-      <div className="footerSection footerSection-first">
-        <h3>Ponte en Contacto</h3>
-        <p style={{ margin: '10px' }}>
-          Aquí tienes varias maneras de conocerme o ponerte en contacto:
+    <div className="w-full">
+      <form
+        className={`form-glass transition-all ${
+          isSending ? 'blur-state' : ''
+        }`}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {/* Nombre */}
+        <div className="form-group">
+          <label htmlFor="nombre" className="form-label">
+            Nombre / Empresa
+          </label>
+          <input
+            id="nombre"
+            type="text"
+            className="form-input"
+            placeholder="Tu nombre o empresa"
+            {...register('nombre', {
+              required: 'El nombre es obligatorio',
+            })}
+          />
+          {errors.nombre && (
+            <span className="form-error">{errors.nombre.message}</span>
+          )}
+        </div>
+
+        {/* Email */}
+        <div className="form-group">
+          <label htmlFor="correoElectronico" className="form-label">
+            Correo Electrónico
+          </label>
+          <input
+            id="correoElectronico"
+            type="email"
+            className="form-input"
+            placeholder="tu@email.com"
+            {...register('correoElectronico', {
+              required: 'El correo es obligatorio',
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: 'El formato de correo no es válido',
+              },
+            })}
+          />
+          {errors.correoElectronico && (
+            <span className="form-error">
+              {errors.correoElectronico.message}
+            </span>
+          )}
+        </div>
+
+        {/* Mensaje */}
+        <div className="form-group">
+          <label htmlFor="content" className="form-label">
+            Mensaje
+          </label>
+          <textarea
+            id="content"
+            className="form-textarea"
+            placeholder="Tu mensaje aquí..."
+            {...register('content', {
+              required: 'El mensaje es obligatorio',
+              minLength: {
+                value: 10,
+                message: 'El mensaje debe tener al menos 10 caracteres',
+              },
+            })}
+          />
+          {errors.content && (
+            <span className="form-error">{errors.content.message}</span>
+          )}
+        </div>
+
+        {/* Validación Info */}
+        {!isValid && (
+          <p className="form-error mb-4">
+            ℹ️ Completa correctamente todos los campos
+          </p>
+        )}
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={!isValid || isSending}
+          className="form-button w-full mb-3"
+        >
+          {isSending ? (
+            <span className="inline-flex items-center gap-2">
+              <span className="inline-block w-4 h-4 border-2 border-transparent border-t-2 rounded-full animate-spin"></span>
+              Enviando...
+            </span>
+          ) : (
+            'Enviar Mensaje'
+          )}
+        </button>
+
+        <p className="text-xs opacity-70 text-center">
+          Responderé lo antes posible
         </p>
-
-        {/* Email - Usa mailto: para abrir el gestor de correos */}
-        <a href="mailto:contact@osmanherrera.dev" className="contactMethod">
-          <span
-            className="contactLogo2 icon-mask"
-            style={
-              {
-                '--icon-url': 'url(/assets/icons/social3.svg)',
-              } as React.CSSProperties
-            }></span>
-          <p>contact@osmanherrera.dev</p>
-        </a>
-
-        {/* LinkedIn - Abrir en pestaña nueva */}
-        <a
-          href="https://www.linkedin.com/in/osmanherrera/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="contactMethod">
-          <span
-            className="contactLogo2 icon-mask"
-            style={
-              {
-                '--icon-url': 'url(/assets/icons/social1.svg)',
-              } as React.CSSProperties
-            }></span>
-          <p>linkedin.com/in/osmanherrera/</p>
-        </a>
-
-        {/* GitHub - Abrir en pestaña nueva */}
-        <a
-          href="https://github.com/osmanjosue"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="contactMethod">
-          <span
-            className="contactLogo2 icon-mask"
-            style={
-              {
-                '--icon-url': 'url(/assets/icons/social4.svg)',
-              } as React.CSSProperties
-            }></span>
-          <p>github.com/osmanjosue</p>
-        </a>
-      </div>
-
-      {/* Condición de clase inhabilitarDiv similar a [class.inhabilitarDiv] */}
-      <div
-        className={`footerSection footerSection-second ${isSending ? 'inhabilitarDiv' : ''}`}>
-        <form className="formFlex" onSubmit={handleSubmit(onSubmit)}>
-          <div className="formFields">
-            <label htmlFor="name">Nombre/Empresa:</label>
-            <input
-              type="text"
-              placeholder="nombre"
-              {...register('nombre', { required: true })}
-            />
-          </div>
-
-          <div className="formFields">
-            <label htmlFor="email">Correo:</label>
-            <input
-              type="email"
-              placeholder="correo"
-              {...register('correoElectronico', {
-                required: 'El correo es obligatorio',
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: 'El formato de correo no es válido',
-                },
-              })}
-            />
-            {errors.correoElectronico && (
-              <span className="error-message">
-                {errors.correoElectronico.message}
-              </span>
-            )}
-          </div>
-
-          <div className="formFields">
-            <label htmlFor="content">Cuerpo Mensaje:</label>
-            <textarea
-              rows={10}
-              placeholder="Mensaje a enviar"
-              {...register('content', { required: true })}></textarea>
-
-            {!isValid && (
-              <small>
-                El botón se habilita al tener los campos correctos para su envío
-              </small>
-            )}
-          </div>
-
-          <button
-            className="formButton"
-            type="submit"
-            disabled={!isValid || isSending}>
-            {isSending ? 'Enviando...' : 'Enviar'}
-          </button>
-        </form>
-      </div>
-    </footer>
+      </form>
+    </div>
   );
 };

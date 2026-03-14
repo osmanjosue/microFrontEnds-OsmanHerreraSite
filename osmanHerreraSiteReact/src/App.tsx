@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import './App.css';
 import { Footer } from './components/footer';
 
@@ -68,18 +68,12 @@ const TECH_NAMES: string[] = [
   'Git', 'MongoDB', 'Photoshop', 'Illustrator', 'JWT', 'Python', 'n8n', 'Docker'
 ];
 
-// --- FUNCIONES DE UTILIDAD ---
-const lerp = (start: number, end: number, t: number): number =>
-  Math.round(start + (end - start) * t);
 
 // ===========================================================================
 // 2. COMPONENTE APP
 // ===========================================================================
 
 const App: React.FC = () => {
-  // --- ESTADO ---
-  const [colorDinamico, setColorDinamico] = useState<string>('rgb(255, 94, 0)');
-
   // --- LÓGICA DE TRANSFORMACIÓN (USEMEMO) ---
   const technologies = useMemo<Technology[]>(() => {
     return TECH_NAMES.map((name) => ({
@@ -88,358 +82,374 @@ const App: React.FC = () => {
     }));
   }, []);
 
-  // --- EFECTO DE SCROLL ---
-  useEffect(() => {
-    const colors = [
-      { r: 255, g: 94, b: 0 },
-      { r: 102, g: 51, b: 153 },
-      { r: 255, g: 0, b: 0 },
-    ];
-
-    const handleScroll = (): void => {
-      const scrollHeight = document.documentElement.scrollHeight;
-      const windowHeight = window.innerHeight;
-      const scrollTotal = scrollHeight - windowHeight;
-
-      if (scrollTotal <= 0) return;
-
-      const percent = Math.min(Math.max(window.scrollY / scrollTotal, 0), 1);
-      let r: number, g: number, b: number;
-
-      if (percent <= 0.5) {
-        const subPercent = percent * 2;
-        r = lerp(colors[0].r, colors[1].r, subPercent);
-        g = lerp(colors[0].g, colors[1].g, subPercent);
-        b = lerp(colors[0].b, colors[1].b, subPercent);
-      } else {
-        const subPercent = (percent - 0.5) * 2;
-        r = lerp(colors[1].r, colors[2].r, subPercent);
-        g = lerp(colors[1].g, colors[2].g, subPercent);
-        b = lerp(colors[1].b, colors[2].b, subPercent);
-      }
-      setColorDinamico(`rgb(${r}, ${g}, ${b})`);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return (// Aplicamos la variable de CSS tipada como objeto de estilos
-    <div style={{ '--variant': colorDinamico } as React.CSSProperties}>
-      {/* Navbar */}
-      <section className="navbar">
-        <div className="navbarContainer">
-          <div className="icono-n-name">
-            <i className="OHicono"></i>
-            <h2 className="navbarOsmanDev">osmanherrera.dev</h2>
+  return (
+    <div className="w-full">
+      {/* ================= STICKY HEADER ================= */}
+      <header className="header-sticky">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+          {/* Logo & Brand */}
+          <div className="flex items-center gap-3">
+            <i className="OHicono w-10 h-10"></i>
+            <h1 className="text-2xl font-bold">
+              <span className="color-variant">Osman</span>Herrera.dev
+            </h1>
           </div>
-          <h2 className="navbarOsmanDev">Bienvenido</h2>
+
+          {/* Navigation */}
+          <nav className="hidden md:flex gap-8">
+            <a href="#hero" className="text-sm font-semibold hover:color-variant transition">
+              Inicio
+            </a>
+            <a href="#technologies" className="text-sm font-semibold hover:color-variant transition">
+              Habilidades
+            </a>
+            <a href="#formation" className="text-sm font-semibold hover:color-variant transition">
+              Formación
+            </a>
+            <a href="#experience" className="text-sm font-semibold hover:color-variant transition">
+              Experiencia
+            </a>
+            <a href="#contact" className="text-sm font-semibold hover:color-variant transition">
+              Contacto
+            </a>
+          </nav>
         </div>
-      </section>
+      </header>
 
-      <section style={{ position: 'relative', width: '100%' }}>
-        <p className="introMessage">
-          Me encuentro trabajando en proyectos que iré agregando a este sitio.
-        </p>
-      </section>
+      {/* ================= HERO SECTION ================= */}
+      
 
-      {/* Perfil */}
-      <section className="profile">
-        <div className="cardProfile">
-          <div className="profilePicture__iconButtons">
-            <div className="profilePicture">
+      {/* ================= PROFILE SECTION ================= */}
+      <section className="w-full py-20 px-4 bg-black">
+        <div className="max-w-4xl mx-auto">
+          <div className="profile-card">
+            {/* Profile Image */}
+            <div className="profile-image">
               <img
                 src="/assets/images/IMG_20230209_080358.jpg"
                 alt="Osman Herrera"
               />
             </div>
-            <div className="iconButtons">
-              {SOCIAL_ICONS.map((icon, i) => (
-                <a
-                  key={i}
-                  href={icon.address}
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  <span
-                    className="icon-mask"
-                    style={
-                      {
-                        '--icon-url': `url(${icon.icon})`,
-                      } as React.CSSProperties
-                    }></span>
-                </a>
-              ))}
-            </div>
-          </div>
 
-          <div className="sectionTitle">
-            <h2>Osman Herrera</h2>
-            <div className="sectionTitle_name_CV">
-              <div>
-                <div className="label_icon">
-                  <p>Desarrollador FullStack!</p>
-                </div>
-                <div className="label_icon">
-                  <p>Diseñador Gráfico!</p>
-                </div>
+            {/* Profile Info */}
+            <div className="profile-info">
+              <h2 className="profile-name">Osman Herrera</h2>
+
+              {/* Badges */}
+              <div className="profile-badges">
+                <span className="badge">Desarrollador FullStack</span>
+                <span className="badge">Diseñador Gráfico</span>
+                <span className="badge">Eterno Aprendiz</span>
               </div>
-              <div
-                className="CV_button"
-                title="Este es mi currículo actualizado en formato PDF">
-                <a
-                  href="https://raw.githubusercontent.com/osmanjosue/pdfCv/d3122180d29d9b5bf0b7acca4c33b7af8264304e/CV_oherrera_dev_eng_2026.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-cv">
-                  <span
-                    className="icon-mask"
-                    style={
-                      {
-                        '--icon-url': 'url("/assets/icons/Download_icon.svg")',
-                      } as React.CSSProperties
-                    }></span>
-                </a>
+
+              {/* Social Buttons */}
+              <div className="social-buttons">
+                {SOCIAL_ICONS.map((icon, i) => (
+                  <a
+                    key={i}
+                    href={icon.address}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-btn"
+                    title={icon.title}
+                  >
+                    <span
+                      className="icon-mask"
+                      style={
+                        {
+                          '--icon-url': `url(${icon.icon})`,
+                        } as React.CSSProperties
+                      }
+                    ></span>
+                  </a>
+                ))}
               </div>
-            </div>
-            <hr style={{ width: '100%' }} />
-            <div className="aboutMe">
-              <p>
-                ¡Hola! Soy desarrollador web independiente y me considero un
-                eterno aprendiz. Más allá de dominar una herramienta específica,
-                mi verdadera fortaleza es una lógica de programación sólida y la
-                capacidad de aprender lo que sea necesario para hacer realidad
-                tu proyecto. Me mantengo siempre actualizado para ofrecerte
-                soluciones ágiles, funcionales y modernas.
-              </p>
-            </div>
-          </div>
-          <hr className="linea-hr" />
-        </div>
-      </section>
 
-      {/* Habilidades */}
-      <section className="webSections">
-        <div className="sectionCurriculum sectionTitle">
-          <h2>Habilidades</h2>
-        </div>
-        <div className="technologies">
-          {technologies.map((tech, i) => (
-            <a key={i}>
-              <span
-                className="skillLogo icon-mask"
-                style={
-                  { '--icon-url': `url(${tech.icon})` } as React.CSSProperties
-                }></span>
-              <p className="technologyName">{tech.title}</p>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* Formación */}
-      <section className="webSections">
-        <div className="sectionCurriculum sectionTitle">
-          <h2>Formación</h2>
-        </div>
-        <div className="allFormation">
-          <p>Universidad Tecnológica de Honduras</p>
-          <div className="formation-n-date">
-            <li>
-              Técnico Universitario en Desarrollo de Aplicaciones
-              Computacionales.
-            </li>
-            <p>(Estudiando Actualmente)</p>
-          </div>
-        </div>
-        {CERTIFICATES.map((cert, i) => (
-          <div className="allFormation" key={i}>
-            <div className="certificatePlatform">
-              <p>Certificado {cert.platform}</p>
-              <a href={cert.link} target="_blank" rel="noopener noreferrer">
+              {/* CV Button */}
+              <a
+                href="https://raw.githubusercontent.com/osmanjosue/pdfCv/d3122180d29d9b5bf0b7acca4c33b7af8264304e/CV_oherrera_dev_eng_2026.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cv-button mb-6 inline-flex"
+              >
                 <span
-                  className="colorTheme linkExterno icon-mask"
+                  className="icon-mask w-6 h-6 mr-2"
                   style={
                     {
-                      '--icon-url': 'url(/assets/icons/linkExterno.svg)',
+                      '--icon-url': 'url("/assets/icons/Download_icon.svg")',
                     } as React.CSSProperties
-                  }></span>
+                  }
+                ></span>
+                Descargar CV
               </a>
-            </div>
-            <div className="formation-n-date">
-              <li>{cert.title}</li>
-              <p>
-                <span className="colorTheme">{cert.month}-</span>
-                <span>{cert.date}</span>
-              </p>
+
+              {/* About Me */}
+              <div className="text-base leading-relaxed opacity-90 max-w-2xl mx-auto">
+                <p>
+                  ¡Hola! Soy <span className="color-variant font-semibold">desarrollador web independiente</span> y me considero un
+                  <span className="color-variant font-semibold"> eterno aprendiz</span>. Más allá de dominar una herramienta específica,
+                  mi verdadera fortaleza es una lógica de programación sólida y la
+                  capacidad de aprender lo que sea necesario para hacer realidad
+                  tu proyecto.
+                </p>
+                <p className="mt-4">
+                  Me mantengo siempre actualizado para ofrecerte
+                  <span className="color-variant font-semibold"> soluciones ágiles, funcionales y modernas</span>.
+                </p>
+              </div>
             </div>
           </div>
-        ))}
+        </div>
       </section>
 
-      {/* =========================== Experience start =========================== */}
-      <section>
-        <div className="sectionCurriculum sectionTitle">
-          <h2>Experiencia</h2>
-        </div>
+      {/* ================= TECHNOLOGIES SECTION ================= */}
+      <section id="technologies" className="technologies-section">
+        <div className="max-w-6xl mx-auto">
+          <div className="section-header">
+            <h2 className="section-title">Habilidades Técnicas</h2>
+            <p className="section-subtitle">
+              Tecnologías y herramientas que domino
+            </p>
+          </div>
 
-        <div className="experiences">
-          {/* TARJETA 1: FUNDACIÓN PROLANCHO */}
-          <div className="experience_card">
-            <div className="experience">
-              <p>
-                Desarrollador <span className="colorTheme">web</span> en
-                Fundación Prolancho
-              </p>
-              <p className="colorTheme">2023-2026</p>
+          <div className="technologies-grid">
+            {technologies.map((tech, i) => (
+              <div key={i} className="tech-card">
+                <span
+                  className="tech-icon icon-mask"
+                  style={
+                    { '--icon-url': `url(${tech.icon})` } as React.CSSProperties
+                  }
+                ></span>
+                <p className="tech-name">{tech.title}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= FORMATION SECTION ================= */}
+      <section id="formation" className="formation-section">
+        <div className="max-w-4xl mx-auto">
+          <div className="section-header mb-12">
+            <h2 className="section-title">Formación</h2>
+            <p className="section-subtitle">Educación y Certificaciones</p>
+          </div>
+
+          <div className="certificates-container">
+            {/* Universidad */}
+            <div className="certificate-card">
+              <div className="certificate-platform">UNIVERSIDAD</div>
+              <h3 className="certificate-title">
+                Técnico Universitario en Desarrollo de Aplicaciones Computacionales
+              </h3>
+              <p className="certificate-date">Universidad Tecnológica de Honduras • Estudiando Actualmente</p>
             </div>
 
-            <div className="iconButtons__experience">
-              <div className="label_icon">
-                <p>Repositorio del Proyecto</p>
+            {/* Certificados */}
+            {CERTIFICATES.map((cert, i) => (
+              <div key={i} className="certificate-card">
+                <div className="certificate-platform">{cert.platform}</div>
+                <h3 className="certificate-title">{cert.title}</h3>
+                <p className="certificate-date">
+                  {cert.month} {cert.date}
+                </p>
+                <a
+                  href={cert.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="certificate-link"
+                >
+                  Ver Certificado →
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= EXPERIENCE SECTION ================= */}
+      <section id="experience" className="experience-section">
+        <div className="max-w-5xl mx-auto">
+          <div className="section-header mb-12">
+            <h2 className="section-title">Experiencia Profesional</h2>
+            <p className="section-subtitle">Proyectos y roles que he desempeñado</p>
+          </div>
+
+          <div className="experience-container">
+            {/* Experience Card 1 */}
+            <div className="experience-card">
+              <div className="experience-header">
+                <div>
+                  <h3 className="experience-title">
+                    Desarrollador <span className="color-variant">web</span>
+                  </h3>
+                  <p className="text-lg opacity-70">Fundación Prolancho</p>
+                </div>
+                <span className="experience-date">2023 - 2026</span>
+              </div>
+
+              <p className="experience-description">
+                Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend.
+                Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT
+                y validación de credenciales para panel administrativo. Alojado en AWS EC2 con Ubuntu,
+                NGINX y PM2.
+              </p>
+
+              <div className="experience-tech">
+                <span className="tech-badge">Angular 15</span>
+                <span className="tech-badge">NodeJS</span>
+                <span className="tech-badge">MongoDB</span>
+                <span className="tech-badge">JWT</span>
+                <span className="tech-badge">AWS EC2</span>
+                <span className="tech-badge">NGINX</span>
+              </div>
+
+              <div className="mt-6 flex gap-4">
                 <a
                   href="https://github.com/osmanjosue/fundacionProlanchoSiteFrontAndBack"
                   target="_blank"
-                  rel="noopener noreferrer">
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold color-variant hover:opacity-80"
+                >
                   <span
-                    className="icon-mask"
+                    className="icon-mask w-4 h-4"
                     style={
                       {
                         '--icon-url':
                           'url(/assets/icons/technologies-GitHub.svg)',
                       } as React.CSSProperties
-                    }></span>
+                    }
+                  ></span>
+                  Repositorio
                 </a>
-              </div>
-              <div className="label_icon">
-                <p>Sitio Web</p>
                 <a
                   href="https://www.fundacionprolancho.org"
                   target="_blank"
-                  rel="noopener noreferrer">
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold color-variant hover:opacity-80"
+                >
                   <span
-                    className="contactLogo colorTheme icon-mask"
+                    className="icon-mask w-4 h-4"
                     style={
                       {
                         '--icon-url': 'url(/assets/icons/website.svg)',
                       } as React.CSSProperties
-                    }></span>
+                    }
+                  ></span>
+                  Sitio Web
                 </a>
               </div>
             </div>
 
-            <ul className="experienceDetails padding-ul">
-              <li>
-                Desarrollo del sitio web con Angular15 de frontEnd y NodeJs
-                para el desarrollo de su API, base de datos con MongoDB y
-                utilizando cloudinary para el manejo de las imágenes.
-              </li>
-              <li>
-                Autenticado con JWT desde el lado del servidor y validación de
-                credenciales para envío de un menú diferente para su
-                administración.
-              </li>
-              <li>
-                Pagina alojada en una capa EC2 en AWS usando:
-                <ul className="padding-ul">
-                  <li>Ubuntu como S.O.</li>
-                  <li>
-                    NGINX como servidor web gestionando las solicitudes HTTP
-                    entrantes.
-                  </li>
-                  <li>
-                    PM2 como administrador de procesos de la aplicación de
-                    NodeJS.
-                  </li>
-                </ul>
-              </li>
-              <li>
-                Actualmente trabajando en nuevas características a pedido de la
-                organización.
-              </li>
-            </ul>
-          </div>
-        </div>
+            {/* Experience Card 2 */}
+            <div className="experience-card">
+              <div className="experience-header">
+                <div>
+                  <h3 className="experience-title">
+                    Diseñador <span className="color-variant">Gráfico</span> & Coordinador de Productos
+                  </h3>
+                  <p className="text-lg opacity-70">Empresa de Diseño y Estampado</p>
+                </div>
+                <span className="experience-date">2012 - 2023</span>
+              </div>
 
-        <div className="experiences">
-          {/* TARJETA 2: DISEÑADOR GRÁFICO */}
-          <div className="experience_card">
-            <div className="experience">
-              <p>
-                Diseñador <span className="colorTheme">Gráfico</span>/ Coordinar
-                de lanzamiento de <span className="colorTheme">Productos</span>
+              <p className="experience-description">
+                Diseño y creación de ilustraciones profesionales. Separación de colores para serigrafía
+                y sublimación. Coordinación de personal, cumplimiento de objetivos de producción,
+                y lanzamiento de nuevos productos con fechas puntuales basados en metas establecidas.
               </p>
-              <p className="colorTheme">2012-2023</p>
-            </div>
 
-            <div className="iconButtons__experience">
-              <div className="label_icon">
-                <p>Pagina de Facebook</p>
+              <div className="experience-tech">
+                <span className="tech-badge">Diseño Gráfico</span>
+                <span className="tech-badge">Photoshop</span>
+                <span className="tech-badge">Ilustrator</span>
+                <span className="tech-badge">Gestión de Equipos</span>
+                <span className="tech-badge">Serigrafía</span>
+                <span className="tech-badge">Sublimación</span>
+              </div>
+
+              <div className="mt-6">
                 <a
                   href="https://www.facebook.com/beomegusta/"
                   target="_blank"
-                  rel="noopener noreferrer">
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold color-variant hover:opacity-80"
+                >
                   <span
-                    className="contactLogo icon-mask"
+                    className="icon-mask w-4 h-4"
                     style={
                       {
                         '--icon-url': 'url(/assets/icons/facebook.svg)',
                       } as React.CSSProperties
-                    }></span>
-                </a>
-              </div>
-
-              <div className="label_icon">
-                <p>Sitio Web</p>
-                <a>
-                  <span
-                    className="contactLogo colorTheme icon-mask"
-                    style={
-                      {
-                        '--icon-url': 'url(/assets/icons/website.svg)',
-                      } as React.CSSProperties
-                    }></span>
+                    }
+                  ></span>
+                  Página de Facebook
                 </a>
               </div>
             </div>
-
-            <ul className="experienceDetails padding-ul">
-              <li>
-                Encargado del diseño, creación y desarrollo de ilustraciones.
-              </li>
-              <li>
-                Separación de colores para técnicas de estampado (serigrafía y
-                sublimación).
-              </li>
-              <li>
-                Coordinación y manejo del personal para:
-                <ul className="padding-ul">
-                  <li>Cumplimiento de los objetivos de producción.</li>
-                  <li>
-                    Lanzamiento de nuevos productos con fechas puntuales basados
-                    en metas pre-establecidas entre los colaboradores de la
-                    empresa.
-                  </li>
-                </ul>
-              </li>
-              <li>
-                Actualmente trabajando en nuevas características a pedido de la
-                organización.
-              </li>
-            </ul>
           </div>
         </div>
       </section>
-      {/* =========================== Experience end =========================== */}
 
-      {/* Sección Contacto */}
-      <section>
-        <h2 className="sectionCurriculum sectionTitle">Contacto</h2>
-        {/* <Footer /> */}
-        <Footer />
-        <div className="final"></div>
+      {/* ================= CONTACT SECTION ================= */}
+      <section id="contact" className="contact-section">
+        <div className="max-w-4xl mx-auto">
+          <div className="section-header mb-12">
+            <h2 className="section-title">Ponte en Contacto</h2>
+            <p className="section-subtitle">
+              Varias formas de conectar conmigo
+            </p>
+          </div>
+
+          <div className="contact-container">
+            {/* Contact Methods */}
+            <div className="contact-info">
+              <h3 className="contact-title mb-8">Contacta Conmigo</h3>
+              <div className="contact-methods">
+                {SOCIAL_ICONS.map((icon, i) => (
+                  <a
+                    key={i}
+                    href={icon.address}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-method"
+                  >
+                    <span
+                      className="contact-icon icon-mask"
+                      style={
+                        {
+                          '--icon-url': `url(${icon.icon})`,
+                        } as React.CSSProperties
+                      }
+                    ></span>
+                    <span className="contact-text">{icon.title}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <Footer />
+          </div>
+        </div>
       </section>
+
+      {/* ================= FOOTER ================= */}
+      <footer className="footer">
+        <div className="footer-content">
+          <p className="footer-credit">
+            © 2026 Osman Herrera. Todos los derechos reservados.
+          </p>
+          <p className="footer-credit">
+            Diseñado y desarrollado con ❤️ por Osman Herrera
+          </p>
+        </div>
+      </footer>
     </div>
   );
+
+
 };
 
 export default App;
