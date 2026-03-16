@@ -1,68 +1,79 @@
-<footer class="footerSections">
-  <div class="footerSection footerSection-first">
-    <h3>Ponte en Contacto</h3>
-    <p style="margin: 10px;">Aquí tienes varias maneras conocerme o ponerte en contacto:</p>
-    <div class="contactMethod">
-      <span class="contactLogo2 icon-mask" [style.--icon-url]="'url(/assets/icons/social3.svg)'" ></span>
-      <p>contact&#64;osmanherrera.dev</p>
+<div class="w-full">
+  <form
+    [formGroup]="contactForm"
+    (ngSubmit)="onSubmit()"
+    class="form-glass transition-all"
+    [class.blur-state]="isSending"
+  >
+    <div class="form-group">
+      <label for="nombre" class="form-label">Nombre / Empresa</label>
+      <input
+        id="nombre"
+        type="text"
+        formControlName="nombre"
+        class="form-input"
+        placeholder="Tu nombre o empresa"
+      />
+      <span *ngIf="f['nombre'].touched && f['nombre'].errors?.['required']" class="form-error">
+        El nombre es obligatorio
+      </span>
     </div>
-    <div class="contactMethod">
-      <span class="contactLogo2  icon-mask" [style.--icon-url]="'url(/assets/icons/social1.svg)'" ></span>
-      <p>https://www.linkedin.com/in/osmanherrera/</p>
+
+    <div class="form-group">
+      <label for="correoElectronico" class="form-label">Correo Electrónico</label>
+      <input
+        id="correoElectronico"
+        type="email"
+        formControlName="correoElectronico"
+        class="form-input"
+        placeholder="tu@email.com"
+      />
+      <div *ngIf="f['correoElectronico'].touched && f['correoElectronico'].errors">
+        <span *ngIf="f['correoElectronico'].errors['required']" class="form-error">
+          El correo es obligatorio
+        </span>
+        <span *ngIf="f['correoElectronico'].errors['pattern']" class="form-error">
+          El formato de correo no es válido
+        </span>
+      </div>
     </div>
-    <div class="contactMethod">
-      <span class="contactLogo2  icon-mask" [style.--icon-url]="'url(/assets/icons/social4.svg)' " ></span>
-      <p>https://github.com/osmanjosue</p>
+
+    <div class="form-group">
+      <label for="content" class="form-label">Mensaje</label>
+      <textarea
+        id="content"
+        formControlName="content"
+        class="form-textarea"
+        placeholder="Tu mensaje aquí..."
+      ></textarea>
+      <div *ngIf="f['content'].touched && f['content'].errors">
+        <span *ngIf="f['content'].errors['required']" class="form-error">
+          El mensaje es obligatorio
+        </span>
+        <span *ngIf="f['content'].errors['minlength']" class="form-error">
+          El mensaje debe tener al menos 10 caracteres
+        </span>
+      </div>
     </div>
-  </div>
-  <div class="footerSection footerSection-second" [class.inhabilitarDiv]="this.formSubmitted">
-    <form
-      class="formFlex"
-      autocomplete="on"
-      [formGroup]="contactForm"
-      (ngSubmit)="enviarFormularioContacto()"
+
+    <p *ngIf="contactForm.invalid && contactForm.touched" class="form-error mb-4">
+      ℹ️ Completa correctamente todos los campos
+    </p>
+
+    <button
+      type="submit"
+      [disabled]="contactForm.invalid || isSending"
+      class="form-button w-full mb-3"
     >
-      <div class="formFields">
-        <label for="name">Nombre/Empresa:</label>
-        <input
-          type="text"
-          placeholder="nombre"
-          name="name"
-          formControlName="nombre"
-        />
-      </div>
+      <span *ngIf="isSending; else defaultText" class="inline-flex items-center gap-2">
+        <span class="inline-block w-4 h-4 border-2 border-transparent border-t-white rounded-full animate-spin"></span>
+        Enviando...
+      </span>
+      <ng-template #defaultText>Enviar Mensaje</ng-template>
+    </button>
 
-      <div class="formFields">
-        <label for="email">Correo:</label>
-        <input
-          type="email"
-          placeholder="correo"
-          name="email"
-          formControlName="correoElectronico"
-        />
-      </div>
-      <div class="formFields">
-        <label for="content">Cuerpo Mensaje:</label>
-        <textarea
-          name="content"
-          rows="10"
-          placeholder="Mensaje a enviar"
-          formControlName="content"
-        ></textarea>
-
-        <small *ngIf="this.contactForm.invalid"
-          >El botón se habilita al tener los campos correctos para su
-          envío</small
-        >
-      </div>
-
-      <button
-        class="formButton"
-        type="submit"
-        [disabled]="this.contactForm.invalid"
-      >
-        Enviar
-      </button>
-    </form>
-  </div>
-</footer>
+    <p class="text-xs opacity-70 text-center">
+      Responderé lo antes posible
+    </p>
+  </form>
+</div>

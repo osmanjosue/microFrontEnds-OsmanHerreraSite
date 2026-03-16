@@ -1,582 +1,189 @@
+/* Importar Tailwind si no lo tienes en el global */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --background: #000000;
   --front: #ffffff;
   --variant: #ff5e00;
-  /* --variant: #8800ff; */
-  --card: #e8e8e8;
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-backdrop: blur(10px);
 }
 
-* {
-  font-size: 100%;
-  box-sizing: border-box;
-  margin: 0px;
-  padding: 0px;
-}
-
-html,
-body {
-  position: relative;
+/* IMPORTANTE: En Angular el equivalente a #root suele ser el selector del componente */
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  font-family: "Ubuntu", "Merriweather Sans", Arial, Helvetica;
-  min-width: 360px;
 }
 
-a {
-  cursor: pointer;
-}
-
-h2 {
-  font-size: 3rem;
-}
-
-h3 {
-  font-size: 2rem;
-}
-
-.padding-ul {
-  padding-left: 30px;
-}
-
-/* ================= navbar ================= */
-.navbar {
-  background: var(--background);
-  position: relative;
-  width: 100%;
-  height: 175px;
-}
-
-.introMessage {
-  position: relative;
-  padding: 10px;
+html, body {
+  background-color: var(--background);
   color: var(--front);
-  width: 100%;
-  /* font-size: 2rem; */
-  font-size: calc(0.7vw + 1vh);
-  background: var(--variant);
+  font-family: "Ubuntu", sans-serif;
+  scroll-behavior: smooth;
 }
 
-.navbarContainer {
-  position: relative;
-  display: flex;
-  width: 90%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  color: var(--front);
-  flex-wrap: wrap;
-}
-
-.icono-n-name {
-  margin-right: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.OHicono {
-  mask-image: url(/assets/icons/OsmanHerreraLogo3.svg);
-  width: 100px;
-  height: 90px;
-  background: var(--front);
-  mask-repeat: no-repeat;
-  mask-origin: view-box;
-}
-
-.navbarOsmanDev {
-  font-size: 2rem;
-}
-
-/* ================= navbar ================= */
-
-.profile {
-  width: 100%;
-  /* background: var(--variant); */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
-}
-
-.cardProfile {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.profilePicture__iconButtons {
-  flex-basis: 65%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 450px;
-  min-width: 320px;
-}
-
-.profilePicture {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  filter: grayscale(1) drop-shadow(12px 12px 0px #dbdbdb);
-  width: 70%;
-  margin-bottom: 20px;
-  padding-top: 50px;
-}
-
-.profilePicture>img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  background: var(--background);
-  border-radius: 25px;
-}
-
-.iconButtons {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 50px;
-  flex-wrap: wrap;
-  width: 60%;
-}
-
-.iconButtons a {
-  margin: 3px;
-  width: 20%;
-  aspect-ratio: 1;
-  border-radius: 10px;
-  background: var(--background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sectionTitle {
-  flex-basis: 35%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px 0px;
-  margin-bottom: 20px;
-}
-
-.sectionTitle_name_CV {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* .CV {} */
-
-.CV_button>a {
-  /* font-size: clamp(1rem, 0.5vw + 0.8vh, 2rem); */
-  aspect-ratio: 1;
-  border-radius: 10px;
-  background: var(--background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 70px;
-}
-
-.linea-hr {
-  width: 80%;
-}
-
-.aboutMe {
-  display: flex;
-  flex-direction: column;
-  gap: 16px 0;
-  font-size: 1.5rem;
-  width: 100%;
-
-}
-
-.contactLogo {
-  height: 80%;
-  width: 80%;
-}
-
-.label_icon2 {
-  flex-direction: column;
-  margin-bottom: 0;
-  gap: 10px;
-
-}
-
-.colorTheme {
-  color: var(--variant);
-  /* ¡Magia! El icono siempre será del color de tu variable */
-}
-
-/* .colorTheme {
-  filter: invert(10%) sepia(96%) saturate(7328%) hue-rotate(275deg) brightness(101%) contrast(117%);
-} */
-
-/* .colorTheme {
-
-  filter: invert(24%) sepia(29%) saturate(5833%) hue-rotate(245deg) brightness(87%) contrast(92%);
-} */
-
-
-/* Esta clase tiene toda la lógica pesada */
-
+/* ================= ICON MASK (Copiado de tu React) ================= */
 .icon-mask {
-  aspect-ratio: 1 / 1;
   display: inline-block;
-  width: 80%;
-  height: 80%;
+  aspect-ratio: 1 / 1;
   background-color: var(--variant);
-  /* Color naranja base */
-
-  /* Usamos una variable para la ruta */
-  -webkit-mask-image: var(--icon-url);
-  mask-image: var(--icon-url);
-
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   mask-size: contain;
   mask-position: center;
+  -webkit-mask-image: var(--icon-url);
+  mask-image: var(--icon-url);
   transition: all 0.3s ease;
 }
 
 .icon-mask:hover {
-  background-color: var(--front);
-  /* Cambia a blanco al pasar el mouse */
   transform: scale(1.1);
+  background-color: var(--front);
 }
 
-/* ================= skills start ================= */
-/* ================= boton de descarga ================= */
-
-
-.btn-cv:hover {
-  background: var(--variant); /* Se llena de color al hover */
-  box-shadow: 0 0 20px var(--variant);
-  transform: scale(1.05);
+/* ================= HEADER & SECTIONS ================= */
+.header-sticky {
+  @apply sticky top-0 z-50 w-full;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  animation: slideDown 0.5s ease-out;
 }
 
-/* Reutilizamos tu lógica de icono */
-
-/* ================= boton de descarga end ================= */
-
-
-.sectionCurriculum {
-  display: flex;
-  justify-content: center;
-  color: var(--front);
-  background: var(--background);
-  width: 100%;
-  align-items: center;
-  margin: 50px 0px;
+.profile-card {
+  @apply relative p-8 md:p-12 mx-auto;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+  border-radius: 1.5rem;
+  animation: fadeIn 0.6s ease-out;
 }
 
-.technologies {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-  margin: 0 auto;
-  flex-wrap: wrap;
-  pointer-events: none;
+.profile-image {
+  @apply w-48 h-48 md:w-64 md:h-64 mx-auto mb-6 overflow-hidden;
+  border-radius: 1.5rem;
+  border: 3px solid var(--variant);
+  box-shadow: 0 20px 60px rgba(255, 94, 0, 0.3);
 }
 
-.technologies>a {
-  width: 110px;
-  padding: 0 10px;
-  display: flex;
-  flex-direction: column;
-}
+.profile-image img { @apply w-full h-full object-cover; }
 
-.skillLogo {
-  margin-bottom: 0px;
-  width: 90px;
-  height: 110px;
-  object-fit: contain;
-}
-
-.technologyName {
-  width: 100%;
-  font-weight: 700;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  text-align: center;
-
-}
-
-/* ================= skills end ================= */
-/* ================= Formation start ================= */
-
-.webSections {
-  position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.allFormation {
-  width: 70%;
-}
-
-.allFormation>p,
-.certificatePlatform>p {
-  font-size: 1.2rem;
-  padding-bottom: 10px;
-  font-weight: 500;
-}
-
-.certificatePlatform {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 50px;
-  width: 20%;
-}
-
-.linkExterno {
-  width: 30px;
-  margin-left: 10px;
-}
-
-.formation-n-date {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--front);
-  background: var(--background);
-  width: 100%;
-  border-radius: 25px;
-  padding: 10px;
-  font-size: 1.3rem;
-  margin-bottom: 20px;
-  ;
-  flex-wrap: wrap;
-}
-
-.formation-n-date>li {
-  margin-right: auto;
-}
-
-.formation-n-date>p {
-  margin-left: auto;
-}
-
-/* ================= Formation end ================= */
-/* ================= Experience start ================= */
-
-.experiences {
-  width: 100%;
-}
-
-.experience_card {
-  background: var(--card);
-  width: 70%;
-  margin: 0 auto;
-  padding-bottom: 40px;
-  margin-top: 50px;
-  border-radius: 15px;
-  overflow: hidden;
-}
-
-.experience {
-  width: 100%;
-  margin: 0 auto;
-  background: var(--background);
-  color: var(--front);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
-  gap: 0 30%;
-  padding: 20px;
-  flex-wrap: wrap;
-}
-
-.experienceDetails {
-  width: 100%;
-  margin: 0 auto;
-  font-size: 1.2rem;
-}
-
-.iconButtons__experience {
-  width: 100%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 20px 0px;
-}
-
-.iconButtons__experience a {
-  width: 60px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--background);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 5px;
-}
-
-.label_icon {
-  display: flex;
-  margin: 10px 40px;
-  align-items: center;
-  margin-left: 0px;
-  flex-wrap: wrap;
-  gap: 10px 0px;
-}
-
-.label_icon>p {
-  background: var(--background);
-  border-radius: 25px;
-  color: var(--front);
-  padding: 5px 15px;
-  border: 10px;
-  white-space: nowrap;
-
-}
-
-/* ================= Experience end ================= */
-/* ================= Footer start ================= */
-
-.footerSections {
-  display: flex;
-  align-items: flex-start; /* Alineación superior para que el texto y form cuadren */
-  width: 80%;
-  margin: 0 auto;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding-bottom: 50px;
-}
-
-.footerSection {
-  flex-basis: 45%;
-  text-align: center;
-  min-width: 320px; /* Asegura que en móvil se apilen */
-  margin: 20px;
-}
-
-.footerSection-second {
-  text-align: start;
-}
-
-.footerSection input,
-.formFlex textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-family: inherit;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-}
-
-textarea,
-textarea::placeholder {
-  font-family: "Ubuntu", "Merriweather Sans", Arial, Helvetica;
-}
-
-.formFlex {
-  display: flex;
-  flex-direction: column;
-  gap: 10px 0px;
-}
-
-.formButton {
-  width: 150px;
-  padding: 12px;
-  background: var(--background);
-  color: var(--front);
-  border: none;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  align-self: flex-start;
-}
-
-/* Efecto Hover similar a tus otros botones */
-.formButton:not(:disabled):hover {
-  background: var(--variant);
-  box-shadow: 0 0 15px var(--variant);
-  transform: scale(1.02);
-}
-
-.formButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.formFields {
-  display: flex;
-  flex-direction: column;
-  gap: 5px
-}
-
-.formFields label {
-  font-weight: 700;
-  color: var(--background);
-}
-
-small {
+.badge {
+  @apply px-4 py-2 rounded-full text-sm font-semibold;
+  background: rgba(255, 94, 0, 0.2);
+  border: 1px solid var(--variant);
   color: var(--variant);
 }
 
-.footerSection-first {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.social-btn {
+  @apply w-12 h-12 rounded-full flex items-center justify-center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s;
 }
 
-.contactMethod {
-
-  text-decoration: none; /* Quita el subrayado */
-  color: inherit;        /* Mantiene el color del texto que ya definiste */
-  display: flex;
-  align-self: center;
-  align-items: center;
-  background: var(--background);
-  border-radius: 35px;
-  cursor: pointer;       /* Asegura que salga la "manito" al pasar el mouse */
-
+.social-btn:hover {
+  background: var(--variant);
+  box-shadow: 0 0 20px rgba(255, 94, 0, 0.5);
 }
 
-.contactMethod:hover {
-  transform: translateX(10px);
+.cv-button {
+  @apply inline-flex items-center justify-center px-8 py-3 rounded-lg font-bold;
+  border: 2px solid var(--variant);
+  color: var(--variant);
+  transition: all 0.3s;
 }
 
-.contactLogo2 {
-  width: 40px;
-  height: 45px;
-  margin: 5px 0px 5px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.cv-button:hover {
+  background: var(--variant);
+  color: #000;
 }
 
-.contactMethod>p {
-  color: var(--front);
-  padding: 15px;
-  font-size: 1rem;
-  font-weight: 500;
-  word-break: break-all;
+/* ================= GRID & CARDS ================= */
+.technologies-grid {
+  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6;
 }
 
-.final {
-  background: black;
-  width: 100%;
-  height: 50px;
-  margin-top: 30px;
+.tech-card {
+  @apply p-6 flex flex-col items-center justify-center text-center;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+  border-radius: 1.5rem;
+  transition: 0.3s;
 }
 
-.inhabilitarDiv {
-  filter: blur(2px);
+.tech-card:hover {
+  border-color: var(--variant);
+  transform: scale(1.05);
+}
+
+.experience-card {
+  @apply p-8 md:p-12 mb-8;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+}
+
+.experience-tech {
+  @apply flex flex-wrap gap-2;
+}
+
+/* Reutiliza el resto de animaciones de tu CSS de React... */
+@keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+/* ========================footer======================== */
+.form-glass {
+  @apply p-8;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1.5rem;
+}
+
+.blur-state {
+  filter: blur(4px);
   pointer-events: none;
   opacity: 0.6;
 }
 
-/* ================= Footer end ================= */
+.form-group { @apply mb-6 flex flex-col gap-2; }
+.form-label { @apply font-semibold text-sm text-white; }
+
+.form-input, .form-textarea {
+  @apply w-full px-4 py-3 rounded-lg text-white;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+}
+
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: #ff5e00; /* Tu color naranja variant */
+  box-shadow: 0 0 20px rgba(255, 94, 0, 0.2);
+}
+
+.form-error { @apply text-red-400 text-xs mt-1; }
+
+.form-button {
+  @apply px-8 py-3 rounded-lg font-bold transition-all bg-[#ff5e00] text-black cursor-pointer;
+}
+
+.form-button:disabled { @apply opacity-50 cursor-not-allowed; }
+
+.animate-spin {
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+/* ========================footer======================== */

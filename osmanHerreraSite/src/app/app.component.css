@@ -1,0 +1,534 @@
+/* ================= RESET & GLOBALS ================= */
+html,
+body,
+#root {
+  @apply w-full h-auto;
+  font-family: "Ubuntu", "Merriweather Sans", Arial, Helvetica;
+  background-color: var(--background);
+  color: var(--front);
+  scroll-behavior: smooth;
+}
+
+a {
+  @apply cursor-pointer no-underline;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: var(--variant);
+}
+
+/* ================= GLASSMORPHISM UTILITIES ================= */
+.glass {
+  @apply relative;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+  border-radius: 1.5rem;
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: var(--glass-backdrop);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+}
+
+/* ================= COLOR THEME ================= */
+.color-variant {
+  color: var(--variant);
+}
+
+.bg-variant {
+  background-color: var(--variant);
+}
+
+.border-variant {
+  border-color: var(--variant);
+}
+
+/* ================= STICKY HEADER ================= */
+.header-sticky {
+  @apply sticky top-0 z-50 w-full;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 100%);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ================= HERO SECTION ================= */
+.hero-section {
+  @apply relative w-full py-24 px-4 md:py-32 flex flex-col items-center justify-center;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 1) 0%, rgba(255, 94, 0, 0.05) 100%);
+  min-height: 60vh;
+}
+
+.hero-content {
+  @apply max-w-4xl w-full flex flex-col items-center justify-center gap-8;
+  animation: slideUp 0.8s ease-out;
+}
+
+.hero-title {
+  @apply text-5xl md:text-7xl font-bold text-center leading-tight;
+  color: var(--front);
+  background: linear-gradient(135deg, var(--front) 0%, var(--variant) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  @apply text-xl md:text-2xl text-center opacity-80;
+  color: var(--front);
+}
+
+.lottie-container {
+  @apply w-full h-80 md:h-96 flex items-center justify-center;
+  background: rgba(255, 94, 0, 0.08);
+  border-radius: 1.5rem;
+  border: 2px solid rgba(255, 94, 0, 0.2);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= PROFILE SECTION ================= */
+.profile-card {
+  @apply glass max-w-md md:max-w-2xl mx-4 md:mx-auto p-8 md:p-12;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.profile-image {
+  @apply w-48 h-48 md:w-64 md:h-64 mx-auto mb-6;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  border: 3px solid var(--variant);
+  box-shadow: 0 20px 60px rgba(255, 94, 0, 0.3);
+}
+
+.profile-image img {
+  @apply w-full h-full object-cover;
+}
+
+.profile-info {
+  @apply text-center;
+}
+
+.profile-name {
+  @apply text-4xl md:text-5xl font-bold mb-4;
+}
+
+.profile-badges {
+  @apply flex flex-wrap justify-center gap-3 mb-6;
+}
+
+.badge {
+  @apply px-4 py-2 rounded-full text-sm font-semibold;
+  background: rgba(255, 94, 0, 0.2);
+  border: 1px solid var(--variant);
+  color: var(--variant);
+  transition: all 0.3s ease;
+}
+
+.badge:hover {
+  @apply scale-105;
+  background: var(--variant);
+  color: var(--background);
+  box-shadow: 0 0 20px rgba(255, 94, 0, 0.5);
+}
+
+.social-buttons {
+  @apply flex justify-center gap-4 mb-6;
+  flex-wrap: wrap;
+}
+
+.social-btn {
+  @apply w-12 h-12 rounded-full flex items-center justify-center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+  @apply scale-110;
+  background: var(--variant);
+  border-color: var(--variant);
+  box-shadow: 0 0 20px rgba(255, 94, 0, 0.5);
+}
+
+.social-btn svg,
+.social-btn .icon-mask {
+  @apply w-6 h-6;
+}
+
+.cv-button {
+  @apply inline-flex items-center justify-center px-8 py-3 rounded-lg font-bold;
+  background: var(--background);
+  border: 2px solid var(--variant);
+  color: var(--variant);
+  transition: all 0.3s ease;
+}
+
+.cv-button:hover {
+  background: var(--variant);
+  color: var(--background);
+  box-shadow: 0 0 30px rgba(255, 94, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+/* ================= TECHNOLOGIES SECTION ================= */
+.technologies-section {
+  @apply w-full py-20 px-4;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(255, 94, 0, 0.03) 100%);
+}
+
+.section-header {
+  @apply text-center mb-16;
+}
+
+.section-title {
+  @apply text-4xl md:text-5xl font-bold mb-4;
+}
+
+.section-subtitle {
+  @apply text-lg opacity-70;
+}
+
+.technologies-grid {
+  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 max-w-6xl mx-auto;
+}
+
+.tech-card {
+  @apply glass p-6 flex flex-col items-center justify-center text-center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.tech-card:hover {
+  @apply scale-105;
+  background: rgba(255, 94, 0, 0.15);
+  border-color: var(--variant);
+  box-shadow: 0 0 30px rgba(255, 94, 0, 0.4);
+}
+
+.tech-icon {
+  @apply w-16 h-16 mb-4 object-contain;
+}
+
+.tech-name {
+  @apply text-sm font-semibold;
+}
+
+/* ================= FORMATION SECTION ================= */
+.formation-section {
+  @apply w-full py-20 px-4;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 1) 0%, rgba(255, 94, 0, 0.03) 100%);
+}
+
+.certificates-container {
+  @apply max-w-4xl mx-auto space-y-6;
+}
+
+.certificate-card {
+  @apply glass p-6 md:p-8;
+  transition: all 0.3s ease;
+}
+
+.certificate-card:hover {
+  @apply scale-105;
+  background: rgba(255, 94, 0, 0.12);
+  border-color: var(--variant);
+  box-shadow: 0 0 30px rgba(255, 94, 0, 0.3);
+}
+
+.certificate-platform {
+  @apply inline-block px-3 py-1 rounded-full text-xs font-bold mb-2;
+  background: rgba(255, 94, 0, 0.2);
+  color: var(--variant);
+}
+
+.certificate-title {
+  @apply text-xl font-bold mb-3;
+}
+
+.certificate-date {
+  @apply text-sm opacity-60 mb-4;
+}
+
+.certificate-link {
+  @apply inline-flex items-center text-sm font-semibold;
+  color: var(--variant);
+  transition: all 0.3s ease;
+}
+
+.certificate-link:hover {
+  @apply gap-2;
+  text-decoration: underline;
+}
+
+/* ================= EXPERIENCE SECTION ================= */
+.experience-section {
+  @apply w-full py-20 px-4;
+}
+
+.experience-container {
+  @apply max-w-5xl mx-auto;
+}
+
+.experience-card {
+  @apply glass-dark p-8 md:p-12 mb-8;
+  transition: all 0.3s ease;
+}
+
+.experience-card:hover {
+  background: rgba(255, 94, 0, 0.15);
+  border-color: var(--variant);
+}
+
+.experience-header {
+  @apply flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6;
+}
+
+.experience-title {
+  @apply text-2xl md:text-3xl font-bold;
+}
+
+.experience-date {
+  @apply text-sm opacity-70 whitespace-nowrap;
+}
+
+.experience-description {
+  @apply text-base leading-relaxed mb-6 opacity-90;
+}
+
+.experience-tech {
+  @apply flex flex-wrap gap-2;
+}
+
+.tech-badge {
+  @apply px-3 py-1 rounded-full text-xs font-semibold;
+  background: rgba(255, 94, 0, 0.2);
+  color: var(--variant);
+}
+
+/* ================= CONTACT FORM SECTION ================= */
+.contact-section {
+  @apply w-full py-20 px-4 bg-black;
+}
+
+.contact-container {
+  @apply max-w-4xl mx-auto grid md:grid-cols-2 gap-12;
+}
+
+.contact-info {
+  @apply flex flex-col justify-center;
+}
+
+.contact-title {
+  @apply text-4xl font-bold mb-6;
+}
+
+.contact-methods {
+  @apply space-y-4;
+}
+
+.contact-method {
+  @apply glass p-4 flex items-center gap-4;
+  transition: all 0.3s ease;
+}
+
+.contact-method:hover {
+  @apply scale-105;
+  background: rgba(255, 94, 0, 0.15);
+  border-color: var(--variant);
+  box-shadow: 0 0 20px rgba(255, 94, 0, 0.4);
+}
+
+.contact-icon {
+  @apply w-10 h-10 flex-shrink-0;
+}
+
+.contact-text {
+  @apply text-sm opacity-90;
+  word-break: break-all;
+}
+
+/* ================= FORM STYLES ================= */
+.form-glass {
+  @apply glass p-8;
+}
+
+.form-group {
+  @apply mb-6 flex flex-col gap-2;
+}
+
+.form-label {
+  @apply font-semibold text-sm;
+  color: var(--front);
+}
+
+.form-input,
+.form-textarea {
+  @apply w-full px-4 py-3 rounded-lg;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--front);
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--variant);
+  box-shadow: 0 0 20px rgba(255, 94, 0, 0.2);
+}
+
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-button {
+  @apply px-8 py-3 rounded-lg font-bold transition-all;
+  background: var(--variant);
+  color: var(--background);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.form-button:not(:disabled):hover {
+  @apply scale-105;
+  box-shadow: 0 0 30px rgba(255, 94, 0, 0.6);
+}
+
+.form-button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.form-error {
+  @apply text-red-400 text-xs mt-1;
+}
+
+.form-success {
+  @apply text-green-400 text-sm;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  @apply w-full py-12 px-4;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-content {
+  @apply max-w-6xl mx-auto flex justify-between items-center;
+  text-align: center;
+}
+
+.footer-credit {
+  @apply text-xs opacity-50;
+}
+
+/* ================= ICON MASK ================= */
+.icon-mask {
+  @apply inline-block;
+  aspect-ratio: 1 / 1;
+  background-color: var(--variant);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+  -webkit-mask-image: var(--icon-url);
+  mask-image: var(--icon-url);
+  transition: all 0.3s ease;
+}
+
+.icon-mask:hover {
+  @apply scale-110;
+  background-color: var(--front);
+}
+
+/* ================= RESPONSIVE UTILITIES ================= */
+@media (max-width: 640px) {
+  .section-title {
+    @apply text-2xl;
+  }
+
+  .profile-name {
+    @apply text-2xl;
+  }
+
+  .hero-title {
+    @apply text-3xl;
+  }
+
+  .technologies-grid {
+    @apply grid-cols-2;
+  }
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 94, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 94, 0, 0.6);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}

@@ -1,50 +1,60 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmailService } from '../../services/email.service';
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styles: ``
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit {
 
-  // private emailService = inject(EmailService);
+  // 1. Definición del Formulario y Estado de Carga (isSending)
+  public contactForm!: FormGroup;
+  public isSending: boolean = false;
 
-  public formSubmitted: boolean = false;
+  constructor(private fb: FormBuilder) {}
 
-  constructor(
-    private fb: FormBuilder,
-    private emailService: EmailService
-  ) { }
-
-  public contactForm: FormGroup = this.fb.group({
-    nombre: ['', Validators.required],
-    correoElectronico: ['', [Validators.email, Validators.required]],
-    content: ['', Validators.required]
-  });
-
-  enviarFormularioContacto() {
-    if (this.contactForm.invalid) return; // Seguridad extra
-
-    this.formSubmitted = true;
-
-    this.emailService.enviarCorreo(this.contactForm.value)
-      .subscribe({
-        next: (resp) => {
-          alert("¡Mensaje enviado con éxito!");
-          this.formSubmitted = false;
-          this.contactForm.reset();
-        },
-        error: (err) => {
-          // 🛠️ Cambiamos esto para ver el error real en la alerta
-          console.error('Error desde el componente:', err);
-          alert(`Error al enviar: ${err.message || 'Error de servidor'}`);
-
-          this.formSubmitted = false;
-          // Opcional: No resetear el formulario si falló, para que el usuario no pierda lo escrito
-        }
-      });
+  ngOnInit(): void {
+    // 2. Inicialización con las mismas validaciones de tu React
+    this.contactForm = this.fb.group({
+      nombre: ['', [Validators.required]],
+      correoElectronico: ['', [
+        Validators.required,
+        Validators.pattern(/^\S+@\S+$/i)
+      ]],
+      content: ['', [
+        Validators.required,
+        Validators.minLength(10)
+      ]]
+    });
   }
 
+  // 3. Getter para facilitar el acceso a errores en el HTML (equivalente a 'errors')
+  get f() {
+    return this.contactForm.controls;
+  }
+
+  // 4. Lógica de Envío (equivalente al onSubmit de React)
+  async onSubmit() {
+    if (this.contactForm.invalid || this.isSending) return;
+
+    this.isSending = true;
+
+    try {
+      // Aquí es donde conectarías con tu backend o servicio de correos
+      console.log('Datos a enviar:', this.contactForm.value);
+
+      // Simulamos la espera del envío (como hacía tu useContactForm)
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Si el envío es exitoso, reseteamos el formulario
+      this.contactForm.reset();
+
+      // Opcional: Podrías añadir una notificación de éxito aquí
+    } catch (error) {
+      console.error('Error al enviar el mensaje:', error);
+    } finally {
+      this.isSending = false;
+    }
+  }
 }
