@@ -36,6 +36,27 @@
         >
       </nav>
     </div>
+    <div
+      class="w-full bg-[var(--variant)] border-y border-transparent transition-all duration-300 hover:bg-[var(--background)] hover:border-[var(--variant)] group cursor-pointer"
+    >
+      <div class="max-w-7xl mx-auto flex justify-center items-center py-2 px-4">
+        <a
+          href="react"
+          target="_blank"
+          class="flex items-center gap-2 text-xs md:text-sm font-bold text-[var(--background)] transition-colors duration-300 group-hover:text-[var(--variant)]"
+        >
+          <span
+            >Este sitio está hecho en Angular, pulsa aquí para ver la versión en
+            React</span
+          >
+
+          <span
+            class="icon-mask w-4 h-4 bg-[var(--background)] transition-all duration-300 group-hover:bg-[var(--variant)] group-hover:scale-110"
+            [style.--icon-url]="'url(/assets/icons/react-logo.svg)'"
+          ></span>
+        </a>
+      </div>
+    </div>
   </header>
 
   <!-- ================= HERO SECTION ================= -->
@@ -300,7 +321,9 @@
     </div>
   </section>
 
-  <footer class="footer py-12 border-t border-white/10 text-center opacity-60 text-sm">
+  <footer
+    class="footer py-12 border-t border-white/10 text-center opacity-60 text-sm"
+  >
     <div class="footer-content">
       <p class="footer-credit">
         © 2026 Osman Herrera. Todos los derechos reservados.

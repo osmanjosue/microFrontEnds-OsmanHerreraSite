@@ -250,6 +250,25 @@ const App: React.FC = () => {
             </a>
           </nav>
         </div>
+        <div className="w-full bg-[var(--variant)] border-y border-transparent transition-all duration-300 hover:bg-[var(--background)] hover:border-[var(--variant)] group">
+          <div className="max-w-7xl mx-auto flex justify-center items-center py-2 px-4">
+            <a
+              href="angular"
+              className="flex items-center gap-2 text-xs md:text-sm font-bold text-[var(--background)] transition-colors duration-300 group-hover:text-[var(--variant)]">
+              <span>
+                Este sitio está hecho en React, pulsa aquí para ver la versión
+                en Angular
+              </span>
+
+              {/* El icono también debe cambiar su color de fondo para que se vea el SVG */}
+              <span
+                className="icon-mask w-4 h-4 bg-[var(--background)] transition-all duration-300 group-hover:bg-[var(--variant)] group-hover:scale-110"
+                style={
+                  { '--icon-url': 'url(/assets/icons/angular-logo.svg)' } as any
+                }></span>
+            </a>
+          </div>
+        </div>
       </header>
 
       {/* ================= HERO SECTION ================= */}
