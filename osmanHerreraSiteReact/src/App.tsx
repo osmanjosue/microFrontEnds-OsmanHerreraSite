@@ -253,7 +253,7 @@ const App: React.FC = () => {
         <div className="w-full bg-[var(--variant)] border-y border-transparent transition-all duration-300 hover:bg-[var(--background)] hover:border-[var(--variant)] group">
           <div className="max-w-7xl mx-auto flex justify-center items-center py-2 px-4">
             <a
-              href="angular"
+              href="/angular"
               className="flex items-center gap-2 text-xs md:text-sm font-bold text-[var(--background)] transition-colors duration-300 group-hover:text-[var(--variant)]">
               <span>
                 Este sitio está hecho en React, pulsa aquí para ver la versión
