@@ -97,6 +97,78 @@ const TECH_NAMES: string[] = [
   'Docker',
 ];
 
+interface ExperienceLink {
+  label: string;
+  url: string;
+  icon: string;
+}
+
+interface Experience {
+  role: string;
+  roleHighlight: string;
+  roleSuffix?: string; // Para textos después del resaltado
+  company: string;
+  period: string;
+  description: string;
+  technologies: string[];
+  links: ExperienceLink[];
+}
+
+const EXPERIENCES: Experience[] = [
+  {
+    role: 'Desarrollador',
+    roleHighlight: 'web',
+    company: 'Fundación Prolancho',
+    period: '2023 - 2026',
+    description:
+      'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en AWS EC2 con Ubuntu, NGINX y PM2.',
+    technologies: [
+      'Angular 15',
+      'NodeJS',
+      'MongoDB',
+      'JWT',
+      'AWS EC2',
+      'NGINX',
+    ],
+    links: [
+      {
+        label: 'Repositorio',
+        url: 'https://github.com/osmanjosue/fundacionProlanchoSiteFrontAndBack',
+        icon: '/assets/icons/technologies-GitHub.svg',
+      },
+      {
+        label: 'Sitio Web',
+        url: 'https://www.fundacionprolancho.org',
+        icon: '/assets/icons/website.svg',
+      },
+    ],
+  },
+  {
+    role: 'Diseñador',
+    roleHighlight: 'Gráfico',
+    roleSuffix: '& Coordinador de Productos',
+    company: 'Empresa de Diseño y Estampado',
+    period: '2012 - 2023',
+    description:
+      'Diseño y creación de ilustraciones profesionales. Separación de colores para serigrafía y sublimación. Coordinación de personal, cumplimiento de objetivos de producción, y lanzamiento de nuevos productos con fechas puntuales basados en metas establecidas.',
+    technologies: [
+      'Diseño Gráfico',
+      'Photoshop',
+      'Ilustrator',
+      'Gestión de Equipos',
+      'Serigrafía',
+      'Sublimación',
+    ],
+    links: [
+      {
+        label: 'Página de Facebook',
+        url: 'https://www.facebook.com/beomegusta/',
+        icon: '/assets/icons/facebook.svg',
+      },
+    ],
+  },
+];
+
 // ===========================================================================
 // 2. COMPONENTE APP
 // ===========================================================================
@@ -326,32 +398,63 @@ const App: React.FC = () => {
 
       {/* ================= EXPERIENCE SECTION ================= */}
       <section id="experience" className="experience-section">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="section-title mb-12">Experiencia Profesional</h2>
+        <div className="max-w-5xl mx-auto">
+          <div className="section-header mb-12">
+            <h2 className="section-title mb-12">Experiencia Profesional</h2>
+            <p className="section-subtitle">
+              Proyectos y roles que he desempeñado
+            </p>
+          </div>
           <div className="experience-container">
-            <div className="experience-card">
-              <div className="experience-header">
-                <div>
-                  <h3 className="experience-title">
-                    Desarrollador <span className="color-variant">web</span>
-                  </h3>
-                  <p className="text-lg opacity-70">
-                    Fundación Prolancho (2023 - 2026)
-                  </p>
+            {EXPERIENCES.map((exp, index) => (
+              <div key={index} className="experience-card">
+                {/* Header */}
+                <div className="experience-header">
+                  <div>
+                    <h3 className="experience-title">
+                      {exp.role}{' '}
+                      <span className="color-variant">{exp.roleHighlight}</span>{' '}
+                      {exp.roleSuffix}
+                    </h3>
+                    <p className="text-lg opacity-70">{exp.company}</p>
+                  </div>
+                  <span className="experience-date">{exp.period}</span>
+                </div>
+
+                {/* Description */}
+                <p className="experience-description">{exp.description}</p>
+
+                {/* Tech Badges */}
+                <div className="experience-tech">
+                  {exp.technologies.map((tech) => (
+                    <span key={tech} className="tech-badge">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Links Dinámicos */}
+                <div className="mt-6 flex flex-wrap gap-4">
+                  {exp.links.map((link, lIndex) => (
+                    <a
+                      key={lIndex}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-semibold color-variant hover:opacity-80">
+                      <span
+                        className="icon-mask w-4 h-4"
+                        style={
+                          {
+                            '--icon-url': `url(${link.icon})`,
+                          } as React.CSSProperties
+                        }></span>
+                      {link.label}
+                    </a>
+                  ))}
                 </div>
               </div>
-              <p className="experience-description">
-                Desarrollo FullStack con Angular 15, NodeJS y MongoDB. Alojado
-                en AWS EC2.
-              </p>
-              <div className="experience-tech">
-                {['Angular 15', 'NodeJS', 'MongoDB', 'AWS EC2'].map((t) => (
-                  <span key={t} className="tech-badge">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
