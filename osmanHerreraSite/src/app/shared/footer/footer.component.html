@@ -1,7 +1,7 @@
 <div class="w-full">
   <form
     [formGroup]="contactForm"
-    (ngSubmit)="onSubmit()"
+    (ngSubmit)="enviarFormularioContacto()"
     class="form-glass transition-all"
     [class.blur-state]="isSending"
   >

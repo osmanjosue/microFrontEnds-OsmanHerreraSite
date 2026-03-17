@@ -190,7 +190,7 @@ const App: React.FC = () => {
             <span className="color-variant">pasión</span>.
           </h2>
           <p className="text-xl opacity-80 mb-8">
-            FullStack Developer | Graphic Designer | Constant Learner
+            FullStack Developer | Graphic Designer
           </p>
           <a href="#contact" className="cv-button px-8 py-3 text-lg">
             Hablemos de tu proyecto

@@ -20,6 +20,11 @@
   width: 100%;
 }
 
+section {
+  /* Esto deja 80px de espacio arriba para que no me tape el header" */
+  scroll-margin-top: 80px;
+}
+
 html, body {
   background-color: var(--background);
   color: var(--front);
@@ -27,7 +32,17 @@ html, body {
   scroll-behavior: smooth;
 }
 
-/* ================= ICON MASK (Copiado de tu React) ================= */
+/* ================= ICON MASK  ================= */
+
+.OHicono {
+  mask-image: url(/assets/icons/OsmanHerreraLogo3.svg);
+  width: 100px;
+  height: 90px;
+  background: var(--front);
+  mask-repeat: no-repeat;
+  mask-origin: view-box;
+}
+
 .icon-mask {
   display: inline-block;
   aspect-ratio: 1 / 1;

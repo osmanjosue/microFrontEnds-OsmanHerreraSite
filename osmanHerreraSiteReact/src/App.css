@@ -15,6 +15,11 @@
   --glass-backdrop: blur(10px);
 }
 
+section {
+  /* Esto deja 80px de espacio arriba para que no me tape el header" */
+  scroll-margin-top: 80px; 
+}
+
 .icon-mask {
   @apply inline-block;
   aspect-ratio: 1 / 1;
@@ -26,6 +31,15 @@
   -webkit-mask-image: var(--icon-url);
   mask-image: var(--icon-url);
   transition: all 0.3s ease;
+}
+
+.OHicono {
+  mask-image: url(/assets/icons/OsmanHerreraLogo3.svg);
+  width: 100px;
+  height: 90px;
+  background: var(--front);
+  mask-repeat: no-repeat;
+  mask-origin: view-box;
 }
 
 /* ================= RESET & GLOBALS ================= */
