@@ -19,8 +19,6 @@ app.set('trust proxy', 1);
 const whiteList = [
     'https://www.osmanherrera.dev',
     'https://osmanherrera.dev',
-    'http://www.osmanherrera.dev',
-    'http://osmanherrera.dev',
     'http://localhost:5173',
     'http://localhost:4200',
 ];
@@ -40,7 +38,7 @@ const corsOptions: CorsOptions = {
 // --- 3. LIMITADOR DE PETICIONES (Relajado para pruebas) ---
 const emailLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, 
-    max: 100, // Lo subimos a 100 para que no te bloquee mientras testeamos
+    max: 5, // Lo subimos a 100 para que no te bloquee mientras testeamos
     message: { ok: false, msg: 'Límite de envíos excedido.' },
     standardHeaders: true,
     legacyHeaders: false,
