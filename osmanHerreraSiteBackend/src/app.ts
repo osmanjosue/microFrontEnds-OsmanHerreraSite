@@ -3,7 +3,7 @@ import path from 'path';
 
 // --- 0. CARGA DE VARIABLES DE ENTORNO ---
 // Esto busca el .env subiendo dos niveles desde la carpeta 'dist'
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 import express, { Request, Response, NextFunction } from 'express';
 import cors, { CorsOptions } from 'cors';
@@ -68,9 +68,9 @@ app.use('/api/email', emailLimiter, (req: Request, res: Response, next: NextFunc
 }, emailRoutes);
 
 // --- 6. MANEJO DE SPA ---
-app.get('*', (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// app.get('*', (req: Request, res: Response) => {
+//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 
 // --- 7. MANEJADOR DE ERRORES GLOBAL ---
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
