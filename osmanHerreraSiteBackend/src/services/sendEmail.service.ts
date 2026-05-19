@@ -5,8 +5,8 @@ import { EmailAttachment } from '../interfaces/email.interface';
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 465,
-    secure: true, // Importante: usar true para el puerto 465
+    port: 587,
+    secure: false, // Importante: usar true para el puerto 465
     auth: {
         user: process.env.MAILER_EMAIL,
         pass: process.env.MAILER_SECRET_KEY
