@@ -11,17 +11,15 @@
     "osmanHerreraSiteReact"
   ],
   "scripts": {
-  "install:all": "npm install",
-  "clean": "rm -rf **/node_modules **/dist",
-  
-  "build:angular": "npm run build --prefix osmanHerreraSite -- --base-href /angular/",
-  "build:react": "npm run build --prefix osmanHerreraSiteReact -- --base /react/",
-  "build:backend": "npm run build --prefix osmanHerreraSiteBackend",
-  
-  "build:all": "npm run build:angular && npm run build:react && npm run build:backend",
-  
-  "start:backend": "pm2 restart oherrera-api || pm2 start osmanHerreraSiteBackend/dist/app.js --name oherrera-api"
-},
+    "dev": "npm run dev --prefix osmanHerreraSiteReact",
+    "install:all": "npm install",
+    "clean": "rm -rf **/node_modules **/dist",
+    "build:angular": "npm run build --prefix osmanHerreraSite -- --base-href /angular/",
+    "build:react": "npm run build --prefix osmanHerreraSiteReact -- --base /react/",
+    "build:backend": "npm run build --prefix osmanHerreraSiteBackend",
+    "build:all": "npm run build:angular && npm run build:react && npm run build:backend",
+    "start:backend": "pm2 restart oherrera-api || pm2 start osmanHerreraSiteBackend/dist/app.js --name oherrera-api"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/osmanjosue/microFrontEnds-OsmanHerreraSite.git"
