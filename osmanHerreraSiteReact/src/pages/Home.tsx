@@ -1,174 +1,12 @@
 import React, { useMemo, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../App.css';
+import { siteConfig, type Technology } from '@shared/content';
 import { Footer as ContactForm } from '../components/footer';
+import { RichText } from '../components/RichText';
 
-// ===========================================================================
-// 1. INTERFACES Y DATOS
-// ===========================================================================
-
-interface Certificate {
-  platform: string;
-  title: string;
-  month: string;
-  date: number;
-  link: string;
-}
-
-interface SocialIcon {
-  title: string;
-  icon: string;
-  address: string;
-}
-
-interface Technology {
-  title: string;
-  icon: string;
-}
-
-const CERTIFICATES: Certificate[] = [
-  {
-    platform: 'Udemy',
-    title: 'Master en JavaScript: Aprender JS, jQuery, Angular, NodeJS',
-    month: 'Enero',
-    date: 2024,
-    link: 'https://www.udemy.com/certificate/UC-53ecf1b8-00d0-49a5-a948-ae2e6d2ecfd0/',
-  },
-  {
-    platform: 'Udemy',
-    title: 'Angular Avanzado: Lleva tus bases al siguiente nivel - MEAN',
-    month: 'Agosto',
-    date: 2023,
-    link: 'https://www.udemy.com/certificate/UC-03475c4f-f50b-491c-a1e2-4975b8aab381/',
-  },
-  {
-    platform: 'Devtalles',
-    title: 'GIT+GitHub: Todo un sistema de control de versiones de cero',
-    month: 'Abril',
-    date: 2024,
-    link: 'https://cursos.devtalles.com/certificates/zl0noyjvkn',
-  },
-  {
-    platform: 'Udemy',
-    title: 'Alojamiento de sitio web en modo serverless en Amazon AWS',
-    month: 'Julio',
-    date: 2022,
-    link: 'https://www.udemy.com/certificate/UC-4840328a-96c0-47c9-afa4-04f65c37096d/',
-  },
-];
-
-const SOCIAL_ICONS: SocialIcon[] = [
-  {
-    title: 'linkedin',
-    icon: '/assets/icons/social1.svg',
-    address: 'https://www.linkedin.com/in/osmanherrera/',
-  },
-  {
-    title: 'whatsapp',
-    icon: '/assets/icons/social2.svg',
-    address: 'https://wa.me/50489709082',
-  },
-  {
-    title: 'email',
-    icon: '/assets/icons/social3.svg',
-    address: 'mailto:contact@osmanherrera.dev',
-  },
-  {
-    title: 'github',
-    icon: '/assets/icons/social4.svg',
-    address: 'https://github.com/osmanjosue',
-  },
-];
-
-const TECH_NAMES: string[] = [
-  'CSS',
-  'HTML',
-  'JavaScript',
-  'TypeScript',
-  'Angular',
-  'NodeJS',
-  'GitHub',
-  'Git',
-  'MongoDB',
-  'Photoshop',
-  'Illustrator',
-  'JWT',
-  'Python',
-  'n8n',
-  'Docker',
-];
-
-interface ExperienceLink {
-  label: string;
-  url: string;
-  icon: string;
-}
-
-interface Experience {
-  role: string;
-  roleHighlight: string;
-  roleSuffix?: string;
-  company: string;
-  period: string;
-  description: string;
-  technologies: string[];
-  links: ExperienceLink[];
-}
-
-const EXPERIENCES: Experience[] = [
-  {
-    role: 'Desarrollador',
-    roleHighlight: 'web',
-    company: 'Fundación Prolancho',
-    period: '2023 - 2026',
-    description:
-      'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en AWS EC2 con Ubuntu, NGINX y PM2.',
-    technologies: [
-      'Angular 15',
-      'NodeJS',
-      'MongoDB',
-      'JWT',
-      'AWS EC2',
-      'NGINX',
-    ],
-    links: [
-      {
-        label: 'Repositorio',
-        url: 'https://github.com/osmanjosue/fundacionProlanchoSiteFrontAndBack',
-        icon: '/assets/icons/technologies-GitHub.svg',
-      },
-      {
-        label: 'Sitio Web',
-        url: 'https://www.fundacionprolancho.org',
-        icon: '/assets/icons/website.svg',
-      },
-    ],
-  },
-  {
-    role: 'Diseñador',
-    roleHighlight: 'Gráfico',
-    roleSuffix: '& Coordinador de Productos',
-    company: 'Empresa de Diseño y Estampado',
-    period: '2012 - 2023',
-    description:
-      'Diseño y creación de ilustraciones profesionales. Separación de colores para serigrafía y sublimación. Coordinación de personal, cumplimiento de objetivos de producción, y lanzamiento de nuevos productos con fechas puntuales basados en metas establecidas.',
-    technologies: [
-      'Diseño Gráfico',
-      'Photoshop',
-      'Ilustrator',
-      'Gestión de Equipos',
-      'Serigrafía',
-      'Sublimación',
-    ],
-    links: [
-      {
-        label: 'Página de Facebook',
-        url: 'https://www.facebook.com/beomegusta/',
-        icon: '/assets/icons/facebook.svg',
-      },
-    ],
-  },
-];
+const { hero, profile, socialIcons, skills, formation, experience, contact } =
+  siteConfig;
 
 export const Home: React.FC = () => {
   const { hash } = useLocation();
@@ -191,7 +29,7 @@ export const Home: React.FC = () => {
 
   // --- LÓGICA DE TECNOLOGÍAS ---
   const technologies = useMemo<Technology[]>(() => {
-    return TECH_NAMES.map((name) => ({
+    return skills.technologies.map((name) => ({
       title: name,
       icon: `/assets/icons/technologies-${name}.svg`,
     }));
@@ -205,14 +43,13 @@ export const Home: React.FC = () => {
         className="min-h-[80vh] flex items-center justify-center pt-20">
         <div className="text-center px-4 max-w-4xl">
           <h2 className="text-5xl md:text-7xl font-bold mb-6">
-            Desarrollo web con <span className="color-variant">lógica</span> y{' '}
-            <span className="color-variant">pasión</span>.
+            <RichText value={hero.title} />
           </h2>
-          <p className="text-xl opacity-80 mb-8">
-            FullStack Developer | Graphic Designer
-          </p>
-          <a href="#contact" className="cv-button px-8 py-3 text-lg">
-            Hablemos de tu proyecto
+          <p className="text-xl opacity-80 mb-8">{hero.subtitle}</p>
+          <a
+            href={`#${hero.cta.target}`}
+            className="cv-button px-8 py-3 text-lg">
+            {hero.cta.label}
           </a>
         </div>
       </section>
@@ -222,21 +59,21 @@ export const Home: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <div className="profile-card">
             <div className="profile-image">
-              <img
-                src="/assets/images/IMG_20230209_080358.jpg"
-                alt="Osman Herrera"
-              />
+              <img src={profile.image} alt={profile.imageAlt} />
             </div>
 
             <div className="profile-info text-center">
-              <h2 className="profile-name">Osman Herrera</h2>
+              <h2 className="profile-name">{profile.name}</h2>
               <div className="profile-badges">
-                <span className="badge">Desarrollador FullStack</span>
-                <span className="badge">Diseñador Gráfico</span>
+                {profile.badges.map((badge) => (
+                  <span key={badge} className="badge">
+                    {badge}
+                  </span>
+                ))}
               </div>
 
               <div className="social-buttons">
-                {SOCIAL_ICONS.map((icon, i) => (
+                {socialIcons.map((icon, i) => (
                   <a
                     key={i}
                     href={icon.address}
@@ -256,7 +93,7 @@ export const Home: React.FC = () => {
               </div>
 
               <a
-                href="https://raw.githubusercontent.com/osmanjosue/pdfCv/main/CV_oherrera_dev_eng_2026.pdf"
+                href={profile.cv.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cv-button mb-6 inline-flex">
@@ -264,25 +101,18 @@ export const Home: React.FC = () => {
                   className="icon-mask w-6 h-6 mr-2"
                   style={
                     {
-                      '--icon-url': 'url("/assets/icons/Download_icon.svg")',
+                      '--icon-url': `url("${profile.cv.icon}")`,
                     } as React.CSSProperties
                   }></span>
-                Descargar CV
+                {profile.cv.label}
               </a>
 
               <div className="text-base leading-relaxed opacity-90 max-w-2xl mx-auto mt-4">
-                <p>
-                  ¡Hola! Soy{' '}
-                  <span className="color-variant font-semibold">
-                    desarrollador web independiente
-                  </span>{' '}
-                  y un{' '}
-                  <span className="color-variant font-semibold">
-                    eterno aprendiz
-                  </span>
-                  . Mi fortaleza es una lógica sólida para hacer realidad
-                  cualquier proyecto.
-                </p>
+                {profile.bio.map((paragraph, i) => (
+                  <p key={i} className={i > 0 ? 'mt-4' : undefined}>
+                    <RichText value={paragraph} />
+                  </p>
+                ))}
               </div>
             </div>
           </div>
@@ -293,7 +123,10 @@ export const Home: React.FC = () => {
       <section id="technologies" className="technologies-section">
         <div className="max-w-6xl mx-auto px-4">
           <div className="section-header">
-            <h2 className="section-title">Habilidades Técnicas</h2>
+            <h2 className="section-title">{skills.title}</h2>
+            {skills.subtitle && (
+              <p className="section-subtitle">{skills.subtitle}</p>
+            )}
           </div>
           <div className="technologies-grid">
             {technologies.map((tech, i) => (
@@ -313,17 +146,19 @@ export const Home: React.FC = () => {
       {/* ================= FORMATION SECTION ================= */}
       <section id="formation" className="formation-section">
         <div className="max-w-4xl mx-auto px-4">
-          <h2 className="section-title mb-12">Formación</h2>
+          <h2 className="section-title mb-12">{formation.title}</h2>
+          {formation.subtitle && (
+            <p className="section-subtitle">{formation.subtitle}</p>
+          )}
           <div className="certificates-container">
-            <div className="certificate-card">
-              <div className="certificate-platform">UNIVERSIDAD</div>
-              <h3 className="certificate-title">
-                Técnico Universitario en Desarrollo de Aplicaciones
-                Computacionales
-              </h3>
-              <p className="certificate-date">UTH • Estudiando Actualmente</p>
-            </div>
-            {CERTIFICATES.map((cert, i) => (
+            {formation.education.map((edu, i) => (
+              <div key={i} className="certificate-card">
+                <div className="certificate-platform">{edu.platform}</div>
+                <h3 className="certificate-title">{edu.title}</h3>
+                <p className="certificate-date">{edu.detail}</p>
+              </div>
+            ))}
+            {formation.certificates.map((cert, i) => (
               <div key={i} className="certificate-card">
                 <div className="certificate-platform">{cert.platform}</div>
                 <h3 className="certificate-title">{cert.title}</h3>
@@ -335,7 +170,7 @@ export const Home: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="certificate-link">
-                  Ver Certificado →
+                  {formation.certificateLinkLabel}
                 </a>
               </div>
             ))}
@@ -347,21 +182,19 @@ export const Home: React.FC = () => {
       <section id="experience" className="experience-section">
         <div className="max-w-5xl mx-auto">
           <div className="section-header mb-12">
-            <h2 className="section-title mb-12">Experiencia Profesional</h2>
-            <p className="section-subtitle">
-              Proyectos y roles que he desempeñado
-            </p>
+            <h2 className="section-title mb-12">{experience.title}</h2>
+            {experience.subtitle && (
+              <p className="section-subtitle">{experience.subtitle}</p>
+            )}
           </div>
           <div className="experience-container">
-            {EXPERIENCES.map((exp, index) => (
+            {experience.items.map((exp, index) => (
               <div key={index} className="experience-card">
                 {/* Header */}
                 <div className="experience-header">
                   <div>
                     <h3 className="experience-title">
-                      {exp.role}{' '}
-                      <span className="color-variant">{exp.roleHighlight}</span>{' '}
-                      {exp.roleSuffix}
+                      <RichText value={exp.role} />
                     </h3>
                     <p className="text-lg opacity-70">{exp.company}</p>
                   </div>
@@ -409,10 +242,10 @@ export const Home: React.FC = () => {
       {/* ================= CONTACT SECTION ================= */}
       <section id="contact" className="contact-section py-20">
         <div className="max-w-4xl mx-auto px-4">
-          <h2 className="section-title mb-12 text-center">Contacto</h2>
+          <h2 className="section-title mb-12 text-center">{contact.title}</h2>
           <div className="contact-container grid md:grid-cols-2 gap-12 items-start">
             <div className="contact-info flex flex-col gap-6">
-              {SOCIAL_ICONS.map((icon, i) => (
+              {socialIcons.map((icon, i) => (
                 <a
                   key={i}
                   href={icon.address}

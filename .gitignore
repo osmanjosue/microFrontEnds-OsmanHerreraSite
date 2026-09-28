@@ -3,6 +3,8 @@
 # ==========================================
 # Dependencias
 **/node_modules/
+# Documentación local
+**/docs/
 
 # Variables de entorno y secretos (¡NUNCA SUBIR!)
 .env

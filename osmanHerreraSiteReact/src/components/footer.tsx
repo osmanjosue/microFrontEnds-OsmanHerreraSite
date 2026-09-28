@@ -1,6 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { useContactForm } from '../hooks/useContactForm';
+import { siteConfig } from '@shared/content';
 import '../App.css';
+
+const form = siteConfig.contactForm;
 
 interface ContactFormData {
   nombre: string;
@@ -36,15 +39,15 @@ export const Footer = () => {
         {/* Nombre */}
         <div className="form-group">
           <label htmlFor="nombre" className="form-label">
-            Nombre / Empresa
+            {form.name.label}
           </label>
           <input
             id="nombre"
             type="text"
             className="form-input"
-            placeholder="Tu nombre o empresa"
+            placeholder={form.name.placeholder}
             {...register('nombre', {
-              required: 'El nombre es obligatorio',
+              required: form.errors.nameRequired,
             })}
           />
           {errors.nombre && (
@@ -55,18 +58,18 @@ export const Footer = () => {
         {/* Email */}
         <div className="form-group">
           <label htmlFor="correoElectronico" className="form-label">
-            Correo Electrónico
+            {form.email.label}
           </label>
           <input
             id="correoElectronico"
             type="email"
             className="form-input"
-            placeholder="tu@email.com"
+            placeholder={form.email.placeholder}
             {...register('correoElectronico', {
-              required: 'El correo es obligatorio',
+              required: form.errors.emailRequired,
               pattern: {
                 value: /^\S+@\S+$/i,
-                message: 'El formato de correo no es válido',
+                message: form.errors.emailPattern,
               },
             })}
           />
@@ -80,17 +83,17 @@ export const Footer = () => {
         {/* Mensaje */}
         <div className="form-group">
           <label htmlFor="content" className="form-label">
-            Mensaje
+            {form.message.label}
           </label>
           <textarea
             id="content"
             className="form-textarea"
-            placeholder="Tu mensaje aquí..."
+            placeholder={form.message.placeholder}
             {...register('content', {
-              required: 'El mensaje es obligatorio',
+              required: form.errors.messageRequired,
               minLength: {
-                value: 10,
-                message: 'El mensaje debe tener al menos 10 caracteres',
+                value: form.minMessageLength,
+                message: form.errors.messageMinLength,
               },
             })}
           />
@@ -102,7 +105,7 @@ export const Footer = () => {
         {/* Validación Info */}
         {!isValid && (
           <p className="form-error mb-4">
-            ℹ️ Completa correctamente todos los campos
+            {form.errors.formInvalid}
           </p>
         )}
 
@@ -115,15 +118,15 @@ export const Footer = () => {
           {isSending ? (
             <span className="inline-flex items-center gap-2">
               <span className="inline-block w-4 h-4 border-2 border-transparent border-t-2 rounded-full animate-spin"></span>
-              Enviando...
+              {form.sending}
             </span>
           ) : (
-            'Enviar Mensaje'
+            form.submit
           )}
         </button>
 
         <p className="text-xs opacity-70 text-center">
-          Responderé lo antes posible
+          {form.note}
         </p>
       </form>
     </div>

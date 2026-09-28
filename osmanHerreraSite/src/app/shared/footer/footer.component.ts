@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { EmailService } from '../../services/email.service';
+import { siteConfig } from '@shared/content';
 
 @Component({
   selector: 'app-footer',
@@ -12,6 +13,7 @@ export class FooterComponent implements OnInit {
 
   public contactForm!: FormGroup;
   public isSending: boolean = false;
+  public readonly form = siteConfig.contactForm;
 
   constructor(private fb: FormBuilder, private emailService: EmailService) { }
 
@@ -24,7 +26,7 @@ export class FooterComponent implements OnInit {
       ]],
       content: ['', [
         Validators.required,
-        Validators.minLength(10)
+        Validators.minLength(this.form.minMessageLength)
       ]]
     });
   }
@@ -48,12 +50,12 @@ export class FooterComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          alert("Mensaje enviado con éxito");
+          alert(this.form.alerts.success);
           this.contactForm.reset();
         },
         error: (err) => {
           console.error('Error en el envío:', err);
-          alert("No se pudo enviar el mensaje");
+          alert(this.form.alerts.error);
         }
       });
   }

@@ -6,58 +6,58 @@
     [class.blur-state]="isSending"
   >
     <div class="form-group">
-      <label for="nombre" class="form-label">Nombre / Empresa</label>
+      <label for="nombre" class="form-label">{{ form.name.label }}</label>
       <input
         id="nombre"
         type="text"
         formControlName="nombre"
         class="form-input"
-        placeholder="Tu nombre o empresa"
+        [placeholder]="form.name.placeholder"
       />
       <span *ngIf="f['nombre'].touched && f['nombre'].errors?.['required']" class="form-error">
-        El nombre es obligatorio
+        {{ form.errors.nameRequired }}
       </span>
     </div>
 
     <div class="form-group">
-      <label for="correoElectronico" class="form-label">Correo Electrónico</label>
+      <label for="correoElectronico" class="form-label">{{ form.email.label }}</label>
       <input
         id="correoElectronico"
         type="email"
         formControlName="correoElectronico"
         class="form-input"
-        placeholder="tu@email.com"
+        [placeholder]="form.email.placeholder"
       />
       <div *ngIf="f['correoElectronico'].touched && f['correoElectronico'].errors">
         <span *ngIf="f['correoElectronico'].errors['required']" class="form-error">
-          El correo es obligatorio
+          {{ form.errors.emailRequired }}
         </span>
         <span *ngIf="f['correoElectronico'].errors['pattern']" class="form-error">
-          El formato de correo no es válido
+          {{ form.errors.emailPattern }}
         </span>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="content" class="form-label">Mensaje</label>
+      <label for="content" class="form-label">{{ form.message.label }}</label>
       <textarea
         id="content"
         formControlName="content"
         class="form-textarea"
-        placeholder="Tu mensaje aquí..."
+        [placeholder]="form.message.placeholder"
       ></textarea>
       <div *ngIf="f['content'].touched && f['content'].errors">
         <span *ngIf="f['content'].errors['required']" class="form-error">
-          El mensaje es obligatorio
+          {{ form.errors.messageRequired }}
         </span>
         <span *ngIf="f['content'].errors['minlength']" class="form-error">
-          El mensaje debe tener al menos 10 caracteres
+          {{ form.errors.messageMinLength }}
         </span>
       </div>
     </div>
 
     <p *ngIf="contactForm.invalid && contactForm.touched" class="form-error mb-4">
-      ℹ️ Completa correctamente todos los campos
+      {{ form.errors.formInvalid }}
     </p>
 
     <button
@@ -67,13 +67,13 @@
     >
       <span *ngIf="isSending; else defaultText" class="inline-flex items-center gap-2">
         <span class="inline-block w-4 h-4 border-2 border-transparent border-t-white rounded-full animate-spin"></span>
-        Enviando...
+        {{ form.sending }}
       </span>
-      <ng-template #defaultText>Enviar Mensaje</ng-template>
+      <ng-template #defaultText>{{ form.submit }}</ng-template>
     </button>
 
     <p class="text-xs opacity-70 text-center">
-      Responderé lo antes posible
+      {{ form.note }}
     </p>
   </form>
 </div>
