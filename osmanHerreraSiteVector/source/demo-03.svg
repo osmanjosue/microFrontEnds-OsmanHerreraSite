@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
+  <title>Logo Secreto</title>
+  <metadata>
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <rdf:Description>
+        <dc:title>Metadato Emblema Confidencial</dc:title>
+      </rdf:Description>
+    </rdf:RDF>
+  </metadata>
+  <defs>
+    <linearGradient id="gold-radial-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd795" />
+      <stop offset="50%" stop-color="#fbb400" />
+      <stop offset="100%" stop-color="#694900" />
+    </linearGradient>
+  </defs>
+  <g id="Capa_personaje" data-name="Capa_logo">
+    <!-- Marco hexagonal exterior -->
+    <polygon points="400,100 660,250 660,550 400,700 140,550 140,250" fill="#0d0e13" stroke="#849495" stroke-width="4" />
+    <!-- Anillo concéntrico interno -->
+    <circle cx="400" cy="400" r="210" fill="#1e1f25" stroke="#00f0ff" stroke-width="3" />
+    <!-- Emblema de alas y cruz geométrica en oro -->
+    <path fill="url(#gold-radial-grad)" stroke="#271900" stroke-width="2" d="M 400 240 L 460 360 L 580 400 L 460 440 L 400 560 L 340 440 L 220 400 L 340 360 Z" />
+    <!-- Núcleo central brillante -->
+    <circle cx="400" cy="400" r="45" fill="#00f0ff" />
+    <circle cx="400" cy="400" r="20" fill="#090a0d" />
+  </g>
+</svg>

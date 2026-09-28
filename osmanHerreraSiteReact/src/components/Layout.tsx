@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { siteConfig, colorAtProgress, scrollProgress } from '@shared/content';
 
-const { theme, brand, nav, frameworkSwitch, footer } = siteConfig;
+const { theme, brand, nav, vectorWorkLink, frameworkSwitch, footer } = siteConfig;
 
 export const Layout: React.FC = () => {
   // --- ESTADO PARA EL COLOR DINÁMICO ---
@@ -44,6 +44,13 @@ export const Layout: React.FC = () => {
                 {item.label}
               </Link>
             ))}
+            {vectorWorkLink && (
+              <a
+                href={vectorWorkLink.href}
+                className="text-sm font-semibold hover:color-variant transition">
+                {vectorWorkLink.label}
+              </a>
+            )}
           </nav>
         </div>
         

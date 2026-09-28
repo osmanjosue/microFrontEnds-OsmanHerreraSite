@@ -15,6 +15,12 @@
           class="text-sm font-semibold hover:color-variant transition"
           >{{ item.label }}</a
         >
+        <a
+          *ngIf="c.vectorWorkLink"
+          [href]="c.vectorWorkLink.href"
+          class="text-sm font-semibold hover:color-variant transition"
+          >{{ c.vectorWorkLink.label }}</a
+        >
       </nav>
     </div>
     <div

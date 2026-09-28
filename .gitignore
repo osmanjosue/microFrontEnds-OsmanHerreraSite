@@ -50,3 +50,10 @@ yarn-error.log*
 
 # Ignorar assets copiados en builds (por si acaso fallara el filtro de dist)
 **/src/assets/temp/
+
+# Vector Work: fuentes editables, artes y títulos reales NUNCA en git (repo público)
+osmanHerreraSiteVector/source/*
+!osmanHerreraSiteVector/source/demo-*
+osmanHerreraSiteVector/public/works/*
+!osmanHerreraSiteVector/public/works/demo-*/
+osmanHerreraSiteVector/public/data/titles.json

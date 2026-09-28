@@ -1,0 +1,22 @@
+{
+  "demo-01": {
+    "es": "Ejemplo 1",
+    "en": "Sample 1",
+    "credit": {
+      "es": "Ilustración base por Artista Invitado",
+      "en": "Base illustration by Guest Artist"
+    }
+  },
+  "demo-02": {
+    "es": "Ejemplo 2",
+    "en": "Sample 2"
+  },
+  "demo-03": {
+    "es": "Ejemplo 3",
+    "en": "Sample 3",
+    "credit": {
+      "es": "Diseño de identidad por Vector Studio",
+      "en": "Identity design by Vector Studio"
+    }
+  }
+}

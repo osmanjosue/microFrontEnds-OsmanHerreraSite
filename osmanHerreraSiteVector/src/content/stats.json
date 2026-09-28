@@ -1,0 +1,46 @@
+{
+  "demo-01": {
+    "paths": 11,
+    "anchors": 45,
+    "colors": 11,
+    "artboard": [
+      800,
+      800
+    ],
+    "rasters": 0,
+    "outlineAnchors": true
+  },
+  "demo-02": {
+    "paths": 9,
+    "anchors": 33,
+    "colors": 10,
+    "artboard": [
+      800,
+      800
+    ],
+    "rasters": 1,
+    "outlineAnchors": true
+  },
+  "demo-03": {
+    "paths": 5,
+    "anchors": 26,
+    "colors": 9,
+    "artboard": [
+      800,
+      800
+    ],
+    "rasters": 0,
+    "outlineAnchors": true
+  },
+  "pieza-01": {
+    "paths": 5397,
+    "anchors": 246208,
+    "colors": 6,
+    "artboard": [
+      900,
+      1332
+    ],
+    "rasters": 1,
+    "outlineAnchors": false
+  }
+}

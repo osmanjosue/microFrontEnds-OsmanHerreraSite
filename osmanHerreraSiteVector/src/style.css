@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #121318;
+    color: #e3e1e9;
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  img {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+}
+
+@layer utilities {
+  /* Chaflán mecánico en la esquina superior derecha (Apex Dossier) */
+  .chamfer {
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  }
+
+  /* Visor responsivo adaptado a la proporción del artboard */
+  .slider-viewport {
+    --slider-max-h: 70vh;
+  }
+
+  @media (min-width: 640px) {
+    .slider-viewport {
+      --slider-max-h: max(360px, min(calc(100vh - 285px), 900px));
+    }
+  }
+}
+
+/* Fallback cuando una imagen falla al cargar */
+.img-error > img {
+  display: none !important;
+}
+
+.img-error > .img-error-fallback {
+  display: flex !important;
+}
+
+/* Respeto a las preferencias del usuario sobre reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

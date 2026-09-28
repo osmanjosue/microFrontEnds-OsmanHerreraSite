@@ -25,6 +25,11 @@ export const siteConfig: SiteConfig = {
     { label: 'Contacto', target: 'contact' },
   ],
 
+  vectorWorkLink: {
+    label: 'Vector Work',
+    href: '/vectorwork/',
+  },
+
   frameworkSwitch: {
     angular: {
       text: 'Este sitio está hecho en Angular, pulsa aquí para ver la versión en React',

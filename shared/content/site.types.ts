@@ -98,6 +98,10 @@ export interface SiteConfig {
     rest: string;
   };
   nav: NavItem[];
+  vectorWorkLink: {
+    label: string;
+    href: string;
+  };
   frameworkSwitch: {
     /** Banner mostrado en la versión Angular (apunta a React) */
     angular: FrameworkSwitch;
