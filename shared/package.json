@@ -1,0 +1,5 @@
+{
+  "name": "@shared/content",
+  "private": true,
+  "type": "module"
+}
