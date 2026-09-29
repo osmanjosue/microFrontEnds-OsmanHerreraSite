@@ -43,4 +43,18 @@ No hay bloqueantes. Los detalles pendientes son de calidad en la 404 y en el blo
 
 Corregir los puntos 1 a 8 al inicio de la fase 8, o en un commit de correcciones antes de ella.
 
-<!-- VEREDICTO: APROBADA CON OBSERVACIONES -->
+## Re-revisión (91d50a2)
+Verificación: `astro check` 0 errors, 0 warnings, 4 hints (antes 38: `dist/` ya está excluido); `build` 7 páginas. En `dist/404.html`: un solo `<main>`, `<meta name="robots" content="noindex, nofollow">`, sin canonical ni `hreflang`, y la tarjeta en inglés con `lang="en"`.
+
+1. ✅ La 404 usa `<section>`; queda un solo `<main>`.
+2. ✅ `notFound.langLabel` en el config; `metaTitle` y `metaDescription` en uso.
+3. ✅ `BaseLayout` acepta `noindex` (sin canonical ni `hreflang`); `lang="en"` en la tarjeta en inglés.
+4. ✅ Cabeceras de seguridad repetidas en `/vectorwork/data/`, `/vectorwork/works/` y `/_astro/`, con una nota explicativa.
+5. ✅ `works/` sin `immutable`; las adiciones están declaradas.
+6. ✅ Rutas del VPS y de Certbot marcadas como `TODO: confirmar`; nota sobre `http2 on;`. La regex `~ ^/react/politicadeprivacidad/?$` gana correctamente sobre el prefijo `location /react/`: Nginx evalúa las regex después del prefijo más largo, salvo que el prefijo use `^~`, y no es el caso.
+7. ✅ `exclude: ["dist", "node_modules"]`.
+8. ✅ Desviaciones declaradas.
+
+Fase 7 cerrada. Las fases automáticas (1-7) están completas. Queda la fase 8 (limpieza), que requiere aprobación del usuario.
+
+<!-- VEREDICTO: APROBADA -->
