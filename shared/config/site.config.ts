@@ -339,12 +339,12 @@ export const siteConfig: SiteConfig = {
         category: 'modulos',
         badge: { es: 'NUEVO', en: 'NEW' },
         title: {
-          es: 'Fundación Prolancho — Módulo de Reclutamiento',
-          en: 'Fundación Prolancho — Recruitment Module',
+          es: 'Fundación Prolancho — Módulo de Reclutamiento y Gestión de Talento',
+          en: 'Fundación Prolancho — Recruitment & Talent Management Module',
         },
         description: {
-          es: 'TODO: confirmar',
-          en: 'TODO: confirmar',
+          es: 'Sistema web integral de captación y administración de postulaciones laborales. Diseñado para optimizar la recepción de talento mediante un formulario público interactivo con carga segura de hojas de vida (PDF en Cloudinary) y notificaciones automatizadas. Incluye un directorio privado de evaluación protegido por autenticación segura sin contraseña (Magic Links criptográficos vía email), permitiendo al equipo directivo filtrar, auditar y consultar perfiles en tiempo real sin exponer credenciales.',
+          en: 'End-to-end web system for sourcing and managing job applications. Built to streamline talent intake through an interactive public form with secure résumé uploads (PDFs on Cloudinary) and automated notifications. It includes a private review directory protected by secure passwordless authentication (cryptographic Magic Links via email), letting the leadership team filter, audit, and browse profiles in real time without exposing credentials.',
         },
         image: '/assets/images/projects/prolancho-reclutamiento.svg',
         technologies: [
