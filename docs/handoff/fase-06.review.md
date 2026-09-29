@@ -29,3 +29,28 @@ La migración está bien estructurada. Funcionan las 6 rutas, las etiquetas `hre
 5. [info] El contenido de Vector Work se renderiza solo en el cliente: `#vector-app` llega vacío en el HTML, como en la app original. Es aceptable por ahora. Si en el futuro importa el SEO de la galería, se puede prerenderizar la pieza inicial en el `.astro`.
 
 <!-- VEREDICTO: REQUIERE CORRECCIONES -->
+
+## Re-revisión (659f927)
+- Veredicto: APROBADA CON OBSERVACIONES
+
+### Verificación propia
+- `astro check`: 0 errors, 0 warnings. `astro build`: 6 páginas. `dist/vectorwork/` solo contiene `index.html` ✓.
+- `test-assets-fixture.mjs`: los 14 tests pasan ✓.
+- `git diff e1b97e1^ HEAD -- shared/config/i18n.ts`: `t(value, lang)` queda igual que en la fase 2 (solo cambian el JSDoc y el `T = string` por defecto) ✓.
+- Playwright sobre `dist` + `public` (servidor propio en el puerto 4399, cerrado al terminar):
+  - `/vectorwork/` a 1440px: visor de 416×615, `--slider-max-h` aplicado; imagen original con `naturalWidth` 450, visible; la captura muestra el comparador completo, con el original, el vector y el control;
+  - `/en/vectorwork/` a 375px: visor de 333×493, `--slider-max-h: 70vh`; textos en inglés;
+  - `/vectorwork/?lang=en#pieza-02` redirige a `/en/vectorwork/#pieza-02` y muestra la pieza 2;
+  - en los 3 casos: 0 errores de consola, 0 respuestas 4xx, sin scroll horizontal.
+
+### Estado de los puntos
+1. ✅ `global.css` incluye `.slider-viewport` y `.img-error`, idénticos a `osmanHerreraSiteVector/src/style.css:26-49`. `verify-ui.mjs` comprueba el tamaño del visor (>200px) y la imagen original (`naturalWidth > 0` y visible) antes de la captura.
+2. ✅ `t()` es estricto otra vez. `src/lib/vector/i18n-client.js` expone `tc()` y `getLang()`, y `src/lib/vector/**` ya no importa `t` ni `getLang` de `@config`. La desviación está declarada.
+3. ✅ `header.js` y `footer.js` eliminados.
+4. ✅ `fase-05.md` ya responde a la revisión de la fase 5; `fase-06.md` declara las desviaciones; Playwright usa `^1.63.0`.
+5. Info, sin cambios (se acepta el render solo en el cliente).
+
+### Observaciones nuevas
+6. [menor] `osmanHerreraSiteAstro/src/lib/vector/components/detail.js:83,109-111,121` resuelve textos con `x[currentLang] || x.es`. Si falta la traducción, muestra español en `/en/` sin avisar, que es el patrón que el punto 2 quiso evitar. `tc()` hace algo parecido: con `!value` devuelve `''` (`i18n-client.js:28`). → Usar `tc()` (o `value[getLang()]`) sin respaldo a `.es` y dejar que `vector.config.ts` garantice con sus tipos que existen ambos idiomas. Corregir al inicio de la fase 7.
+
+<!-- VEREDICTO: APROBADA CON OBSERVACIONES -->

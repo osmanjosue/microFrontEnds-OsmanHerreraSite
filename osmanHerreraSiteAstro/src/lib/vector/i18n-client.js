@@ -25,7 +25,6 @@ export function getLang() {
  * @returns {any}
  */
 export function tc(value, vars) {
-  if (!value) return '';
   const lang = getLang();
   const result = value[lang];
   if (typeof result === 'string' && vars) {

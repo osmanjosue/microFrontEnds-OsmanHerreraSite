@@ -80,7 +80,7 @@ export function renderDetail({
 
   // Métrica opcional de horas
   const hoursUnitConfig = vectorConfig.ui.hoursUnit;
-  const langUnit = hoursUnitConfig ? (hoursUnitConfig[currentLang] || hoursUnitConfig.es || hoursUnitConfig) : null;
+  const langUnit = hoursUnitConfig ? hoursUnitConfig[currentLang] : null;
   const hoursUnit = langUnit
     ? (work.hours === 1 ? langUnit.one : langUnit.other)
     : (work.hours === 1 ? 'HR' : 'HRS');
@@ -106,9 +106,9 @@ export function renderDetail({
   });
 
   // 6. Textos de las 4 tarjetas técnicas
-  const briefTemplate = work.brief ? (work.brief[currentLang] || work.brief.es || '') : '';
-  const challengeTemplate = work.challenge ? (work.challenge[currentLang] || work.challenge.es || '') : '';
-  const resultTemplate = work.result ? (work.result[currentLang] || work.result.es || '') : '';
+  const briefTemplate = work.brief ? work.brief[currentLang] : '';
+  const challengeTemplate = work.challenge ? work.challenge[currentLang] : '';
+  const resultTemplate = work.result ? work.result[currentLang] : '';
 
   const briefHasTitle = typeof briefTemplate === 'string' && briefTemplate.includes('{title}');
   const challengeHasTitle = typeof challengeTemplate === 'string' && challengeTemplate.includes('{title}');
@@ -118,7 +118,7 @@ export function renderDetail({
   const challengeText = tc(work.challenge, { title: rawTitle });
 
   const rawTechniqueList = work.technique
-    ? (Array.isArray(work.technique) ? work.technique : (work.technique[currentLang] || work.technique.es || []))
+    ? (Array.isArray(work.technique) ? work.technique : (work.technique[currentLang] || []))
     : [];
 
   const techniqueListHtml = rawTechniqueList
