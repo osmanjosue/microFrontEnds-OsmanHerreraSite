@@ -49,6 +49,7 @@ export const MATERIAL_ICONS = [
   'check_circle',
   'close',
   'download',
+  'error',
   'home',
   'location_on',
   'mail',
@@ -314,11 +315,11 @@ export const siteConfig: SiteConfig = {
           en: 'Fundación Prolancho — Website',
         },
         description: {
-          es: 'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en AWS EC2 con Ubuntu, NGINX y PM2.',
-          en: 'Built the website with an Angular 15 frontend and a Node.js backend API. MongoDB database with Cloudinary for image management. JWT authentication and credential validation for the admin panel. Hosted on AWS EC2 with Ubuntu, NGINX, and PM2.',
+          es: 'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en Hetzner con Ubuntu Server, NGINX y PM2.',
+          en: 'Built the website with an Angular 15 frontend and a Node.js backend API. MongoDB database with Cloudinary for image management. JWT authentication and credential validation for the admin panel. Hosted on Hetzner with Ubuntu Server, NGINX, and PM2.',
         },
         image: '/assets/images/projects/prolancho-web.svg',
-        technologies: ['Angular 15', 'NodeJS', 'MongoDB', 'JWT', 'AWS EC2', 'NGINX'],
+        technologies: ['Angular 15', 'NodeJS', 'MongoDB', 'JWT', 'Hetzner', 'NGINX'],
         links: [
           {
             label: { es: 'Sitio Web', en: 'Website' },
@@ -416,7 +417,7 @@ export const siteConfig: SiteConfig = {
   formation: {
     kicker: {
       es: 'ACADEMIA // CERTIFICACIONES TÉCNICAS',
-      en: 'ACADEMIA // TECHNICAL CERTIFICATIONS',
+      en: 'ACADEMICS // TECHNICAL CERTIFICATIONS',
     },
     educationTitle: {
       es: 'Educación Superior',
@@ -501,10 +502,10 @@ export const siteConfig: SiteConfig = {
         company: { es: 'Fundación Prolancho', en: 'Fundación Prolancho' },
         period: '2023 - 2026',
         description: {
-          es: 'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en AWS EC2 con Ubuntu, NGINX y PM2.',
-          en: 'Built the website with an Angular 15 frontend and a Node.js backend API. MongoDB database with Cloudinary for image management. JWT authentication and credential validation for the admin panel. Hosted on AWS EC2 with Ubuntu, NGINX, and PM2.',
+          es: 'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en Hetzner con Ubuntu Server, NGINX y PM2.',
+          en: 'Built the website with an Angular 15 frontend and a Node.js backend API. MongoDB database with Cloudinary for image management. JWT authentication and credential validation for the admin panel. Hosted on Hetzner with Ubuntu Server, NGINX, and PM2.',
         },
-        technologies: ['Angular 15', 'NodeJS', 'MongoDB', 'JWT', 'AWS EC2', 'NGINX'],
+        technologies: ['Angular 15', 'NodeJS', 'MongoDB', 'JWT', 'Hetzner', 'NGINX'],
         links: [
           {
             label: { es: 'Repositorio', en: 'Repository' },
@@ -574,7 +575,7 @@ export const siteConfig: SiteConfig = {
     },
     intro: {
       es: '¿Tienes en mente un desarrollo web, arquitectura de frontend o diseño gráfico especializado? Contáctame a través de cualquiera de mis redes o deja un mensaje.',
-      en: 'Have a web development, frontend architecture, or custom vector design in mind? Reach out via any of my channels or send a message.',
+      en: 'Have a web development project, frontend architecture, or specialized graphic design in mind? Reach out through any of my channels or send a message.',
     },
     channelsTitle: {
       es: 'Canales directos',
@@ -647,6 +648,10 @@ export const siteConfig: SiteConfig = {
       error: {
         es: 'No se pudo enviar el mensaje',
         en: 'Your message couldn\'t be sent. Please try again.',
+      },
+      close: {
+        es: 'Cerrar notificación',
+        en: 'Close notification',
       },
     },
   },

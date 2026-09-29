@@ -203,6 +203,7 @@ export interface SiteConfig {
     alerts: {
       success: Localized;
       error: Localized;
+      close: Localized;
     };
   };
   footer: {

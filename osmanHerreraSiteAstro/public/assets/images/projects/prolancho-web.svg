@@ -35,7 +35,7 @@
 
   <!-- Project Title -->
   <text x="600" y="450" fill="#e0e8eb" font-family="'Space Grotesk', sans-serif" font-size="34" font-weight="700" text-anchor="middle" letter-spacing="1">Fundación Prolancho — Sitio Web</text>
-  <text x="600" y="490" fill="#758890" font-family="'JetBrains Mono', monospace" font-size="16" text-anchor="middle" letter-spacing="2">ANGULAR 15 · NODEJS · MONGODB · AWS EC2</text>
+  <text x="600" y="490" fill="#758890" font-family="'JetBrains Mono', monospace" font-size="16" text-anchor="middle" letter-spacing="2">ANGULAR 15 · NODEJS · MONGODB · HETZNER</text>
 
   <!-- Footer telemetry -->
   <text x="80" y="670" fill="#4a5f68" font-family="'JetBrains Mono', monospace" font-size="13" letter-spacing="2">SYS_ID: PROLANCHO-WEB // STATUS: PRODUCTION</text>

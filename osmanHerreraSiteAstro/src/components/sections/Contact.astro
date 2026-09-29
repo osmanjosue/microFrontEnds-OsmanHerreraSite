@@ -2,13 +2,13 @@
 // ===========================================================================
 // SECCIÓN: CONTACT / CANALES DE CONTACTO (05)
 // ===========================================================================
-// Presenta las vías de comunicación directas y el contenedor para la isla del
-// formulario de contacto de la Fase 5.
+// Presenta las vías de comunicación directas y la isla React interactiva
+// ContactForm (client:visible).
 
 import { siteConfig, type Lang, t } from '@config';
 import SectionHeader from '../ui/SectionHeader.astro';
 import Card from '../ui/Card.astro';
-import Button from '../ui/Button.astro';
+import ContactForm from '../islands/ContactForm';
 
 interface Props {
   lang: Lang;
@@ -16,6 +16,38 @@ interface Props {
 
 const { lang } = Astro.props;
 const { contact, socialIcons, contactForm } = siteConfig;
+
+const formTexts = {
+  name: {
+    label: t(contactForm.name.label, lang),
+    placeholder: t(contactForm.name.placeholder, lang),
+  },
+  email: {
+    label: t(contactForm.email.label, lang),
+    placeholder: t(contactForm.email.placeholder, lang),
+  },
+  message: {
+    label: t(contactForm.message.label, lang),
+    placeholder: t(contactForm.message.placeholder, lang),
+  },
+  minMessageLength: contactForm.minMessageLength,
+  errors: {
+    nameRequired: t(contactForm.errors.nameRequired, lang),
+    emailRequired: t(contactForm.errors.emailRequired, lang),
+    emailPattern: t(contactForm.errors.emailPattern, lang),
+    messageRequired: t(contactForm.errors.messageRequired, lang),
+    messageMinLength: t(contactForm.errors.messageMinLength, lang),
+    formInvalid: t(contactForm.errors.formInvalid, lang),
+  },
+  submit: t(contactForm.submit, lang),
+  sending: t(contactForm.sending, lang),
+  note: t(contactForm.note, lang),
+  alerts: {
+    success: t(contactForm.alerts.success, lang),
+    error: t(contactForm.alerts.error, lang),
+    close: t(contactForm.alerts.close, lang),
+  },
+};
 ---
 
 <section id="contact" class="py-space-xl">
@@ -62,7 +94,7 @@ const { contact, socialIcons, contactForm } = siteConfig;
         </div>
       </div>
 
-      <!-- COLUMNA DERECHA: CONTENEDOR DEL FORMULARIO (ISLA FASE 5) -->
+      <!-- COLUMNA DERECHA: ISLA REACT DEL FORMULARIO -->
       <div id="contact-form-island-container">
         <Card variant="interactive" cornerMarks={true} class="p-space-lg lg:p-space-xl">
           <div class="space-y-space-md">
@@ -75,22 +107,8 @@ const { contact, socialIcons, contactForm } = siteConfig;
               </span>
             </div>
 
-            <!-- Placeholder técnico de Fase 4 que será enriquecido por la isla de React en la Fase 5 -->
-            <div class="space-y-space-sm py-space-sm">
-              <p class="font-body-sm text-on-surface-variant">
-                {t(contactForm.note, lang)}
-              </p>
-              <div class="pt-space-sm">
-                <Button
-                  variant="primary"
-                  href={`mailto:${contact.email}`}
-                  icon="mail"
-                  class="w-full justify-center"
-                >
-                  {t(contactForm.submit, lang)}
-                </Button>
-              </div>
-            </div>
+            <!-- Isla interactiva de React con client:visible -->
+            <ContactForm client:visible texts={formTexts} />
           </div>
         </Card>
       </div>

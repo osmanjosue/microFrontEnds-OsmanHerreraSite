@@ -59,3 +59,12 @@ Actualiza `projects.items[2]`:
   - en: `Freelance project: professional website for an OB-GYN specialist. Online appointment booking, an AI chat that escalates to WhatsApp, and a contact form, with all content centralized in data files.`
 
 Busca y corrige cualquier otra aparición de `francisherrera.com` o `francisherrera-com` en `osmanHerreraSiteAstro/` y `shared/config/`.
+
+## 5. Fundación Prolancho: hosting en Hetzner (confirmado)
+El sitio de Fundación Prolancho ya no está en AWS EC2: corre en **Hetzner**. Aplica el cambio en `projects.items[0]` (sitio web) y en `experience.items[0]` (Desarrollador web):
+- `technologies`: reemplaza `'AWS EC2'` por `'Hetzner'`. Queda `['Angular 15', 'NodeJS', 'MongoDB', 'JWT', 'Hetzner', 'NGINX']`.
+- `description`, última oración:
+  - es: `Alojado en AWS EC2 con Ubuntu, NGINX y PM2.` → `Alojado en Hetzner con Ubuntu Server, NGINX y PM2.`
+  - en: `Hosted on AWS EC2 with Ubuntu, NGINX, and PM2.` → `Hosted on Hetzner with Ubuntu Server, NGINX, and PM2.`
+- **No toques** el certificado "Alojamiento de sitio web en modo serverless en Amazon AWS": es el nombre oficial del curso.
+- Si el placeholder `prolancho-web.svg` muestra "AWS EC2" en su texto, cámbialo también.

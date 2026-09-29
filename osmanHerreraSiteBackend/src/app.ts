@@ -21,6 +21,7 @@ const whiteList = [
     'https://osmanherrera.dev',
     'http://localhost:5173',
     'http://localhost:4200',
+    'http://localhost:4321',
 ];
 
 const corsOptions: CorsOptions = {

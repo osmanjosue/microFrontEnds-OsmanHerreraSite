@@ -1,6 +1,6 @@
 # Revisión fase 4
 - Commits revisados: 836b095 (correcciones de la fase 3) y 6598d63 (fase 4)
-- Veredicto: REQUIERE CORRECCIONES
+- Veredicto: REQUIERE CORRECCIONES → APROBADA CON OBSERVACIONES tras re-revisión (28bede6)
 
 La estructura es correcta: 6 secciones con IDs estables, un solo `<h1>`, filtro funcional, política completa y `RichText`. Pero la página tiene fallos visibles (iconos como texto, imágenes rotas, un correo equivocado) y textos fuera del config. Corrige todo antes de la fase 5.
 
@@ -62,3 +62,33 @@ La nueva sesión debe:
 4. Punto 9: en el plugin, usa `theme('colors.outline-variant')` desde JS, porque `theme` ya está desestructurado. No uses la función CSS `theme(...)` dentro del string.
 5. Aplicar también la sección 4 de `docs/handoff/contenido-usuario.md` (drafrancisherrera.com).
 6. Seguir con el resto de los puntos y hacer un solo commit de correcciones.
+
+## Re-revisión (28bede6)
+Verificación: `astro check` 0 errors; `build` 4 páginas. Playwright sobre `dist` (`/` a 1440px, `/en/` a 375px, `/en/privacy-policy`):
+- **0 respuestas 4xx** y 0 errores de consola;
+- sin scroll horizontal y 1 `<h1>` por página;
+- todos los `mailto:` apuntan a `contact@osmanherrera.dev`.
+
+Revisé la captura: los iconos se ven, los placeholders cargan y el chaflán de los botones ghost dibuja la diagonal.
+
+1. ✅ Todos los iconos usados en `src/` están en `MATERIAL_ICONS`, que alimenta `icon_names`.
+2. ✅ Correo correcto, tomado de `contact.email`.
+3. ✅ 4 placeholders SVG. Ya no hay 404.
+4. ✅ No quedan objetos `{ es, en }` escritos a mano en `src/`.
+5. ✅ La categoría usa la etiqueta del filtro (MÓDULOS/MODULES).
+6. ✅ `lastUpdatedDate` + `lastUpdatedLabel`.
+7. ✅ `headline-md` agregado al preset; se eliminó `p-space-2xl`.
+8. ✅ Iconos sociales con `icon-mask`.
+9. ✅ `.chamfer-border` con `::after` diagonal y `--chamfer-line`. Además, `Button` ya no duplica el chamfer.
+10. ✅ Textos nuevos listados. Pendientes de aprobación del usuario, con 2 ajustes sugeridos abajo.
+11. ✅ Reporte completo.
+12. ✅ Listener eliminado.
+13. ✅
+- ✅ drafrancisherrera.com aplicado; no queda ningún `francisherrera.com` en `src/`, `public/` ni `shared/config/`.
+
+### Observaciones menores (aplicar en la fase 5)
+14. [menor] `contact.intro`: el español dice "diseño gráfico especializado" y el inglés "custom vector design", así que no dicen lo mismo. → en: `Have a web development project, frontend architecture, or specialized graphic design in mind? Reach out through any of my channels or send a message.`
+15. [menor] `formation.kicker.en`: "ACADEMIA" no es natural en inglés. → `ACADEMICS // TECHNICAL CERTIFICATIONS`.
+16. [info] Los placeholders SVG repiten dentro de la imagen el título y las tecnologías de cada proyecto, y el texto está solo en español. Como se reemplazarán por capturas reales, no hace falta tocarlos.
+
+Fase 4 cerrada, sujeta a que el usuario apruebe los textos nuevos. Puede avanzar a la fase 5.
