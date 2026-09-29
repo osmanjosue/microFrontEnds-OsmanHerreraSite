@@ -2,7 +2,7 @@
 // ===========================================================================
 // LAYOUT BASE: BASELAYOUT (APEX DOSSIER BILINGÜE)
 // ===========================================================================
-import { type Lang, type RouteKey } from '@config';
+import { type Lang, type RouteKey, MATERIAL_ICONS } from '@config';
 import { getSeoMetadata } from '../lib/seo';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
@@ -44,7 +44,7 @@ const seo = getSeoMetadata({ route, lang, title, description });
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_back,arrow_forward,brush,check_circle,close,download,menu,north_east,person,refresh,send,terminal,view_in_ar&display=swap"
+      href={`https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=${MATERIAL_ICONS.join(',')}&display=swap`}
       rel="stylesheet"
     />
   </head>

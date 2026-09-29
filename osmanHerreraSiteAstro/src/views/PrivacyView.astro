@@ -22,16 +22,15 @@ const { privacyPolicy, brand } = siteConfig;
 const homePath = localizedPath('home', lang);
 
 // Formateo de fecha según el idioma mediante Intl.DateTimeFormat
-const updatedDate = new Date(2026, 4, 28); // 28 de mayo de 2026
+const [year, month, day] = privacyPolicy.lastUpdatedDate.split('-').map(Number);
+const updatedDate = new Date(year, month - 1, day);
 const formattedDate = new Intl.DateTimeFormat(lang === 'es' ? 'es-HN' : 'en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 }).format(updatedDate);
 
-const lastUpdatedLabel = lang === 'es'
-  ? `Última actualización: ${formattedDate}`
-  : `Last updated: ${formattedDate}`;
+const lastUpdatedDisplay = `${t(privacyPolicy.lastUpdatedLabel, lang)} ${formattedDate}`;
 
 const titleText = `${t(privacyPolicy.title, lang).map((s) => (typeof s === 'string' ? s : s.text)).join('')} — ${brand.highlight}${brand.rest}`;
 ---
@@ -60,11 +59,11 @@ const titleText = `${t(privacyPolicy.title, lang).map((s) => (typeof s === 'stri
     </div>
 
     <!-- TARJETA PRINCIPAL DEL DOCUMENTO -->
-    <Card chamfer={true} cornerMarks={true} class="space-y-space-xl p-space-lg md:p-space-2xl">
+    <Card chamfer={true} cornerMarks={true} class="space-y-space-xl p-space-lg lg:p-space-xl">
       <!-- Badge de fecha de actualización e Introducción -->
       <section class="space-y-space-md">
         <div class="inline-flex">
-          <Chip variant="tactical">{lastUpdatedLabel}</Chip>
+          <Chip variant="tactical">{lastUpdatedDisplay}</Chip>
         </div>
 
         <p class="font-body-md text-on-surface leading-relaxed text-base md:text-lg">

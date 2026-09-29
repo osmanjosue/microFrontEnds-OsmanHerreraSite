@@ -86,6 +86,7 @@ export default {
         'body-md': ['Inter', 'sans-serif'],
         'label-caps': ['JetBrains Mono', 'monospace'],
         'headline-sm': ['Space Grotesk', 'sans-serif'],
+        'headline-md': ['Space Grotesk', 'sans-serif'],
         'headline-xl': ['Space Grotesk', 'sans-serif'],
         'body-sm': ['Inter', 'sans-serif'],
         'headline-lg': ['Space Grotesk', 'sans-serif'],
@@ -97,6 +98,7 @@ export default {
         'body-md': ['13px', { lineHeight: '18px', letterSpacing: '0em', fontWeight: '400' }],
         'label-caps': ['10px', { lineHeight: '12px', letterSpacing: '0.12em', fontWeight: '600' }],
         'headline-sm': ['18px', { lineHeight: '22px', letterSpacing: '0.02em', fontWeight: '600' }],
+        'headline-md': ['22px', { lineHeight: '26px', letterSpacing: '-0.01em', fontWeight: '600' }],
         'headline-xl': ['44px', { lineHeight: '48px', letterSpacing: '-0.02em', fontWeight: '700' }],
         'body-sm': ['11px', { lineHeight: '15px', letterSpacing: '0.01em', fontWeight: '400' }],
         'headline-lg': ['28px', { lineHeight: '32px', letterSpacing: '-0.01em', fontWeight: '700' }],
@@ -105,27 +107,27 @@ export default {
     },
   },
   plugins: [
-    plugin(function ({ addUtilities }) {
+    plugin(function ({ addUtilities, theme }) {
+      const outlineVariant = theme('colors.outline-variant');
       addUtilities({
         // Chaflán mecánico en la esquina superior derecha (Apex Dossier)
         // También disponible en el CSS global como fallback
         '.chamfer': {
           'clip-path': 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%)',
         },
-        // Variante con borde: usa posición relativa + ::before para dibujar la diagonal
-        // sin clip-path (que cortaría el borde). El color del borde se hereda de currentColor.
+        // Variante con borde: usa clip-path para el recorte y ::after para dibujar la diagonal
+        // del chaflán con gradiente lineal configurable mediante --chamfer-line
         '.chamfer-border': {
           position: 'relative',
           'clip-path': 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%)',
-          '&::before': {
+          '&::after': {
             content: '""',
             position: 'absolute',
             top: '0',
             right: '0',
-            width: '14px',
-            height: '1px',
-            background:
-              'linear-gradient(225deg, transparent 50%, currentColor 50%)',
+            width: '10px',
+            height: '10px',
+            background: `linear-gradient(to top right, transparent calc(50% - 1px), var(--chamfer-line, ${outlineVariant}) calc(50% - 1px), var(--chamfer-line, ${outlineVariant}) calc(50% + 1px), transparent calc(50% + 1px))`,
             'pointer-events': 'none',
           },
         },

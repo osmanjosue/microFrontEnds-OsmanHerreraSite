@@ -43,3 +43,19 @@ Se **elimina** la stat de proyectos completados.
 | `ui.langToggleAria.es` (español) | `Cambiar idioma a Inglés` | `Cambiar idioma a inglés`: en español los idiomas van en minúscula |
 
 El resto de las traducciones se revisó y queda como está.
+
+## 4. drafrancisherrera.com (confirmado, reemplaza lo anterior)
+Fuente: reseña del proyecto que proporcionó el usuario. **El dominio correcto es `drafrancisherrera.com`**; `francisherrera.com` es un error.
+
+Actualiza `projects.items[2]`:
+- `id: 'drafrancisherrera-com'`
+- `title`: `drafrancisherrera.com` en ambos idiomas.
+- `links[0].url: 'https://drafrancisherrera.com'`
+- `image: '/assets/images/projects/drafrancisherrera.svg'` (placeholder del punto 3 de `fase-04.review.md`).
+- `technologies: ['React 19', 'TypeScript', 'Vite', 'NodeJS', 'Cloudflare']`
+- `badge`: `NUEVO` / `NEW` (sin cambios).
+- `description`:
+  - es: `Proyecto freelance: sitio web profesional para una médica especialista en ginecología y obstetricia. Reserva de citas online, chat con IA que escala a WhatsApp y formulario de contacto, con todo el contenido centralizado en archivos de datos.`
+  - en: `Freelance project: professional website for an OB-GYN specialist. Online appointment booking, an AI chat that escalates to WhatsApp, and a contact form, with all content centralized in data files.`
+
+Busca y corrige cualquier otra aparición de `francisherrera.com` o `francisherrera-com` en `osmanHerreraSiteAstro/` y `shared/config/`.

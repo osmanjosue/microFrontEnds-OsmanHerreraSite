@@ -91,6 +91,7 @@ export interface ProjectsConfig {
   title: Localized;
   subtitle?: Localized;
   kicker: Localized;
+  filterAria: Localized;
   filters: { id: string; label: Localized }[];
   items: Project[];
 }
@@ -163,15 +164,25 @@ export interface SiteConfig {
   };
   projects: ProjectsConfig;
   formation: SectionHeader & {
+    kicker: Localized;
+    educationTitle: Localized;
+    certificatesTitle: Localized;
     education: EducationCard[];
     certificates: Certificate[];
     certificateLinkLabel: Localized;
   };
   experience: SectionHeader & {
+    kicker: Localized;
     items: Experience[];
   };
   contact: {
     title: Localized;
+    kicker: Localized;
+    subtitle: Localized;
+    intro: Localized;
+    channelsTitle: Localized;
+    formTitle: Localized;
+    email: string;
   };
   contactForm: {
     name: FormField;
@@ -208,7 +219,8 @@ export interface SiteConfig {
     owner: string;
     backLabel: Localized;
     homeLabel: Localized;
-    lastUpdated: Localized;
+    lastUpdatedDate: string;
+    lastUpdatedLabel: Localized;
     intro: Localized<RichText>;
     sections: PrivacySection[];
     closing: {

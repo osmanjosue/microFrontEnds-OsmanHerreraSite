@@ -39,7 +39,31 @@
 import { ROUTES } from './i18n';
 import type { SiteConfig } from './site.types';
 
-const CONTACT_EMAIL = 'contact@osmanherrera.dev';
+export const CONTACT_EMAIL = 'contact@osmanherrera.dev';
+
+export const MATERIAL_ICONS = [
+  'arrow_back',
+  'arrow_forward',
+  'brush',
+  'calendar_today',
+  'check_circle',
+  'close',
+  'download',
+  'home',
+  'location_on',
+  'mail',
+  'menu',
+  'north_east',
+  'open_in_new',
+  'person',
+  'refresh',
+  'school',
+  'send',
+  'terminal',
+  'verified',
+  'view_in_ar',
+  'workspace_premium',
+] as const;
 
 const TECHNOLOGIES = [
   'CSS',
@@ -270,6 +294,10 @@ export const siteConfig: SiteConfig = {
       es: 'PORTFOLIO // SELECCIÓN DE TRABAJOS',
       en: 'PORTFOLIO // SELECTED WORKS',
     },
+    filterAria: {
+      es: 'Filtrar proyectos por categoría',
+      en: 'Filter projects by category',
+    },
     filters: [
       { id: 'all', label: { es: 'Todos', en: 'All' } },
       { id: 'web', label: { es: 'Web', en: 'Web' } },
@@ -289,7 +317,7 @@ export const siteConfig: SiteConfig = {
           es: 'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en AWS EC2 con Ubuntu, NGINX y PM2.',
           en: 'Built the website with an Angular 15 frontend and a Node.js backend API. MongoDB database with Cloudinary for image management. JWT authentication and credential validation for the admin panel. Hosted on AWS EC2 with Ubuntu, NGINX, and PM2.',
         },
-        image: '/assets/images/projects/prolancho-web.webp',
+        image: '/assets/images/projects/prolancho-web.svg',
         technologies: ['Angular 15', 'NodeJS', 'MongoDB', 'JWT', 'AWS EC2', 'NGINX'],
         links: [
           {
@@ -317,7 +345,7 @@ export const siteConfig: SiteConfig = {
           es: 'TODO: confirmar',
           en: 'TODO: confirmar',
         },
-        image: '/assets/images/projects/prolancho-reclutamiento.webp',
+        image: '/assets/images/projects/prolancho-reclutamiento.svg',
         technologies: [
           'Angular 20',
           'NodeJS',
@@ -337,23 +365,23 @@ export const siteConfig: SiteConfig = {
         featured: false,
       },
       {
-        id: 'francisherrera-com',
+        id: 'drafrancisherrera-com',
         category: 'web',
         badge: { es: 'NUEVO', en: 'NEW' },
         title: {
-          es: 'francisherrera.com',
-          en: 'francisherrera.com',
+          es: 'drafrancisherrera.com',
+          en: 'drafrancisherrera.com',
         },
         description: {
-          es: 'TODO: confirmar',
-          en: 'TODO: confirmar',
+          es: 'Proyecto freelance: sitio web profesional para una médica especialista en ginecología y obstetricia. Reserva de citas online, chat con IA que escala a WhatsApp y formulario de contacto, con todo el contenido centralizado en archivos de datos.',
+          en: 'Freelance project: professional website for an OB-GYN specialist. Online appointment booking, an AI chat that escalates to WhatsApp, and a contact form, with all content centralized in data files.',
         },
-        image: '/assets/images/projects/francisherrera.webp',
-        technologies: ['React', 'NodeJS'],
+        image: '/assets/images/projects/drafrancisherrera.svg',
+        technologies: ['React 19', 'TypeScript', 'Vite', 'NodeJS', 'Cloudflare'],
         links: [
           {
             label: { es: 'Sitio Web', en: 'Website' },
-            url: 'https://francisherrera.com',
+            url: 'https://drafrancisherrera.com',
             icon: '/assets/icons/website.svg',
           },
         ],
@@ -371,7 +399,7 @@ export const siteConfig: SiteConfig = {
           es: 'Galería de conversión raster a vector con visor interactivo de doble capa, modo outline e inspección de trazados vectoriales de alta precisión.',
           en: 'Raster-to-vector gallery featuring an interactive split-slider viewer, outline mode, and high-precision vector path inspection.',
         },
-        image: '/assets/images/projects/vectorwork.webp',
+        image: '/assets/images/projects/vectorwork.svg',
         technologies: ['JavaScript', 'Vite', 'Tailwind CSS', 'Illustrator', 'SVG'],
         links: [
           {
@@ -386,6 +414,18 @@ export const siteConfig: SiteConfig = {
   },
 
   formation: {
+    kicker: {
+      es: 'ACADEMIA // CERTIFICACIONES TÉCNICAS',
+      en: 'ACADEMIA // TECHNICAL CERTIFICATIONS',
+    },
+    educationTitle: {
+      es: 'Educación Superior',
+      en: 'Higher Education',
+    },
+    certificatesTitle: {
+      es: 'Certificaciones Profesionales',
+      en: 'Professional Certifications',
+    },
     title: {
       es: 'Formación',
       en: 'Education',
@@ -440,6 +480,10 @@ export const siteConfig: SiteConfig = {
   },
 
   experience: {
+    kicker: {
+      es: 'TRAYECTORIA // HISTORIAL LABORAL',
+      en: 'CAREER // WORK HISTORY',
+    },
     title: {
       es: 'Experiencia Profesional',
       en: 'Professional Experience',
@@ -520,6 +564,27 @@ export const siteConfig: SiteConfig = {
       es: 'Contacto',
       en: 'Contact',
     },
+    kicker: {
+      es: 'COMUNICACIÓN // ENLACE DIRECTO',
+      en: 'COMMUNICATION // DIRECT LINK',
+    },
+    subtitle: {
+      es: 'Inicia una conversación o consulta disponibilidad para nuevos proyectos',
+      en: 'Start a conversation or check availability for new projects',
+    },
+    intro: {
+      es: '¿Tienes en mente un desarrollo web, arquitectura de frontend o diseño gráfico especializado? Contáctame a través de cualquiera de mis redes o deja un mensaje.',
+      en: 'Have a web development, frontend architecture, or custom vector design in mind? Reach out via any of my channels or send a message.',
+    },
+    channelsTitle: {
+      es: 'Canales directos',
+      en: 'Direct channels',
+    },
+    formTitle: {
+      es: 'Mensaje Directo',
+      en: 'Direct Message',
+    },
+    email: CONTACT_EMAIL,
   },
 
   contactForm: {
@@ -622,9 +687,10 @@ export const siteConfig: SiteConfig = {
       es: 'Ir al Inicio',
       en: 'Go to homepage',
     },
-    lastUpdated: {
-      es: 'Última actualización: 28 de mayo de 2026',
-      en: 'Last updated: May 28, 2026',
+    lastUpdatedDate: '2026-05-28',
+    lastUpdatedLabel: {
+      es: 'Última actualización:',
+      en: 'Last updated:',
     },
     intro: {
       es: [

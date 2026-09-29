@@ -43,7 +43,7 @@ const counts: Record<string, number> = {
     <div
       class="flex flex-wrap gap-space-xs mt-space-md mb-space-xl"
       role="group"
-      aria-label={t({ es: 'Filtrar proyectos por categoría', en: 'Filter projects by category' }, lang)}
+      aria-label={t(projects.filterAria, lang)}
     >
       {projects.filters.map((filter) => (
         <button
@@ -105,7 +105,10 @@ const counts: Record<string, number> = {
                 <div class="space-y-space-sm">
                   <div class="flex items-center gap-space-xs text-on-surface-variant">
                     <span class="font-label-micro text-label-micro uppercase tracking-wider text-primary-container">
-                      // {project.category.toUpperCase()}
+                      // {(() => {
+                        const filterMatch = projects.filters.find((f) => f.id === project.category);
+                        return filterMatch ? t(filterMatch.label, lang).toUpperCase() : project.category.toUpperCase();
+                      })()}
                     </span>
                   </div>
 
@@ -204,5 +207,4 @@ const counts: Record<string, number> = {
   }
 
   setupProjectFilters();
-  document.addEventListener('astro:page-load', setupProjectFilters);
 </script>

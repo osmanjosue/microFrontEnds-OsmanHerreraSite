@@ -29,13 +29,13 @@ const {
 } = Astro.props;
 
 const baseClasses =
-  'relative group inline-flex items-center justify-center gap-space-sm px-space-xl py-space-md font-label-caps text-label-caps uppercase tracking-wider transition-all duration-300 select-none chamfer cursor-pointer';
+  'relative group inline-flex items-center justify-center gap-space-sm px-space-xl py-space-md font-label-caps text-label-caps uppercase tracking-wider transition-all duration-300 select-none cursor-pointer';
 
 const variantClasses = {
   primary:
-    'bg-primary-container text-on-primary-fixed font-bold hover:shadow-[0_0_24px_rgba(0,240,255,0.65)] hover:bg-primary-fixed',
+    'chamfer bg-primary-container text-on-primary-fixed font-bold hover:shadow-[0_0_24px_rgba(0,240,255,0.65)] hover:bg-primary-fixed',
   ghost:
-    'chamfer-border bg-surface-container text-on-surface hover:text-primary-container border border-outline-variant font-semibold hover:bg-surface-container-high hover:border-primary-container/60',
+    'chamfer-border bg-surface-container text-on-surface hover:text-primary-container border border-outline-variant font-semibold hover:bg-surface-container-high hover:border-primary-container/60 hover:[--chamfer-line:rgba(0,240,255,0.6)]',
 };
 ---
 

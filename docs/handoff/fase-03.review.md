@@ -31,3 +31,12 @@ El layout, el header, el footer y los componentes UI cumplen la fase; los puntos
 - Módulo de reclutamiento: descripción y URL exacta.
 - francisherrera.com: descripción.
 - Confirmar si el sitio de Fundación Prolancho sigue en AWS EC2 o se mudó a Hetzner.
+
+## Re-revisión (836b095)
+1. ✅ `aria-label` alterna con `data-open-label` y `data-close-label`.
+2. ✅ El botón primary usa `text-on-primary-fixed`.
+3. ❌ **No resuelto.** El `::before` de `.chamfer-border` (`shared/tailwind.preset.js:117-131`) mide 14×1px: es una línea horizontal, no una diagonal. Usa `currentColor`, que es el color del texto y no el del borde. Además, `baseClasses` de `Button` ya aplica `chamfer`. → Pasa a la revisión de la fase 4, punto 9.
+4. ✅ `SectionHeader` acepta `index` y se usa en las secciones.
+5. ✅ `linkHref(link: ExperienceLink, …)`, sin respaldo `'#'`.
+6. ✅ `StatTile` usa `CornerMarks` con `corners={['tl']}`.
+7. ✅ `privacyPolicy.kicker` está en el config.

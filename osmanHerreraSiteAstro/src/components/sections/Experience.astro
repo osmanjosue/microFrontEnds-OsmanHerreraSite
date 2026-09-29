@@ -22,7 +22,7 @@ const { experience } = siteConfig;
 <section id="experience" class="py-space-xl">
   <div class="max-w-7xl mx-auto px-margin">
     <SectionHeader
-      kicker={t({ es: 'TRAYECTORIA // HISTORIAL LABORAL', en: 'CAREER // WORK HISTORY' }, lang)}
+      kicker={t(experience.kicker, lang)}
       title={t(experience.title, lang)}
       subtitle={experience.subtitle ? t(experience.subtitle, lang) : undefined}
       index={4}

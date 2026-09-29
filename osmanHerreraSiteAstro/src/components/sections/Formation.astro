@@ -20,7 +20,7 @@ const { formation } = siteConfig;
 <section id="formation" class="py-space-xl">
   <div class="max-w-7xl mx-auto px-margin">
     <SectionHeader
-      kicker={t({ es: 'ACADEMIA // CERTIFICACIONES TÉCNICAS', en: 'ACADEMIA // TECHNICAL CERTIFICATIONS' }, lang)}
+      kicker={t(formation.kicker, lang)}
       title={t(formation.title, lang)}
       index={3}
       class="mb-space-lg border-b border-outline-variant pb-space-md"
@@ -30,7 +30,7 @@ const { formation } = siteConfig;
     <div class="mb-space-xl">
       <h3 class="font-label-caps text-label-caps text-primary-container uppercase tracking-wider mb-space-md flex items-center gap-space-xs">
         <span class="material-symbols-outlined text-base">school</span>
-        <span>{t({ es: 'Educación Superior', en: 'Higher Education' }, lang)}</span>
+        <span>{t(formation.educationTitle, lang)}</span>
       </h3>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
@@ -55,7 +55,7 @@ const { formation } = siteConfig;
     <div>
       <h3 class="font-label-caps text-label-caps text-primary-container uppercase tracking-wider mb-space-md flex items-center gap-space-xs">
         <span class="material-symbols-outlined text-base">workspace_premium</span>
-        <span>{t({ es: 'Certificaciones Profesionales', en: 'Professional Certifications' }, lang)}</span>
+        <span>{t(formation.certificatesTitle, lang)}</span>
       </h3>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
