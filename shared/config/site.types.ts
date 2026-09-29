@@ -18,7 +18,9 @@ export type RichText = (string | RichTextSegment)[];
 export interface NavItem {
   label: Localized;
   /** Id de la sección destino (sin '#') */
-  target: string;
+  target?: string;
+  /** Ruta canónica para navegación entre páginas */
+  route?: RouteKey;
 }
 
 export interface SocialIcon {
@@ -35,9 +37,9 @@ export interface Technology {
 export interface Certificate {
   platform: string;
   title: string;
-  month: Localized;
-  date: number;
-  link: string;
+  month?: Localized;
+  date?: number | string;
+  link?: string;
 }
 
 export interface EducationCard {
@@ -57,8 +59,10 @@ export type ExperienceLink = (
 export interface Experience {
   role: Localized<RichText>;
   company: Localized;
-  period: string;
+  period: Localized;
+  location?: Localized;
   description: Localized;
+  highlights?: Localized<string[]>;
   technologies: (string | Localized)[];
   links: ExperienceLink[];
 }
@@ -73,7 +77,7 @@ export interface FormField {
   placeholder: Localized;
 }
 
-export type ProjectCategory = 'web' | 'modulos' | 'diseno';
+export type ProjectCategory = 'web' | 'modulos' | 'diseno' | 'datos';
 
 export interface Project {
   id: string;
@@ -85,6 +89,11 @@ export interface Project {
   technologies: string[];
   links: ExperienceLink[];
   featured?: boolean;
+  caseStudy?: {
+    problem: Localized;
+    solution: Localized;
+    result: Localized;
+  };
 }
 
 export interface ProjectsConfig {
@@ -240,4 +249,61 @@ export interface SiteConfig {
     description: Localized;
     homeLink: Localized;
   };
+  cv: CvConfig;
+}
+
+export interface CvWhatIDoItem {
+  id: string;
+  title: Localized;
+  description: Localized;
+}
+
+export interface CvSkillGroup {
+  title: Localized;
+  skills: { name: string; level?: 'core' | 'working' }[];
+}
+
+export interface CvLanguage {
+  language: Localized;
+  level: Localized;
+}
+
+export interface CvBriefProject {
+  title: string;
+  description: Localized;
+  chips: string[];
+}
+
+export interface CvUiTexts {
+  viewCvBtn: Localized;
+  printPdfBtn: Localized;
+  profileSection: Localized;
+  whatIDoSection: Localized;
+  experienceSection: Localized;
+  featuredProjectsSection: Localized;
+  skillsSection: Localized;
+  strengthsSection: Localized;
+  educationSection: Localized;
+  languagesSection: Localized;
+  aboutMeSection: Localized;
+  updatedLabel: Localized;
+  viewCode: Localized;
+  problemLabel: Localized;
+  solutionLabel: Localized;
+  resultLabel: Localized;
+}
+
+export interface CvConfig {
+  headline: Localized;
+  location: Localized;
+  profileSummary: Localized;
+  whatIDo: CvWhatIDoItem[];
+  skillGroups: CvSkillGroup[];
+  strengths: Localized<string[]>;
+  languages: CvLanguage[];
+  aboutMe: Localized;
+  taekwondo: Localized;
+  briefProjects: CvBriefProject[];
+  updated: string;
+  ui: CvUiTexts;
 }

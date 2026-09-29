@@ -14,7 +14,7 @@ export const DEFAULT_LANG: Lang = 'es';
 export type Localized<T = string> = Record<Lang, T>;
 
 /** Claves identificadoras de las rutas principales del sitio */
-export type RouteKey = 'home' | 'privacy' | 'vectorwork';
+export type RouteKey = 'home' | 'privacy' | 'vectorwork' | 'cv';
 
 /**
  * Tabla de rutas del sitio por idioma.
@@ -32,6 +32,10 @@ export const ROUTES: Record<RouteKey, Localized<string>> = {
   vectorwork: {
     es: '/vectorwork/',
     en: '/en/vectorwork/',
+  },
+  cv: {
+    es: '/cv/',
+    en: '/en/cv/',
   },
 };
 

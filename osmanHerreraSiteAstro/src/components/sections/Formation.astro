@@ -64,25 +64,29 @@ const { formation } = siteConfig;
             <div class="space-y-space-sm">
               <div class="flex items-center justify-between gap-space-xs">
                 <Chip variant="common">{cert.platform}</Chip>
-                <span class="font-mono text-label-micro text-on-surface-variant">
-                  {t(cert.month, lang)} {cert.date}
-                </span>
+                {(cert.month || cert.date) && (
+                  <span class="font-mono text-label-micro text-on-surface-variant">
+                    {cert.month ? t(cert.month, lang) : ''} {cert.date ?? ''}
+                  </span>
+                )}
               </div>
               <h4 class="font-title-md text-title-md text-primary font-semibold leading-snug">
                 {cert.title}
               </h4>
             </div>
 
-            <div class="pt-space-sm border-t border-outline-variant/30">
-              <a
-                href={cert.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-1 font-label-caps text-label-caps text-primary-container hover:text-primary-fixed hover:underline transition-colors"
-              >
-                <span>{t(formation.certificateLinkLabel, lang)}</span>
-              </a>
-            </div>
+            {cert.link && (
+              <div class="pt-space-sm border-t border-outline-variant/30">
+                <a
+                  href={cert.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1 font-label-caps text-label-caps text-primary-container hover:text-primary-fixed hover:underline transition-colors"
+                >
+                  <span>{t(formation.certificateLinkLabel, lang)}</span>
+                </a>
+              </div>
+            )}
           </Card>
         ))}
       </div>

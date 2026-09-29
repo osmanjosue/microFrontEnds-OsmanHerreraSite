@@ -83,14 +83,19 @@ const vectorPath = localizedPath(siteConfig.vectorWorkLink.targetRoute, lang);
     <!-- BARRA INFERIOR: NAVEGACIÓN Y ENLACE A VECTOR WORK (DESKTOP) -->
     <div class="hidden md:flex items-center justify-between gap-gutter border-t border-outline-variant/30 pt-1">
       <nav class="flex items-center gap-space-xs shrink-0">
-        {siteConfig.nav.map((item) => (
-          <a
-            href={`${homePath}#${item.target}`}
-            class="px-space-md py-1 bg-surface-container text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-label-caps text-label-caps uppercase transition-colors"
-          >
-            {t(item.label, lang)}
-          </a>
-        ))}
+        {siteConfig.nav.map((item) => {
+          const href = item.route
+            ? localizedPath(item.route, lang)
+            : `${homePath}#${item.target}`;
+          return (
+            <a
+              href={href}
+              class="px-space-md py-1 bg-surface-container text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-label-caps text-label-caps uppercase transition-colors"
+            >
+              {t(item.label, lang)}
+            </a>
+          );
+        })}
       </nav>
 
       <div class="flex items-center gap-space-xs shrink-0">
@@ -111,14 +116,19 @@ const vectorPath = localizedPath(siteConfig.vectorWorkLink.targetRoute, lang);
     class="hidden md:hidden bg-surface-container border-b border-outline-variant px-margin py-space-md space-y-space-md shadow-2xl"
   >
     <nav class="flex flex-col gap-1">
-      {siteConfig.nav.map((item) => (
-        <a
-          href={`${homePath}#${item.target}`}
-          class="mobile-nav-link px-3 py-2 text-on-surface hover:text-primary-container font-label-caps text-label-caps uppercase border border-transparent hover:border-outline-variant transition-colors"
-        >
-          {t(item.label, lang)}
-        </a>
-      ))}
+      {siteConfig.nav.map((item) => {
+        const href = item.route
+          ? localizedPath(item.route, lang)
+          : `${homePath}#${item.target}`;
+        return (
+          <a
+            href={href}
+            class="mobile-nav-link px-3 py-2 text-on-surface hover:text-primary-container font-label-caps text-label-caps uppercase border border-transparent hover:border-outline-variant transition-colors"
+          >
+            {t(item.label, lang)}
+          </a>
+        );
+      })}
       <a
         href={vectorPath}
         class="mobile-nav-link px-3 py-2 mt-2 bg-secondary-container/20 text-secondary hover:bg-secondary-container hover:text-on-secondary-container font-label-caps text-label-caps uppercase tracking-wider font-semibold flex items-center gap-2 border border-secondary/40"
