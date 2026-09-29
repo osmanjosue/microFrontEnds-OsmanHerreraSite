@@ -13,6 +13,7 @@ Este documento contiene la configuración propuesta para el servidor web Nginx e
 | **Página Principal (Home)** | React SPA servido en `/react/` con proxy inverso | HTML estático generado en build servido en `/` y `/en/` |
 | **Sitio Angular** | Aplicación legado en `/angular/` | Redirigido permanentemente (301) a `/` |
 | **Vector Work** | SPA Vanilla en `/vectorwork/` | Páginas estáticas `/vectorwork/` y `/en/vectorwork/` con visor interactivo hidratado en cliente |
+| **CV** | — | Páginas estáticas `/cv/` y `/en/cv/` con `<meta name="robots" content="noindex">` (no se indexan; el teléfono no llega a buscadores) |
 | **Política de Privacidad** | `/react/politicadeprivacidad` | Rutas estáticas canónicas `/politicadeprivacidad` y `/en/privacy-policy` |
 | **API de Correo** | Proxy inverso hacia Express en `:3000` | Mismo proxy inverso en `/api/` sin modificaciones |
 | **Manejo de 404** | Fallback genérico de SPA | Página 404 estática bilingüe (`/404.html`) generada desde `src/pages/404.astro` |
@@ -109,6 +110,14 @@ server {
 
     location = /en/vectorwork {
         return 301 /en/vectorwork/;
+    }
+
+    location = /cv {
+        return 301 /cv/;
+    }
+
+    location = /en/cv {
+        return 301 /en/cv/;
     }
 
     # --------------------------------------------------------------------------
@@ -219,6 +228,25 @@ server {
        ├── pieza-01/
        ├── pieza-02/
        └── ...
+   ```
+
+   Los assets de Vector Work no están en git y el build los borra del `dist`. Se suben desde la PC local:
+   ```bash
+   # En la PC (origen: osmanHerreraSiteAstro/public/vectorwork/)
+   scp -r osmanHerreraSiteAstro/public/vectorwork/works osmanHerreraSiteAstro/public/vectorwork/data/titles.json usuario@IP:/tmp/vw/
+   # En el VPS
+   sudo mkdir -p /var/www/vectorwork-assets/data
+   sudo mv /tmp/vw/works /var/www/vectorwork-assets/
+   sudo mv /tmp/vw/titles.json /var/www/vectorwork-assets/data/
+   ```
+   No subir `titles.example.json` ni los originales de `scripts/vector/source/`.
+
+   **Build (Node ≥ 22.12, lo exige Astro 7):**
+   ```bash
+   git checkout main && git pull
+   npm ci
+   npm run build:all
+   npm run start:backend   # reinicia pm2 (oherrera-api)
    ```
 
 2. **Permisos recomendados:**
