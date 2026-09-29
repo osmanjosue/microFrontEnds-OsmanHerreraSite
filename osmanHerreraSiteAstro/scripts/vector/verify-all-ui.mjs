@@ -5,7 +5,6 @@
 // - React build servido localmente mostrando el link "Vector Work" en el nav
 // - Angular build servido localmente mostrando el link "Vector Work" en el nav
 // ===========================================================================
-import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,73 +13,14 @@ import { chromium } from 'playwright';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const vectorRoot = path.resolve(__dirname, '..');
-const repoRoot = path.resolve(vectorRoot, '..');
 const screenshotsDir = path.join(vectorRoot, '.screenshots');
 
 fs.mkdirSync(screenshotsDir, { recursive: true });
-
-/**
- * Servidor HTTP estático simple para servir carpetas dist locales sin dependencias externas.
- */
-function createStaticServer(distPath, port, base = '/') {
-  const mimeTypes = {
-    '.html': 'text/html; charset=UTF-8',
-    '.js': 'application/javascript',
-    '.css': 'text/css',
-    '.svg': 'image/svg+xml',
-    '.webp': 'image/webp',
-    '.png': 'image/png',
-    '.jpg': 'image/jpeg',
-    '.json': 'application/json',
-  };
-
-  const server = http.createServer((req, res) => {
-    let reqPath = req.url.split('?')[0];
-    if (base !== '/' && reqPath.startsWith(base)) {
-      reqPath = reqPath.slice(base.length);
-    }
-    if (reqPath.startsWith('/')) reqPath = reqPath.slice(1);
-    if (!reqPath || reqPath === '') reqPath = 'index.html';
-
-    let filePath = path.join(distPath, reqPath);
-    if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
-      filePath = path.join(distPath, 'index.html');
-    }
-
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = mimeTypes[ext] || 'application/octet-stream';
-
-    try {
-      const content = fs.readFileSync(filePath);
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content);
-    } catch {
-      res.writeHead(404);
-      res.end('Not Found');
-    }
-  });
-
-  return new Promise((resolve) => {
-    server.listen(port, '127.0.0.1', () => {
-      resolve(server);
-    });
-  });
-}
 
 async function main() {
   console.log('═════════════════════════════════════════════════════════════════');
   console.log('  VERIFICACIÓN VISUAL PLAYWRIGHT HEADLESS (FASE 3)');
   console.log('═════════════════════════════════════════════════════════════════\n');
-
-  // Iniciar servidores estáticos para React y Angular
-  const reactDist = path.join(repoRoot, 'osmanHerreraSiteReact', 'dist');
-  const angularDist = path.join(repoRoot, 'osmanHerreraSite', 'dist', 'osman-herrera-dev', 'browser');
-
-  const reactServer = await createStaticServer(reactDist, 4173, '/react/');
-  console.log('✔ Servidor React dist iniciado en http://127.0.0.1:4173/react/');
-
-  const angularServer = await createStaticServer(angularDist, 4174, '/angular/');
-  console.log('✔ Servidor Angular dist iniciado en http://127.0.0.1:4174/angular/');
 
   const browser = await chromium.launch({ headless: true });
 
@@ -144,51 +84,7 @@ async function main() {
 
   await desktopCtx.close();
 
-  // -------------------------------------------------------------------------
-  // 2. CAPTURA REACT BUILD (con enlace "Vector Work" en el nav)
-  // -------------------------------------------------------------------------
-  console.log('\n--- Capturando React Build ---');
-  const reactCtx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-  const reactPage = await reactCtx.newPage();
-  await reactPage.goto('http://127.0.0.1:4173/react/', { waitUntil: 'networkidle' });
-  await reactPage.waitForTimeout(500);
-
-  const reactNavCheck = await reactPage.evaluate(() => {
-    const links = Array.from(document.querySelectorAll('header nav a'));
-    return links.map((l) => ({ text: l.textContent.trim(), href: l.getAttribute('href'), tag: l.tagName.toLowerCase() }));
-  });
-  console.log('✔ Enlaces nav React:', reactNavCheck);
-
-  const headerReact = reactPage.locator('header');
-  const reactShotPath = path.join(screenshotsDir, 'screenshot-react-nav.png');
-  await headerReact.screenshot({ path: reactShotPath });
-  console.log('✔ Captura nav React guardada:', reactShotPath);
-  await reactCtx.close();
-
-  // -------------------------------------------------------------------------
-  // 3. CAPTURA ANGULAR BUILD (con enlace "Vector Work" en el nav)
-  // -------------------------------------------------------------------------
-  console.log('\n--- Capturando Angular Build ---');
-  const angularCtx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-  const angularPage = await angularCtx.newPage();
-  await angularPage.goto('http://127.0.0.1:4174/angular/', { waitUntil: 'networkidle' });
-  await angularPage.waitForTimeout(500);
-
-  const angularNavCheck = await angularPage.evaluate(() => {
-    const links = Array.from(document.querySelectorAll('header nav a'));
-    return links.map((l) => ({ text: l.textContent.trim(), href: l.getAttribute('href'), tag: l.tagName.toLowerCase() }));
-  });
-  console.log('✔ Enlaces nav Angular:', angularNavCheck);
-
-  const headerAngular = angularPage.locator('header');
-  const angularShotPath = path.join(screenshotsDir, 'screenshot-angular-nav.png');
-  await headerAngular.screenshot({ path: angularShotPath });
-  console.log('✔ Captura nav Angular guardada:', angularShotPath);
-  await angularCtx.close();
-
   await browser.close();
-  reactServer.close();
-  angularServer.close();
 
   console.log('\n═════════════════════════════════════════════════════════════════');
   console.log('  TODAS LAS CAPTURAS COMPLETADAS EXITOSAMENTE');

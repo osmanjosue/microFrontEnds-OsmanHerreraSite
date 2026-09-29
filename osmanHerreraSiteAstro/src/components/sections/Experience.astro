@@ -13,25 +13,36 @@ import RichText from '../ui/RichText.astro';
 
 interface Props {
   lang: Lang;
+  maxHighlights?: number;
+  showHeader?: boolean;
+  sectionClass?: string;
 }
 
-const { lang } = Astro.props;
+const {
+  lang,
+  maxHighlights,
+  showHeader = true,
+  sectionClass = 'py-space-xl',
+} = Astro.props;
+
 const { experience } = siteConfig;
 ---
 
-<section id="experience" class="py-space-xl">
+<section id="experience" class={sectionClass}>
   <div class="max-w-7xl mx-auto px-margin">
-    <SectionHeader
-      kicker={t(experience.kicker, lang)}
-      title={t(experience.title, lang)}
-      subtitle={experience.subtitle ? t(experience.subtitle, lang) : undefined}
-      index={4}
-      class="mb-space-lg border-b border-outline-variant pb-space-md"
-    />
+    {showHeader && (
+      <SectionHeader
+        kicker={t(experience.kicker, lang)}
+        title={t(experience.title, lang)}
+        subtitle={experience.subtitle ? t(experience.subtitle, lang) : undefined}
+        index={4}
+        class="mb-space-lg border-b border-outline-variant pb-space-md"
+      />
+    )}
 
     <div class="space-y-space-lg">
       {experience.items.map((item) => (
-        <Card variant="interactive" cornerMarks={true} class="p-space-lg lg:p-space-xl">
+        <Card variant="interactive" cornerMarks={true} class="p-space-lg lg:p-space-xl break-inside-avoid">
           <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-space-md mb-space-md pb-space-sm border-b border-outline-variant/40">
             <div>
               <h3 class="font-headline-md text-headline-md text-primary leading-tight">
@@ -42,17 +53,38 @@ const { experience } = siteConfig;
               </p>
             </div>
 
-            <div class="flex items-center gap-space-xs">
-              <span class="material-symbols-outlined text-sm text-primary-container">calendar_today</span>
-              <span class="font-mono text-label-micro text-primary-container font-semibold tracking-wider">
-                {item.period}
-              </span>
+            <div class="flex flex-col lg:items-end gap-1">
+              <div class="flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-sm text-primary-container">calendar_today</span>
+                <span class="font-mono text-label-micro text-primary-container font-semibold tracking-wider">
+                  {t(item.period, lang)}
+                </span>
+              </div>
+              {item.location && (
+                <div class="flex items-center gap-1 text-on-surface-variant">
+                  <span class="material-symbols-outlined text-xs text-outline">location_on</span>
+                  <span class="font-mono text-label-micro text-on-surface-variant/80 tracking-wider">
+                    {t(item.location, lang)}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
-          <p class="font-body-md text-on-surface-variant leading-relaxed max-w-4xl mb-space-md">
-            {t(item.description, lang)}
-          </p>
+          {item.highlights ? (
+            <ul class="space-y-2 mb-space-md text-on-surface-variant font-body-md">
+              {(maxHighlights ? t(item.highlights, lang).slice(0, maxHighlights) : t(item.highlights, lang)).map((bullet) => (
+                <li class="flex items-start gap-2">
+                  <span class="text-primary-container text-xs mt-1 select-none font-mono">▸</span>
+                  <span class="leading-relaxed">{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="font-body-md text-on-surface-variant leading-relaxed max-w-4xl mb-space-md">
+              {t(item.description, lang)}
+            </p>
+          )}
 
           <div class="space-y-space-md pt-space-xs">
             <!-- Chips de tecnologías -->
@@ -66,7 +98,7 @@ const { experience } = siteConfig;
 
             <!-- Enlaces de la experiencia -->
             {item.links && item.links.length > 0 && (
-              <div class="flex flex-wrap gap-space-sm pt-space-xs">
+              <div class="flex flex-wrap gap-space-sm pt-space-xs print:hidden">
                 {item.links.map((link) => {
                   const href = linkHref(link, lang);
                   const isExternal = 'url' in link && Boolean(link.url && link.url.startsWith('http'));

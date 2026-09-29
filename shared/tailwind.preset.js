@@ -2,7 +2,7 @@
 // PRESET COMPARTIDO DE TAILWIND CSS — DESIGN SYSTEM APEX DOSSIER
 // ===========================================================================
 // Fuente de verdad de los tokens de diseño compartidos entre microfrontends.
-// Basado en osmanHerreraSiteVector/tailwind.config.js y DESIGN.md.
+// Basado originalmente en la configuración de Tailwind de Vector Work y DESIGN.md.
 // ===========================================================================
 
 import plugin from 'tailwindcss/plugin.js';

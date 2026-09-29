@@ -11,16 +11,6 @@ import type { Localized } from './i18n';
 
 export interface VectorUI {
   defaultTitle: Localized;
-  brandName: string;
-  brandSubtitle: Localized;
-  availability: Localized;
-  locationLabel: Localized;
-  locationValue: string;
-  nav: {
-    vectorWork: Localized;
-    devWork: Localized;
-    contact: Localized;
-  };
   pageTitle: Localized;
   pageHeading: Localized;
   pageSubtitle: Localized;
@@ -51,8 +41,6 @@ export interface VectorUI {
   nextTitle: Localized;
   inventoryLabel: Localized;
   categoryFilterToolbar: Localized;
-  mainNavAria: Localized;
-  langToggleAria: Localized;
   anchorsTooltip: Localized;
   metrics: {
     anchors: Localized;
@@ -72,12 +60,6 @@ export interface VectorUI {
     result: Localized;
   };
   toolsLabel: Localized;
-  footer: {
-    pipeline: Localized;
-    precision: Localized;
-    copyright: Localized;
-    privacyLink: Localized;
-  };
 }
 
 export interface VectorCategory {
@@ -112,29 +94,6 @@ export const vectorConfig: VectorConfig = {
     defaultTitle: {
       es: 'Estudio vectorial #{n}',
       en: 'Vector study #{n}',
-    },
-
-    // Identidad y cabecera
-    brandName: 'osmanherrera.dev',
-    brandSubtitle: {
-      es: 'ILUSTRACIÓN VECTORIAL · ILLUSTRATOR Y PHOTOSHOP',
-      en: 'VECTOR ILLUSTRATION · ILLUSTRATOR & PHOTOSHOP',
-    },
-    availability: {
-      es: 'DISPONIBLE PARA TRABAJO REMOTO',
-      en: 'AVAILABLE FOR REMOTE WORK',
-    },
-    locationLabel: {
-      es: 'UBICACIÓN',
-      en: 'LOCATION',
-    },
-    locationValue: 'SIGUATEPEQUE, HN · GMT-6',
-
-    // Navegación
-    nav: {
-      vectorWork: { es: 'Vector Work', en: 'Vector Work' },
-      devWork: { es: 'Dev Work', en: 'Dev Work' },
-      contact: { es: 'Contacto', en: 'Contact' },
     },
 
     // Encabezado principal del catálogo
@@ -272,14 +231,6 @@ export const vectorConfig: VectorConfig = {
       es: 'Filtros por categoría',
       en: 'Category filters',
     },
-    mainNavAria: {
-      es: 'Navegación principal',
-      en: 'Main navigation',
-    },
-    langToggleAria: {
-      es: 'Cambiar idioma a {target}',
-      en: 'Switch language to {target}',
-    },
     anchorsTooltip: {
       es: 'Conteo aproximado de nodos del archivo original',
       en: 'Approximate anchor count from the original file',
@@ -337,26 +288,6 @@ export const vectorConfig: VectorConfig = {
     toolsLabel: {
       es: 'HERRAMIENTAS:',
       en: 'TOOLS:',
-    },
-
-    // Footer
-    footer: {
-      pipeline: {
-        es: 'FLUJO DE TRABAJO DE RASTER A VECTORES ESCALABLES',
-        en: 'PRECISION RASTER-TO-SCALABLE VECTOR PIPELINE',
-      },
-      precision: {
-        es: '100% PRECISIÓN BÉZIER',
-        en: '100% BEZIER PRECISION',
-      },
-      copyright: {
-        es: '© {year} Osman Herrera. Todos los derechos reservados.',
-        en: '© {year} Osman Herrera. All rights reserved.',
-      },
-      privacyLink: {
-        es: 'Política de Privacidad',
-        en: 'Privacy Policy',
-      },
     },
   },
 

@@ -9,4 +9,8 @@ Mientras tanto se quedan como `TODO: confirmar` o placeholder. No bloquean ningu
 | Capturas reales de los 4 proyectos (webp ~1200×750) | `public/assets/images/projects/` | ✅ completado (capturas 1440×900 @2x con Playwright → WebP 1200×750; originales PNG en `docs/capturas/`, fuera de git) |
 | Aprobar textos nuevos de Gemini | `formation.kicker`, `experience.kicker`, `contact.*`, `contactForm.alerts.close` | pendiente de revisión |
 | Aprobar textos de la 404 (es/en) | `notFound.*` en `shared/config/site.config.ts` | pendiente de revisión |
+| Captura real del proyecto Night Audit (webp 1200×750) | `projects.items[night-audit-revenue-pipeline].image` | pendiente (fase 9 deja placeholder SVG) |
+| Mes, año y link del certificado "Automate the Boring Stuff with Python" | `formation.certificates` | pendiente |
+| Confirmar que el repo `osmanjosue/night-audit-revenue-report` es público | link del proyecto Night Audit | pendiente |
+| Aprobar `seo.description` nueva (fase 9) | `seo.*.description` | pendiente de revisión |
 | Ruta real del sitio en el VPS y rutas de certificados SSL | `docs/nginx-astro.md` (`root`, `ssl_certificate*`) | pendiente (hoy `/var/www/osmanherrera-site/...` supuesto) |

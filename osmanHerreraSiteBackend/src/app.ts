@@ -19,8 +19,6 @@ app.set('trust proxy', 1);
 const whiteList = [
     'https://www.osmanherrera.dev',
     'https://osmanherrera.dev',
-    'http://localhost:5173',
-    'http://localhost:4200',
     'http://localhost:4321',
 ];
 
@@ -51,8 +49,7 @@ const emailLimiter = rateLimit({
 
 // --- 4. MIDDLEWARES GLOBALES ---
 app.use(cors(corsOptions));
-app.use(express.json()); 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
 // --- 5. RUTAS DE LA API ---
 app.use('/api/email', emailLimiter, (req: Request, res: Response, next: NextFunction) => {
@@ -66,12 +63,7 @@ app.use('/api/email', emailLimiter, (req: Request, res: Response, next: NextFunc
     next();
 }, emailRoutes);
 
-// --- 6. MANEJO DE SPA ---
-// app.get('*', (req: Request, res: Response) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-// });
-
-// --- 7. MANEJADOR DE ERRORES GLOBAL ---
+// --- 6. MANEJADOR DE ERRORES GLOBAL ---
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     console.error(`[LOG ERROR] ${req.method} ${req.url}: ${err.message}`);
     const status = err.message === 'No permitido por CORS' ? 403 : 500;

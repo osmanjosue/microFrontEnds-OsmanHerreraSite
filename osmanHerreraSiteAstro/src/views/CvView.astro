@@ -1,0 +1,491 @@
+---
+// ===========================================================================
+// VISTA: CV / HOJA DE VIDA (BILINGÜE)
+// ===========================================================================
+// Renderiza el perfil público completo estructurado en 10 secciones,
+// optimizado para visualización web y exportación a impresión / PDF (A4/Letter).
+
+import { siteConfig, type Lang, t, PHONE } from '@config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Card from '../components/ui/Card.astro';
+import Chip from '../components/ui/Chip.astro';
+import Experience from '../components/sections/Experience.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { cv, formation, projects, profile, contact, socialIcons, brand, footer } = siteConfig;
+
+const nightAudit = projects.items.find(
+  (p) => p.id === 'night-audit-revenue-pipeline',
+);
+
+const linkedIn = socialIcons.find((s) => s.title === 'linkedin')?.address || 'https://linkedin.com/in/osmanherrera';
+const gitHub = socialIcons.find((s) => s.title === 'github')?.address || 'https://github.com/osmanjosue';
+const domain = `${brand.highlight.toLowerCase()}${brand.rest.toLowerCase()}`;
+const websiteUrl = `https://${domain}`;
+const phoneHref = `tel:${PHONE.replace(/[^\d+]/g, '')}`;
+---
+
+<BaseLayout lang={lang} route="cv" noindex>
+  <div class="max-w-5xl mx-auto px-margin py-space-lg print-page space-y-space-xl">
+    <!-- 1. ENCABEZADO -->
+    <header class="border-b border-outline-variant/60 pb-space-lg cv-header">
+      <div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-md">
+        <span class="font-mono text-label-micro text-primary-container tracking-wider cv-domain">
+          {domain}
+        </span>
+        <button
+          type="button"
+          onclick="window.print()"
+          class="no-print inline-flex items-center gap-space-xs px-space-md py-1.5 bg-surface-container hover:bg-surface-container-high text-primary border border-outline-variant hover:border-primary-container font-mono text-label-micro uppercase tracking-wider transition-colors cursor-pointer"
+        >
+          <span class="material-symbols-outlined text-sm">print</span>
+          <span>{t(cv.ui.printPdfBtn, lang)}</span>
+        </button>
+      </div>
+
+      <h1 class="font-headline-xl text-headline-xl text-primary font-bold tracking-tight">
+        {profile.name}
+      </h1>
+      <p class="font-headline-sm text-headline-sm text-primary-container font-medium mt-1">
+        {t(cv.headline, lang)}
+      </p>
+      <p class="font-body-sm text-on-surface-variant mt-1 flex items-center gap-1">
+        <span class="material-symbols-outlined text-sm text-outline">location_on</span>
+        <span>{t(cv.location, lang)}</span>
+      </p>
+
+      <!-- Enlaces de contacto -->
+      <nav class="flex flex-wrap gap-space-xs pt-space-md" aria-label={t(cv.ui.contactNavAria, lang)}>
+        <a
+          href={`mailto:${contact.email}`}
+          class="inline-flex items-center gap-1 px-3 py-1 bg-surface-container border border-outline-variant hover:border-primary-container text-on-surface font-mono text-label-micro transition-colors"
+        >
+          <span class="text-primary-container">✉</span>
+          <span>{contact.email}</span>
+        </a>
+        <a
+          href={phoneHref}
+          class="inline-flex items-center gap-1 px-3 py-1 bg-surface-container border border-outline-variant hover:border-primary-container text-on-surface font-mono text-label-micro transition-colors"
+        >
+          <span class="text-primary-container">☎</span>
+          <span>{PHONE}</span>
+        </a>
+        <a
+          href={linkedIn}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1 px-3 py-1 bg-surface-container border border-outline-variant hover:border-primary-container text-on-surface font-mono text-label-micro transition-colors"
+        >
+          <span class="text-primary-container font-bold">in</span>
+          <span>LinkedIn</span>
+        </a>
+        <a
+          href={gitHub}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1 px-3 py-1 bg-surface-container border border-outline-variant hover:border-primary-container text-on-surface font-mono text-label-micro transition-colors"
+        >
+          <span class="text-primary-container font-bold">&lt;/&gt;</span>
+          <span>GitHub</span>
+        </a>
+        <a
+          href={websiteUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1 px-3 py-1 bg-surface-container border border-outline-variant hover:border-primary-container text-on-surface font-mono text-label-micro transition-colors"
+        >
+          <span class="text-primary-container font-bold">◎</span>
+          <span>{domain}</span>
+        </a>
+      </nav>
+    </header>
+
+    <!-- 2. PERFIL -->
+    <section class="space-y-space-xs">
+      <h2 class="font-mono text-label-micro text-primary-container uppercase tracking-widest">
+        // {t(cv.ui.profileSection, lang)}
+      </h2>
+      <p class="font-body-md text-on-surface leading-relaxed max-w-4xl text-base lg:text-lg">
+        {t(cv.profileSummary, lang)}
+      </p>
+    </section>
+
+    <!-- 3. QUÉ HAGO -->
+    <section class="space-y-space-sm">
+      <h2 class="font-mono text-label-micro text-primary-container uppercase tracking-widest">
+        // {t(cv.ui.whatIDoSection, lang)}
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-sm">
+        {cv.whatIDo.map((item) => (
+          <Card variant="interactive" class="cv-card p-space-md border-t-2 border-t-primary-container">
+            <h3 class="font-headline-sm text-headline-sm text-primary mb-1">
+              {t(item.title, lang)}
+            </h3>
+            <p class="font-body-sm text-on-surface-variant leading-relaxed">
+              {t(item.description, lang)}
+            </p>
+          </Card>
+        ))}
+      </div>
+    </section>
+
+    <!-- 4. EXPERIENCIA -->
+    <section class="space-y-space-sm">
+      <h2 class="font-mono text-label-micro text-primary-container uppercase tracking-widest">
+        // {t(cv.ui.experienceSection, lang)}
+      </h2>
+      <Experience lang={lang} showHeader={false} sectionClass="py-0" />
+    </section>
+
+    <!-- 5. PROYECTOS DESTACADOS -->
+    <section class="space-y-space-md">
+      <h2 class="font-mono text-label-micro text-primary-container uppercase tracking-widest">
+        // {t(cv.ui.featuredProjectsSection, lang)}
+      </h2>
+
+      <!-- Night Audit Case Study -->
+      {nightAudit && nightAudit.caseStudy && (
+        <Card variant="interactive" cornerMarks={true} class="cv-card p-space-lg lg:p-space-xl border-l-4 border-l-primary-container break-inside-avoid">
+          <div class="flex flex-wrap items-center justify-between gap-space-xs mb-space-sm">
+            <h3 class="font-headline-md text-headline-md text-primary font-bold">
+              {t(nightAudit.title, lang)}
+            </h3>
+            <Chip variant="tactical">{t(nightAudit.badge!, lang)}</Chip>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md my-space-md">
+            <div class="space-y-1">
+              <h4 class="font-mono text-label-micro text-outline uppercase tracking-wider">
+                {t(cv.ui.problemLabel, lang)}
+              </h4>
+              <p class="font-body-sm text-on-surface-variant leading-relaxed">
+                {t(nightAudit.caseStudy.problem, lang)}
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-mono text-label-micro text-outline uppercase tracking-wider">
+                {t(cv.ui.solutionLabel, lang)}
+              </h4>
+              <p class="font-body-sm text-on-surface-variant leading-relaxed">
+                {t(nightAudit.caseStudy.solution, lang)}
+              </p>
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-mono text-label-micro text-outline uppercase tracking-wider">
+                {t(cv.ui.resultLabel, lang)}
+              </h4>
+              <p class="font-body-sm text-on-surface-variant leading-relaxed">
+                {t(nightAudit.caseStudy.result, lang)}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-1 mt-space-sm">
+            {nightAudit.technologies.map((tech) => (
+              <Chip variant="common">{tech}</Chip>
+            ))}
+          </div>
+
+          <div class="mt-space-md pt-space-xs border-t border-outline-variant/30 print:hidden">
+            <a
+              href={nightAudit.links[0]?.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 font-mono text-label-micro text-primary-container hover:text-primary font-semibold tracking-wider uppercase transition-colors"
+            >
+              <span>{t(cv.ui.viewCode, lang)} →</span>
+            </a>
+          </div>
+        </Card>
+      )}
+
+      <!-- 3 Brief Projects -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm">
+        {cv.briefProjects.map((p) => (
+          <Card variant="interactive" class="cv-card p-space-md flex flex-col justify-between gap-space-sm break-inside-avoid">
+            <div class="space-y-space-xs">
+              <h3 class="font-headline-sm text-headline-sm text-primary">
+                {p.title}
+              </h3>
+              <p class="font-body-sm text-on-surface-variant leading-relaxed">
+                {t(p.description, lang)}
+              </p>
+            </div>
+            {p.chips.length > 0 && (
+              <div class="flex flex-wrap gap-1 pt-space-xs">
+                {p.chips.map((chip) => (
+                  <Chip variant="common">{chip}</Chip>
+                ))}
+              </div>
+            )}
+          </Card>
+        ))}
+      </div>
+    </section>
+
+    <!-- 6. HABILIDADES -->
+    <section class="space-y-space-sm">
+      <h2 class="font-mono text-label-micro text-primary-container uppercase tracking-widest">
+        // {t(cv.ui.skillsSection, lang)}
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-space-sm">
+        {cv.skillGroups.map((group) => (
+          <Card variant="interactive" class="cv-card p-space-md break-inside-avoid">
+            <h3 class="font-headline-sm text-headline-sm text-primary mb-space-xs pb-1 border-b border-outline-variant/30">
+              {t(group.title, lang)}
+            </h3>
+            <div class="flex flex-wrap gap-1">
+              {group.skills.map((skill) => (
+                <Chip variant={skill.level === 'core' ? 'tactical' : 'common'}>
+                  {skill.name}
+                </Chip>
+              ))}
+            </div>
+          </Card>
+        ))}
+      </div>
+    </section>
+
+    <!-- 7. FORTALEZAS -->
+    <section class="space-y-space-xs">
+      <h2 class="font-mono text-label-micro text-primary-container uppercase tracking-widest">
+        // {t(cv.ui.strengthsSection, lang)}
+      </h2>
+      <div class="flex flex-wrap gap-1.5">
+        {t(cv.strengths, lang).map((strength) => (
+          <Chip variant="common" class="text-xs py-1 px-3">
+            {strength}
+          </Chip>
+        ))}
+      </div>
+    </section>
+
+    <!-- 8. EDUCACIÓN Y 9. IDIOMAS -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+      <!-- 8. Educación y certificaciones -->
+      <section class="space-y-space-xs break-inside-avoid">
+        <h2 class="font-mono text-label-micro text-primary-container uppercase tracking-widest">
+          // {t(cv.ui.educationSection, lang)}
+        </h2>
+        <Card variant="interactive" class="cv-card p-space-md space-y-space-sm">
+          {formation.education.map((edu) => (
+            <div>
+              <h3 class="font-title-md text-title-md text-primary font-bold">
+                {t(edu.title, lang)}
+              </h3>
+              <p class="font-body-sm text-on-surface-variant">
+                {t(edu.detail, lang)}
+              </p>
+            </div>
+          ))}
+
+          <div class="pt-space-xs border-t border-outline-variant/30 space-y-2">
+            {formation.certificates.map((cert) => (
+              <div class="text-sm">
+                <span class="font-medium text-on-surface">{cert.title}</span>
+                <span class="text-on-surface-variant font-mono text-xs"> — {cert.platform}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </section>
+
+      <!-- 9. Idiomas -->
+      <section class="space-y-space-xs break-inside-avoid">
+        <h2 class="font-mono text-label-micro text-primary-container uppercase tracking-widest">
+          // {t(cv.ui.languagesSection, lang)}
+        </h2>
+        <Card variant="interactive" class="cv-card p-space-md space-y-space-sm">
+          {cv.languages.map((langItem) => (
+            <div class="flex items-center justify-between py-1 border-b border-outline-variant/30 last:border-b-0">
+              <span class="font-medium text-primary">
+                {t(langItem.language, lang)}
+              </span>
+              <Chip variant="tactical">
+                {t(langItem.level, lang)}
+              </Chip>
+            </div>
+          ))}
+        </Card>
+      </section>
+    </div>
+
+    <!-- 10. SOBRE MÍ -->
+    <section class="space-y-space-xs break-inside-avoid">
+      <h2 class="font-mono text-label-micro text-primary-container uppercase tracking-widest">
+        // {t(cv.ui.aboutMeSection, lang)}
+      </h2>
+      <p class="font-body-md text-on-surface-variant leading-relaxed">
+        {t(cv.aboutMe, lang)}
+      </p>
+      <Card variant="interactive" class="cv-card p-space-md flex items-start gap-space-sm mt-space-sm border-l-2 border-l-secondary">
+        <span class="text-2xl select-none" aria-hidden="true">🥋</span>
+        <p class="font-body-sm text-on-surface leading-relaxed">
+          {t(cv.taekwondo, lang)}
+        </p>
+      </Card>
+    </section>
+
+    <!-- FOOTER CV -->
+    <footer class="cv-footer pt-space-md border-t border-outline-variant/40 text-center font-mono text-label-micro text-on-surface-variant">
+      <span>{t(cv.ui.updatedLabel, lang)}: {cv.updated} · {t(footer.copyright, lang)}</span>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  @media print {
+    :global(.site-header),
+    :global(.site-footer),
+    :global(#mobile-menu),
+    :global(.no-print),
+    .no-print {
+      display: none !important;
+    }
+
+    :global(main) {
+      padding-top: 0 !important;
+      background: #ffffff !important;
+      background-color: #ffffff !important;
+      color: #18181b !important;
+    }
+
+    :global(body),
+    :global(html) {
+      background: #ffffff !important;
+      background-color: #ffffff !important;
+      color: #18181b !important;
+      font-size: 10pt !important;
+    }
+
+    :global(.print-page) {
+      max-width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #ffffff !important;
+      background-color: #ffffff !important;
+      color: #18181b !important;
+    }
+
+    /* El header propio del CV debe ser visible en print */
+    :global(.print-page header.cv-header) {
+      display: block !important;
+      border-color: #d1d5db !important;
+      padding-bottom: 12px !important;
+      margin-bottom: 16px !important;
+      break-after: avoid !important;
+      page-break-after: avoid !important;
+    }
+
+    /* Encabezados de sección: evitar que queden huérfanos al final de página */
+    :global(.print-page h2),
+    :global(.print-page .cv-section-title),
+    :global(.print-page section > h2) {
+      break-after: avoid !important;
+      page-break-after: avoid !important;
+      color: #0f766e !important;
+      font-weight: 700 !important;
+    }
+
+    /* Todos los textos oscuros y legibles sobre papel blanco */
+    :global(.print-page),
+    :global(.print-page *) {
+      color: #18181b !important;
+      text-shadow: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Títulos principales y negritas en negro / oscuro #111 */
+    :global(.print-page h1) {
+      color: #000000 !important;
+      font-size: 26pt !important;
+      line-height: 1.1 !important;
+    }
+
+    :global(.print-page h3),
+    :global(.print-page h4),
+    :global(.print-page strong),
+    :global(.print-page b) {
+      color: #111111 !important;
+    }
+
+    /* Títulos de los puestos en Experience: forzar color oscuro #111111 */
+    :global(.print-page .text-primary),
+    :global(.print-page [class*="text-primary"]:not([class*="text-primary-container"]):not([class*="text-primary-fixed"])) {
+      color: #111111 !important;
+    }
+
+    /* Resaltados de palabras clave y kickers: teal oscuro con alto contraste sobre papel blanco */
+    :global(.print-page .text-primary-container),
+    :global(.print-page [class*="text-primary-container"]),
+    :global(.print-page mark),
+    :global(.print-page .highlight) {
+      color: #0f766e !important;
+    }
+
+    /* Textos secundarios / fechas / ubicaciones en gris oscuro legible */
+    :global(.print-page .text-on-surface-variant),
+    :global(.print-page [class*="text-on-surface-variant"]),
+    :global(.print-page [class*="text-outline"]) {
+      color: #374151 !important;
+    }
+
+    /* Quitar cortes angulados chamfer para impresión */
+    :global(.print-page .chamfer),
+    :global(.print-page [class*="chamfer"]) {
+      clip-path: none !important;
+    }
+
+    /* Forzar fondo blanco REAL en todas las tarjetas de Card incluso con printBackground: true */
+    :global(.print-page .cv-card),
+    :global(.print-page [class*="bg-surface"]),
+    :global(.print-page [class*="bg-background"]),
+    :global(.print-page article),
+    :global(.print-page .chamfer),
+    :global(.print-page [class*="chamfer"]) {
+      background: #ffffff !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
+      border-color: #e5e7eb !important;
+      clip-path: none !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+
+    :global(.print-page [class*="chamfer"])::after {
+      display: none !important;
+    }
+
+    /* Chips en impresión: fondo gris suave con borde fino y texto oscuro */
+    :global(.print-page span[class*="border"]),
+    :global(.print-page .chip) {
+      background: #f3f4f6 !important;
+      background-color: #f3f4f6 !important;
+      border-color: #d1d5db !important;
+      color: #111827 !important;
+    }
+
+    /* Ocultar marcas de esquina de Card en impresión */
+    :global(.print-page svg[class*="pointer-events-none"]),
+    :global(.print-page div.pointer-events-none[aria-hidden="true"]) {
+      display: none !important;
+    }
+
+    /* Enlaces impresos limpios */
+    :global(.print-page a) {
+      color: #18181b !important;
+      text-decoration: none !important;
+      border-color: #d1d5db !important;
+      background: transparent !important;
+    }
+
+    :global(.print-page header.cv-header nav a) {
+      background: #f9fafb !important;
+      border: 1px solid #d1d5db !important;
+    }
+  }
+</style>

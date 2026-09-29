@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "config": {
-    "frontPath": "C:/Users/05man/Documents/DEV/1-Proyectos/osmanHerreraSite",
-    "backPublic": "C:/Users/05man/Documents/DEV/1-Proyectos/osmanHerreraSiteBackend/dist/public"
-  },
   "scripts": {
   "dev": "tsnd --respawn --clear src/app.ts",
   "clean": "rimraf dist",

@@ -17,7 +17,7 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const { hero, profile, ui } = siteConfig;
+const { hero, profile, ui, cv } = siteConfig;
 const ctaHref = localizedPath('home', lang) + '#contact';
 ---
 
@@ -69,6 +69,13 @@ const ctaHref = localizedPath('home', lang) + '#contact';
         <div class="flex flex-wrap gap-space-md">
           <Button variant="primary" href={ctaHref} icon="send">
             {t(hero.cta.label, lang)}
+          </Button>
+          <Button
+            variant="ghost"
+            href={localizedPath('cv', lang)}
+            icon="description"
+          >
+            {t(cv.ui.viewCvBtn, lang)}
           </Button>
           <Button
             variant="ghost"
