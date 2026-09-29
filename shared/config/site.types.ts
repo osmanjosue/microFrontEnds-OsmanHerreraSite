@@ -46,12 +46,13 @@ export interface EducationCard {
   detail: Localized;
 }
 
-export interface ExperienceLink {
+export type ExperienceLink = (
+  | { url: string; route?: never }
+  | { route: RouteKey; url?: never }
+) & {
   label: Localized;
-  url?: string;
-  route?: RouteKey;
   icon: string;
-}
+};
 
 export interface Experience {
   role: Localized<RichText>;

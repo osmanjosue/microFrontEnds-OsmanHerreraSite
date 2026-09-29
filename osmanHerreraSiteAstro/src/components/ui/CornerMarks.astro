@@ -1,0 +1,35 @@
+---
+// ===========================================================================
+// COMPONENTE UI: CORNER MARKS (MARCAS TÉCNICAS DE ESQUINA EN L)
+// ===========================================================================
+
+interface Props {
+  color?: string;
+  size?: string;
+  offset?: string;
+  class?: string;
+}
+
+const {
+  color = 'border-primary-container/40',
+  size = 'w-3 h-3',
+  offset = '2',
+  class: className = '',
+} = Astro.props;
+
+const offsetMap: Record<string, { tl: string; tr: string; bl: string; br: string }> = {
+  '1': { tl: 'top-1 left-1', tr: 'top-1 right-1', bl: 'bottom-1 left-1', br: 'bottom-1 right-1' },
+  '2': { tl: 'top-2 left-2', tr: 'top-2 right-2', bl: 'bottom-2 left-2', br: 'bottom-2 right-2' },
+  '3': { tl: 'top-3 left-3', tr: 'top-3 right-3', bl: 'bottom-3 left-3', br: 'bottom-3 right-3' },
+  '4': { tl: 'top-4 left-4', tr: 'top-4 right-4', bl: 'bottom-4 left-4', br: 'bottom-4 right-4' },
+};
+
+const pos = offsetMap[offset] || offsetMap['2'];
+---
+
+<div class:list={["pointer-events-none select-none", className]} aria-hidden="true">
+  <span class:list={["absolute border-t-2 border-l-2", size, color, pos.tl]}></span>
+  <span class:list={["absolute border-t-2 border-r-2", size, color, pos.tr]}></span>
+  <span class:list={["absolute border-b-2 border-l-2", size, color, pos.bl]}></span>
+  <span class:list={["absolute border-b-2 border-r-2", size, color, pos.br]}></span>
+</div>

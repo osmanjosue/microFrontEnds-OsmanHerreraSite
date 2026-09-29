@@ -1,6 +1,6 @@
 # Revisión fase 2
 - Commit revisado: c359ad6 (el reporte dice `60989d8`, que es el commit anterior al `--amend`)
-- Veredicto: REQUIERE CORRECCIONES
+- Veredicto: REQUIERE CORRECCIONES → APROBADA CON OBSERVACIONES tras re-revisión (501968e)
 
 La estructura está bien resuelta: `Localized`, rutas, SEO y vistas por idioma. Pero `site.config.ts` tiene un dato inventado y textos en español sin traducir. La fase 3 se construye sobre este config, así que hay que corregirlo antes de avanzar.
 
@@ -40,3 +40,22 @@ La estructura está bien resuelta: `Localized`, rutas, SEO y vistas por idioma. 
   - bio: "My strength is strong logic to bring any project to life";
   - título universitario: "Associate Degree in Computer Application Development";
   - rol: "Web Developer".
+
+## Re-revisión (501968e)
+Verificación: `npx astro check` 0 errors / 0 warnings; `npm run build` 4 páginas; hreflang correcto. No se tocaron las apps viejas.
+
+1. ✅ Ubicación `SIGUATEPEQUE, HN · GMT-6` en `hero.location`; `ui.locationLabel` es la etiqueta. Sin rastros de "Tegucigalpa".
+2. ✅ El proyecto Vector Work usa `route: 'vectorwork'`.
+3. ✅ `platform`, `company` y las tecnologías de la experiencia de diseño son `Localized`; errata "Illustrator" corregida.
+4. ✅ El stat usa `String(TECHNOLOGIES.length)`. La etiqueta pasó a "Tecnologías" y se quitaron los badges no confirmados; es la opción neutra, válida hasta que el usuario decida.
+5. ✅ "Fundación Prolancho" en ambos idiomas.
+6. ✅ `theme.scrollColors` eliminado.
+7. ✅ Duplicados eliminados.
+8. ✅ `import.meta.env.SITE`.
+9. ✅ Declarado.
+
+### Nuevas observaciones (menores, aplicar en la fase 3)
+13. [menor] `shared/config/site.types.ts` (`ExperienceLink`): `url?` y `route?` son ambos opcionales, así que TypeScript acepta un link sin destino. → Usar una unión: `({ url: string } | { route: RouteKey }) & { label: Localized; icon: string }`. Agregar en `@config` un helper `linkHref(link, lang)` que devuelva `url` o `localizedPath(route, lang)`, y usarlo en todos los componentes.
+14. [menor] `site.types.ts` (`technologies: (string | Localized)[]`): agregar en `@config` un helper `tText(value: string | Localized, lang)` para que los componentes no repitan la comprobación `typeof`.
+
+Fase 2 cerrada. Puede avanzar a la fase 3, incluyendo los puntos 13 y 14.

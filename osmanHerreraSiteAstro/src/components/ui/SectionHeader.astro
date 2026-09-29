@@ -1,0 +1,35 @@
+---
+// ===========================================================================
+// COMPONENTE UI: SECTION HEADER (KICKER // TÍTULO NN // SUBTÍTULO)
+// ===========================================================================
+
+interface Props {
+  kicker?: string;
+  title: string;
+  subtitle?: string;
+  class?: string;
+}
+
+const { kicker, title, subtitle, class: className = '' } = Astro.props;
+---
+
+<div class:list={['flex flex-col sm:flex-row sm:items-end justify-between gap-space-sm pb-space-xs', className]}>
+  <div class="flex flex-col gap-1">
+    {kicker && (
+      <span class="font-label-micro text-label-micro text-primary-container uppercase tracking-widest font-semibold">
+        {kicker}
+      </span>
+    )}
+    <h2 class="font-headline-lg text-headline-lg text-primary font-bold">
+      {title}
+    </h2>
+    {subtitle && (
+      <p class="font-body-md text-on-surface-variant max-w-2xl mt-1">
+        {subtitle}
+      </p>
+    )}
+  </div>
+  <div class="self-start sm:self-auto shrink-0">
+    <slot name="action" />
+  </div>
+</div>

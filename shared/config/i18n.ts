@@ -51,3 +51,20 @@ export function t<T>(value: Localized<T>, lang: Lang): T {
 export function localizedPath(route: RouteKey, lang: Lang): string {
   return ROUTES[route][lang];
 }
+
+/**
+ * Devuelve la URL externa o la ruta interna localizada para un ExperienceLink.
+ */
+export function linkHref(link: { url?: string; route?: RouteKey }, lang: Lang): string {
+  if (link.url) return link.url;
+  if (link.route) return localizedPath(link.route, lang);
+  return '#';
+}
+
+/**
+ * Resuelve un texto que puede ser string plano o un objeto Localized.
+ */
+export function tText(value: string | Localized, lang: Lang): string {
+  return typeof value === 'string' ? value : t(value, lang);
+}
+

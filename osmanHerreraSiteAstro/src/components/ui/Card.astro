@@ -1,0 +1,49 @@
+---
+// ===========================================================================
+// COMPONENTE UI: CARD (PANEL TÉCNICO CON CHAMFER Y CORNER MARKS)
+// ===========================================================================
+import CornerMarks from './CornerMarks.astro';
+
+interface Props {
+  chamfer?: boolean;
+  cornerMarks?: boolean;
+  cornerColor?: string;
+  cornerOffset?: string;
+  variant?: 'default' | 'low' | 'high' | 'interactive';
+  class?: string;
+  id?: string;
+}
+
+const {
+  chamfer = true,
+  cornerMarks = false,
+  cornerColor,
+  cornerOffset,
+  variant = 'default',
+  class: className = '',
+  id,
+  ...rest
+} = Astro.props;
+
+const variantClasses = {
+  default: 'bg-surface-container border border-outline-variant',
+  low: 'bg-surface-container-low border border-outline-variant/60',
+  high: 'bg-surface-container-high border border-outline-variant',
+  interactive:
+    'bg-surface-container border border-outline-variant hover:border-primary-container/60 hover:bg-surface-bright transition-all duration-300',
+};
+---
+
+<div
+  id={id}
+  class:list={[
+    'relative p-space-lg lg:p-space-xl',
+    variantClasses[variant],
+    chamfer && 'chamfer',
+    className,
+  ]}
+  {...rest}
+>
+  {cornerMarks && <CornerMarks color={cornerColor} offset={cornerOffset} />}
+  <slot />
+</div>

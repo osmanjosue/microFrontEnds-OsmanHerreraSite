@@ -1,0 +1,49 @@
+---
+// ===========================================================================
+// COMPONENTE UI: STAT TILE (INDICADOR DE MÉTRICAS TELEMÉTRICAS)
+// ===========================================================================
+
+interface Props {
+  value: string;
+  label: string;
+  tag?: string;
+  color?: 'cyan' | 'gold' | 'dim';
+  class?: string;
+}
+
+const {
+  value,
+  label,
+  tag,
+  color = 'cyan',
+  class: className = '',
+} = Astro.props;
+
+const colorClasses = {
+  cyan: 'text-primary-container',
+  gold: 'text-secondary',
+  dim: 'text-tertiary-fixed-dim',
+};
+---
+
+<div
+  class:list={[
+    'relative bg-surface-container-low p-space-lg flex flex-col justify-between chamfer border border-outline-variant/40',
+    className,
+  ]}
+>
+  <div class="absolute top-2 left-2 w-2 h-2 border-t-2 border-l-2 border-primary-container/40"></div>
+  <div class="flex items-baseline justify-between mb-space-xs">
+    <span class:list={['font-stat-display text-stat-display font-bold tracking-tight', colorClasses[color]]}>
+      {value}
+    </span>
+    {tag && (
+      <span class="font-label-micro text-label-micro text-outline tracking-wider uppercase">
+        {tag}
+      </span>
+    )}
+  </div>
+  <span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">
+    {label}
+  </span>
+</div>

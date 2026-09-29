@@ -97,7 +97,7 @@ export const siteConfig: SiteConfig = {
       en: 'ES',
     },
     langToggleAria: {
-      es: 'Cambiar idioma a Inglés',
+      es: 'Cambiar idioma a inglés',
       en: 'Switch language to Spanish',
     },
     menuOpenAria: {
@@ -144,12 +144,12 @@ export const siteConfig: SiteConfig = {
     },
     stats: [
       {
-        value: 'TODO: confirmar',
-        label: { es: 'Años de Experiencia', en: 'Years Experience' },
+        value: '3+',
+        label: { es: 'Años en desarrollo web', en: 'Years in web development' },
       },
       {
-        value: 'TODO: confirmar',
-        label: { es: 'Proyectos Completados', en: 'Completed Projects' },
+        value: '11+',
+        label: { es: 'Años en diseño gráfico', en: 'Years in graphic design' },
       },
       {
         value: String(TECHNOLOGIES.length),
@@ -216,11 +216,11 @@ export const siteConfig: SiteConfig = {
           '. Mi fortaleza es una lógica sólida para hacer realidad cualquier proyecto.',
         ],
         en: [
-          'Hello! I am an ',
+          'Hi! I\'m an ',
           { text: 'independent web developer', highlight: true, bold: true },
           ' and a ',
           { text: 'lifelong learner', highlight: true, bold: true },
-          '. My strength is strong logic to bring any project to life.',
+          '. My strength is solid logical thinking that brings any project to life.',
         ],
       },
     ],
@@ -287,7 +287,7 @@ export const siteConfig: SiteConfig = {
         },
         description: {
           es: 'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en AWS EC2 con Ubuntu, NGINX y PM2.',
-          en: 'Website development using Angular 15 frontend and Node.js backend API. MongoDB database with Cloudinary for image management. JWT authentication and credential validation for the admin panel. Hosted on AWS EC2 with Ubuntu, NGINX, and PM2.',
+          en: 'Built the website with an Angular 15 frontend and a Node.js backend API. MongoDB database with Cloudinary for image management. JWT authentication and credential validation for the admin panel. Hosted on AWS EC2 with Ubuntu, NGINX, and PM2.',
         },
         image: '/assets/images/projects/prolancho-web.webp',
         technologies: ['Angular 15', 'NodeJS', 'MongoDB', 'JWT', 'AWS EC2', 'NGINX'],
@@ -308,6 +308,7 @@ export const siteConfig: SiteConfig = {
       {
         id: 'fundacion-prolancho-reclutamiento',
         category: 'modulos',
+        badge: { es: 'NUEVO', en: 'NEW' },
         title: {
           es: 'Fundación Prolancho — Módulo de Reclutamiento',
           en: 'Fundación Prolancho — Recruitment Module',
@@ -317,7 +318,15 @@ export const siteConfig: SiteConfig = {
           en: 'TODO: confirmar',
         },
         image: '/assets/images/projects/prolancho-reclutamiento.webp',
-        technologies: ['TODO: confirmar'],
+        technologies: [
+          'Angular 20',
+          'NodeJS',
+          'MongoDB',
+          'JWT',
+          'Cloudinary',
+          'Hetzner',
+          'Ubuntu Server',
+        ],
         links: [
           {
             label: { es: 'Sitio Web', en: 'Website' },
@@ -330,6 +339,7 @@ export const siteConfig: SiteConfig = {
       {
         id: 'francisherrera-com',
         category: 'web',
+        badge: { es: 'NUEVO', en: 'NEW' },
         title: {
           es: 'francisherrera.com',
           en: 'francisherrera.com',
@@ -339,7 +349,7 @@ export const siteConfig: SiteConfig = {
           en: 'TODO: confirmar',
         },
         image: '/assets/images/projects/francisherrera.webp',
-        technologies: ['TODO: confirmar'],
+        technologies: ['React', 'NodeJS'],
         links: [
           {
             label: { es: 'Sitio Web', en: 'Website' },
@@ -389,7 +399,7 @@ export const siteConfig: SiteConfig = {
         },
         detail: {
           es: 'UTH • Estudiando Actualmente',
-          en: 'UTH • Currently Studying',
+          en: 'UTH • In progress',
         },
       },
     ],
@@ -436,19 +446,19 @@ export const siteConfig: SiteConfig = {
     },
     subtitle: {
       es: 'Proyectos y roles que he desempeñado',
-      en: 'Projects and roles I have held',
+      en: 'Roles and projects I\'ve worked on',
     },
     items: [
       {
         role: {
           es: ['Desarrollador ', { text: 'web', highlight: true }],
-          en: ['Web ', { text: 'Developer', highlight: true }],
+          en: [{ text: 'Web', highlight: true }, ' Developer'],
         },
         company: { es: 'Fundación Prolancho', en: 'Fundación Prolancho' },
         period: '2023 - 2026',
         description: {
           es: 'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en AWS EC2 con Ubuntu, NGINX y PM2.',
-          en: 'Website development using Angular 15 frontend and Node.js backend API. MongoDB database with Cloudinary for image management. JWT authentication and credential validation for the admin panel. Hosted on AWS EC2 with Ubuntu, NGINX, and PM2.',
+          en: 'Built the website with an Angular 15 frontend and a Node.js backend API. MongoDB database with Cloudinary for image management. JWT authentication and credential validation for the admin panel. Hosted on AWS EC2 with Ubuntu, NGINX, and PM2.',
         },
         technologies: ['Angular 15', 'NodeJS', 'MongoDB', 'JWT', 'AWS EC2', 'NGINX'],
         links: [
@@ -484,7 +494,7 @@ export const siteConfig: SiteConfig = {
         period: '2012 - 2023',
         description: {
           es: 'Diseño y creación de ilustraciones profesionales. Separación de colores para serigrafía y sublimación. Coordinación de personal, cumplimiento de objetivos de producción, y lanzamiento de nuevos productos con fechas puntuales basados en metas establecidas.',
-          en: 'Design and creation of professional illustrations. Color separation for screen printing and sublimation. Staff coordination, meeting production targets, and launching new products on punctual schedules based on established goals.',
+          en: 'Design and creation of professional illustrations. Color separation for screen printing and sublimation. Staff coordination, meeting production targets, and launching new products on schedule to meet established goals.',
         },
         technologies: [
           { es: 'Diseño Gráfico', en: 'Graphic Design' },
@@ -537,7 +547,7 @@ export const siteConfig: SiteConfig = {
       },
       emailPattern: {
         es: 'El formato de correo no es válido',
-        en: 'Invalid email format',
+        en: 'Please enter a valid email address',
       },
       messageRequired: {
         es: 'El mensaje es obligatorio',
@@ -562,7 +572,7 @@ export const siteConfig: SiteConfig = {
     },
     note: {
       es: 'Responderé lo antes posible',
-      en: 'I will respond as soon as possible',
+      en: 'I\'ll get back to you as soon as possible',
     },
     alerts: {
       success: {
@@ -571,7 +581,7 @@ export const siteConfig: SiteConfig = {
       },
       error: {
         es: 'No se pudo enviar el mensaje',
-        en: 'Could not send message',
+        en: 'Your message couldn\'t be sent. Please try again.',
       },
     },
   },
@@ -602,11 +612,11 @@ export const siteConfig: SiteConfig = {
     owner: 'Osman Josue Herrera Perez',
     backLabel: {
       es: 'Volver al Inicio',
-      en: 'Back to Home',
+      en: 'Back to home',
     },
     homeLabel: {
       es: 'Ir al Inicio',
-      en: 'Go to Home',
+      en: 'Go to homepage',
     },
     lastUpdated: {
       es: 'Última actualización: 28 de mayo de 2026',
@@ -744,7 +754,7 @@ export const siteConfig: SiteConfig = {
       {
         title: {
           es: '5. Tus derechos (Acceso, Rectificación y Cancelación)',
-          en: '5. Your Rights (Access, Rectification, and Cancellation)',
+          en: '5. Your Rights (Access, Correction, and Deletion)',
         },
         paragraphs: [
           {
