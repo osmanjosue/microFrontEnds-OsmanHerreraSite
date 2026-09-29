@@ -1,0 +1,38 @@
+---
+// ===========================================================================
+// COMPONENTE UI: RICH TEXT (RENDERIZA SEGMENTOS CON FORMATO)
+// ===========================================================================
+// Equivalente de osmanHerreraSiteReact/src/components/RichText.tsx.
+// Segmentos con { highlight: true } → text-primary-container (cian).
+// Segmentos con { bold: true } → font-semibold.
+// Segmentos con { href } → <a> con underline.
+
+import type { RichText as RichTextValue } from '@shared/config/site.types';
+
+interface Props {
+  value: RichTextValue;
+  class?: string;
+}
+
+const { value, class: className = '' } = Astro.props;
+---
+
+<span class:list={[className]}>
+  {value.map((segment) => {
+    if (typeof segment === 'string') return segment;
+
+    const cls = [
+      segment.highlight ? 'text-primary-container' : '',
+      segment.bold ? 'font-semibold' : '',
+      segment.href ? 'underline hover:opacity-80' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    return segment.href ? (
+      <a href={segment.href} class={cls}>{segment.text}</a>
+    ) : (
+      <span class={cls}>{segment.text}</span>
+    );
+  })}
+</span>

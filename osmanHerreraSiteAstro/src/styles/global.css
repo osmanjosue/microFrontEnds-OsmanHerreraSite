@@ -21,8 +21,29 @@
     -webkit-user-drag: none;
     user-select: none;
   }
+
+  section[id] {
+    /* Espacio superior para que el header sticky no tape los destinos de anclaje */
+    scroll-margin-top: 80px;
+  }
 }
 
+/* ======================== ICON MASK (ICONOS SVG TEÑIDOS) ========================
+   Uso: <span class="icon-mask w-8 h-8" style="--icon-url: url(/assets/icons/…)">
+   La máscara CSS toma la silueta del SVG y la rellena con background-color (cian).
+   ============================================================================== */
+.icon-mask {
+  display: inline-block;
+  aspect-ratio: 1 / 1;
+  background-color: #00f0ff; /* primary-container */
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+  -webkit-mask-image: var(--icon-url);
+  mask-image: var(--icon-url);
+  transition: background-color 0.3s ease;
+}
 
 /* Respeto a las preferencias del usuario sobre reducción de movimiento */
 @media (prefers-reduced-motion: reduce) {

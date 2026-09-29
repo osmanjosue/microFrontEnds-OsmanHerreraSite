@@ -2,13 +2,17 @@
 // ===========================================================================
 // VISTA: INICIO / HOME (BILINGÜE)
 // ===========================================================================
-import { siteConfig, type Lang, t, localizedPath } from '@config';
+// Compone las 6 secciones principales del dossier profesional:
+// Hero, Technologies, Projects, Formation, Experience, Contact.
+
+import { type Lang } from '@config';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Card from '../components/ui/Card.astro';
-import Button from '../components/ui/Button.astro';
-import Chip from '../components/ui/Chip.astro';
-import SectionHeader from '../components/ui/SectionHeader.astro';
-import StatTile from '../components/ui/StatTile.astro';
+import Hero from '../components/sections/Hero.astro';
+import Technologies from '../components/sections/Technologies.astro';
+import Projects from '../components/sections/Projects.astro';
+import Formation from '../components/sections/Formation.astro';
+import Experience from '../components/sections/Experience.astro';
+import Contact from '../components/sections/Contact.astro';
 
 interface Props {
   lang: Lang;
@@ -18,38 +22,10 @@ const { lang } = Astro.props;
 ---
 
 <BaseLayout lang={lang} route="home">
-  <div class="max-w-7xl mx-auto px-margin py-space-xl space-y-space-xl">
-    <section class="space-y-space-lg">
-      <SectionHeader
-        kicker={t(siteConfig.hero.kicker, lang)}
-        title={`${siteConfig.brand.highlight}${siteConfig.brand.rest}`}
-        subtitle={t(siteConfig.hero.subtitle, lang)}
-      />
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
-        {siteConfig.hero.stats.map((stat) => (
-          <StatTile
-            value={stat.value}
-            label={t(stat.label, lang)}
-          />
-        ))}
-      </div>
-
-      <Card cornerMarks={true} class="space-y-space-md">
-        <div class="flex flex-wrap gap-space-xs">
-          <Chip variant="tactical">{t(siteConfig.ui.availableBadge, lang)}</Chip>
-          <Chip variant="gold">{t(siteConfig.vectorWorkLink.label, lang)}</Chip>
-        </div>
-
-        <div class="flex flex-wrap gap-space-md pt-space-xs">
-          <Button variant="primary" href={localizedPath(siteConfig.vectorWorkLink.targetRoute, lang)} icon="terminal">
-            {t(siteConfig.vectorWorkLink.label, lang)}
-          </Button>
-          <Button variant="ghost" href={localizedPath('privacy', lang)} icon="view_in_ar">
-            {t(siteConfig.footer.privacyLink.label, lang)}
-          </Button>
-        </div>
-      </Card>
-    </section>
-  </div>
+  <Hero lang={lang} />
+  <Technologies lang={lang} />
+  <Projects lang={lang} />
+  <Formation lang={lang} />
+  <Experience lang={lang} />
+  <Contact lang={lang} />
 </BaseLayout>

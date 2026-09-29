@@ -1,0 +1,93 @@
+---
+// ===========================================================================
+// SECCIÓN: EXPERIENCE / EXPERIENCIA PROFESIONAL (04)
+// ===========================================================================
+// Cronología de roles laborales, responsabilidades y tecnologías empleadas.
+
+import { siteConfig, type Lang, t, linkHref } from '@config';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Card from '../ui/Card.astro';
+import Chip from '../ui/Chip.astro';
+import Button from '../ui/Button.astro';
+import RichText from '../ui/RichText.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { experience } = siteConfig;
+---
+
+<section id="experience" class="py-space-xl">
+  <div class="max-w-7xl mx-auto px-margin">
+    <SectionHeader
+      kicker={t({ es: 'TRAYECTORIA // HISTORIAL LABORAL', en: 'CAREER // WORK HISTORY' }, lang)}
+      title={t(experience.title, lang)}
+      subtitle={experience.subtitle ? t(experience.subtitle, lang) : undefined}
+      index={4}
+      class="mb-space-lg border-b border-outline-variant pb-space-md"
+    />
+
+    <div class="space-y-space-lg">
+      {experience.items.map((item) => (
+        <Card variant="interactive" cornerMarks={true} class="p-space-lg lg:p-space-xl">
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-space-md mb-space-md pb-space-sm border-b border-outline-variant/40">
+            <div>
+              <h3 class="font-headline-md text-headline-md text-primary leading-tight">
+                <RichText value={t(item.role, lang)} />
+              </h3>
+              <p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mt-1">
+                {t(item.company, lang)}
+              </p>
+            </div>
+
+            <div class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-sm text-primary-container">calendar_today</span>
+              <span class="font-mono text-label-micro text-primary-container font-semibold tracking-wider">
+                {item.period}
+              </span>
+            </div>
+          </div>
+
+          <p class="font-body-md text-on-surface-variant leading-relaxed max-w-4xl mb-space-md">
+            {t(item.description, lang)}
+          </p>
+
+          <div class="space-y-space-md pt-space-xs">
+            <!-- Chips de tecnologías -->
+            <div class="flex flex-wrap gap-1">
+              {item.technologies.map((tech) => (
+                <Chip variant="common">
+                  {typeof tech === 'string' ? tech : t(tech, lang)}
+                </Chip>
+              ))}
+            </div>
+
+            <!-- Enlaces de la experiencia -->
+            {item.links && item.links.length > 0 && (
+              <div class="flex flex-wrap gap-space-sm pt-space-xs">
+                {item.links.map((link) => {
+                  const href = linkHref(link, lang);
+                  const isExternal = 'url' in link && Boolean(link.url && link.url.startsWith('http'));
+                  return (
+                    <Button
+                      variant="ghost"
+                      href={href}
+                      target={isExternal ? '_blank' : undefined}
+                      rel={isExternal ? 'noopener noreferrer' : undefined}
+                      icon={isExternal ? 'open_in_new' : 'arrow_forward'}
+                      class="text-xs py-1.5 px-3"
+                    >
+                      {t(link.label, lang)}
+                    </Button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </Card>
+      ))}
+    </div>
+  </div>
+</section>

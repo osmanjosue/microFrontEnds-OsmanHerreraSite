@@ -117,3 +117,20 @@ Ninguna pendiente; todas las traducciones requeridas fueron revisadas y actualiz
 
 ## Dudas / riesgos
 Ninguno. Todos los componentes y layouts compilan limpiamente y los 4 endpoints estáticos se generan sin warnings ni errores.
+
+## Correcciones
+
+1. **Header aria-label menú:** El botón `#mobile-menu-btn` ahora recibe `data-open-label` y `data-close-label` con los textos de `ui.menuOpenAria` y `ui.menuCloseAria` respectivamente. El script los lee y llama a `btn.setAttribute('aria-label', closeLabel/openLabel)` al abrir/cerrar. El `aria-label` se alterna correctamente junto con `aria-expanded`.
+
+2. **Contraste Button primary:** Cambiado `text-on-primary-container` (#006970) por `text-on-primary-fixed` (#002022), que da un contraste ≈21:1 sobre el cian `#00f0ff`. La variante `hover:bg-primary-fixed` mantiene el mismo texto. Los chips tácticos usan `bg-primary-container/10` (fondo muy oscuro) con `text-primary-container` (cian), cuyo contraste sobre negro oscuro es adecuado; no se modificaron.
+
+3. **Chamfer borde roto:** Añadida la utilidad `.chamfer-border` en `shared/tailwind.preset.js`. Usa `clip-path` para la forma + `::before` para dibujar la diagonal con `linear-gradient(225deg, transparent 50%, currentColor 50%)`, de modo que el borde se ve completo. La variante `ghost` de `Button.astro` ahora usa `chamfer-border` en vez de `chamfer`.
+
+4. **SectionHeader NN // TÍTULO:** Añadida la prop `index?: number`. Cuando se pasa, el título se formatea como `String(index).padStart(2, '0') + ' // ' + title` (p. ej. `01 // CAPACIDADES TÉCNICAS`). Si no se pasa, el título se muestra tal cual.
+
+5. **`linkHref` tipado estricto:** El parámetro cambia a `ExperienceLink` (importado desde `./site.types`). La detección se hace con `'url' in link && link.url`. Se elimina el fallback `'#'` que anulaba la garantía de la unión. Si el link tiene `route`, se delega a `localizedPath`.
+
+6. **StatTile reutiliza CornerMarks:** Se eliminó el `<div>` manual con la marca L. `CornerMarks.astro` tiene nueva prop `corners?: ('tl'|'tr'|'bl'|'br')[]`; cuando se especifica, solo renderiza las esquinas indicadas. `StatTile` lo usa con `corners={['tl']}` para la única marca que necesita.
+
+7. **`privacyPolicy.kicker`:** Añadido `privacyPolicy.kicker: Localized` al tipo `SiteConfig` y al config con `{ es: 'LEGAL // INFORMACIÓN LEGAL', en: 'LEGAL // LEGAL INFORMATION' }`. `PrivacyView.astro` ahora usa `t(siteConfig.privacyPolicy.kicker, lang)` en lugar de `t(siteConfig.hero.kicker, lang)`.
+

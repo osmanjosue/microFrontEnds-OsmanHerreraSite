@@ -1,0 +1,105 @@
+---
+// ===========================================================================
+// SECCIÓN: CONTACT / CANALES DE CONTACTO (05)
+// ===========================================================================
+// Presenta las vías de comunicación directas y el contenedor para la isla del
+// formulario de contacto de la Fase 5.
+
+import { siteConfig, type Lang, t } from '@config';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Card from '../ui/Card.astro';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { contact, socialIcons, contactForm } = siteConfig;
+---
+
+<section id="contact" class="py-space-xl">
+  <div class="max-w-7xl mx-auto px-margin">
+    <SectionHeader
+      kicker={t({ es: 'COMUNICACIÓN // ENLACE DIRECTO', en: 'COMMUNICATION // DIRECT LINK' }, lang)}
+      title={t(contact.title, lang)}
+      subtitle={t({
+        es: 'Inicia una conversación o consulta disponibilidad para nuevos proyectos',
+        en: 'Start a conversation or check availability for new projects',
+      }, lang)}
+      index={5}
+      class="mb-space-lg border-b border-outline-variant pb-space-md"
+    />
+
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-space-xl items-start">
+      <!-- COLUMNA IZQUIERDA: INFORMACIÓN Y REDES -->
+      <div class="space-y-space-lg">
+        <p class="font-body-md text-on-surface-variant leading-relaxed max-w-md">
+          {t({
+            es: '¿Tienes en mente un desarrollo web, arquitectura de frontend o diseño gráfico especializado? Contáctame a través de cualquiera de mis redes o deja un mensaje.',
+            en: 'Have a web development, frontend architecture, or custom vector design in mind? Reach out via any of my channels or send a message.',
+          }, lang)}
+        </p>
+
+        <!-- Redes sociales directas -->
+        <div class="space-y-space-sm">
+          <h4 class="font-label-caps text-label-caps text-primary-container uppercase tracking-wider">
+            {t({ es: 'Canales directos', en: 'Direct channels' }, lang)}
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+            {socialIcons.map((social) => (
+              <a
+                href={social.address}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-space-sm p-space-md bg-surface-container border border-outline-variant hover:border-primary-container/60 hover:bg-surface-container-high transition-all chamfer group"
+              >
+                <img
+                  src={social.icon}
+                  alt={social.title}
+                  class="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity"
+                />
+                <span class="font-label-caps text-label-caps uppercase tracking-wider text-on-surface group-hover:text-primary-container transition-colors">
+                  {social.title}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: CONTENEDOR DEL FORMULARIO (ISLA FASE 5) -->
+      <div id="contact-form-island-container">
+        <Card variant="interactive" cornerMarks={true} class="p-space-lg lg:p-space-xl">
+          <div class="space-y-space-md">
+            <div class="flex items-center justify-between pb-space-sm border-b border-outline-variant/30">
+              <span class="font-label-caps text-label-caps text-primary-container uppercase tracking-wider">
+                {t({ es: 'Mensaje Directo', en: 'Direct Message' }, lang)}
+              </span>
+              <span class="font-mono text-label-micro text-on-surface-variant">
+                // FORM_CHANNEL
+              </span>
+            </div>
+
+            <!-- Placeholder técnico de Fase 4 que será enriquecido por la isla de React en la Fase 5 -->
+            <div class="space-y-space-sm py-space-sm">
+              <p class="font-body-sm text-on-surface-variant">
+                {t(contactForm.note, lang)}.
+              </p>
+              <div class="pt-space-sm">
+                <Button
+                  variant="primary"
+                  href={`mailto:contact@osmanherrera.com`}
+                  icon="mail"
+                  class="w-full justify-center"
+                >
+                  {t(contactForm.submit, lang)}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </div>
+</section>

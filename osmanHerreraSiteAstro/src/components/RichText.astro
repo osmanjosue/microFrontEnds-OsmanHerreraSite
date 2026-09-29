@@ -1,0 +1,16 @@
+---
+// ===========================================================================
+// COMPONENTE: RICH TEXT (ALIAS/RE-EXPORT EN SRC/COMPONENTS)
+// ===========================================================================
+import type { RichText as RichTextValue } from '@shared/config/site.types';
+import RichTextUI from './ui/RichText.astro';
+
+interface Props {
+  value: RichTextValue;
+  class?: string;
+}
+
+const { value, class: className = '' } = Astro.props;
+---
+
+<RichTextUI value={value} class={className} />
