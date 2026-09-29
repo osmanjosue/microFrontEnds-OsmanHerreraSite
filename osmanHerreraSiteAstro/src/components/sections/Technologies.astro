@@ -1,0 +1,43 @@
+---
+// ===========================================================================
+// SECCIÓN: TECHNOLOGIES / CAPACIDADES TÉCNICAS (01)
+// ===========================================================================
+// Muestra los iconos de las tecnologías teñidos de cian con la técnica
+// icon-mask de global.css. Los SVGs viven en /assets/icons/technologies-{nombre}.svg.
+
+import { siteConfig, type Lang, t } from '@config';
+import SectionHeader from '../ui/SectionHeader.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { skills } = siteConfig;
+---
+
+<section id="technologies" class="py-space-xl">
+  <div class="max-w-7xl mx-auto px-margin">
+    <SectionHeader
+      kicker={t(skills.title, lang).toUpperCase().replace(' ', ' // ')}
+      title={t(skills.title, lang)}
+      index={1}
+      class="mb-space-lg border-b border-outline-variant pb-space-md"
+    />
+
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-x-space-md gap-y-space-lg mt-space-lg">
+      {skills.technologies.map((tech) => (
+        <div class="flex flex-col items-center gap-space-sm group">
+          <span
+            class="icon-mask w-10 h-10 group-hover:brightness-110 transition-all"
+            style={`--icon-url: url(/assets/icons/technologies-${tech}.svg)`}
+            aria-hidden="true"
+          ></span>
+          <span class="font-label-micro text-label-micro text-on-surface-variant uppercase tracking-wider text-center">
+            {tech}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

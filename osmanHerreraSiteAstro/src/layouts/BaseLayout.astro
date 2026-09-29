@@ -1,0 +1,67 @@
+---
+// ===========================================================================
+// LAYOUT BASE: BASELAYOUT (APEX DOSSIER BILINGÜE)
+// ===========================================================================
+import { type Lang, type RouteKey, MATERIAL_ICONS } from '@config';
+import { getSeoMetadata } from '../lib/seo';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  lang: Lang;
+  route: RouteKey;
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const { lang, route, title, description, noindex = false } = Astro.props;
+const seo = getSeoMetadata({ route, lang, title, description });
+---
+
+<!doctype html>
+<html lang={seo.htmlLang} class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <>
+        <link rel="canonical" href={seo.canonicalUrl} />
+        {seo.alternateLinks.map((link) => (
+          <link rel="alternate" hreflang={link.hreflang} href={link.href} />
+        ))}
+      </>
+    )}
+    <meta property="og:locale" content={seo.ogLocale} />
+    <meta property="og:locale:alternate" content={seo.ogLocaleAlternate} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/oherrera.ico" />
+
+    <!-- Google Fonts & Material Symbols Outlined -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href={`https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=${MATERIAL_ICONS.join(',')}&display=swap`}
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-background font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col">
+    <Header lang={lang} currentRoute={route}>
+      <slot name="header-actions" slot="header-actions" />
+    </Header>
+    <main class="w-full pt-28 bg-background min-h-screen flex-1">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

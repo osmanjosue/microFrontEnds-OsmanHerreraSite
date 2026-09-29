@@ -1,0 +1,120 @@
+---
+// ===========================================================================
+// SECCIÓN: HERO (PORTADA PRINCIPAL)
+// ===========================================================================
+// El único <h1> de la página vive aquí. El hero muestra el kicker de contexto,
+// el título con RichText, el subtítulo, la foto de perfil, el bio, los stats
+// y el CTA hacia la sección de contacto.
+
+import { siteConfig, type Lang, t, localizedPath } from '@config';
+import StatTile from '../ui/StatTile.astro';
+import Button from '../ui/Button.astro';
+import Chip from '../ui/Chip.astro';
+import RichText from '../ui/RichText.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { hero, profile, ui } = siteConfig;
+const ctaHref = localizedPath('home', lang) + '#contact';
+---
+
+<section id="hero" class="relative pt-space-xl pb-space-xl">
+  <!-- Fondo decorativo: rejilla sutil -->
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.04]"
+    style="background-image: linear-gradient(var(--tw-gradient-stops)), repeating-linear-gradient(0deg, transparent, transparent 39px, #00f0ff 39px, #00f0ff 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, #00f0ff 39px, #00f0ff 40px);"
+    aria-hidden="true"
+  ></div>
+
+  <div class="max-w-7xl mx-auto px-margin">
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-space-xl items-start">
+      <!-- COLUMNA IZQUIERDA: texto principal -->
+      <div class="flex flex-col gap-space-lg">
+        <!-- Kicker de contexto -->
+        <span class="font-label-micro text-label-micro text-primary-container uppercase tracking-widest font-semibold">
+          {t(hero.kicker, lang)}
+        </span>
+
+        <!-- H1 ÚNICO de la página — título del hero con RichText -->
+        <h1 class="font-headline-xl text-headline-xl text-primary leading-none max-w-3xl">
+          <RichText value={t(hero.title, lang)} />
+        </h1>
+
+        <!-- Subtítulo / rol -->
+        <p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">
+          {t(hero.subtitle, lang)}
+        </p>
+
+        <!-- Badges de perfil -->
+        <div class="flex flex-wrap gap-space-xs">
+          <Chip variant="tactical">{t(ui.availableBadge, lang)}</Chip>
+          {profile.badges.map((badge) => (
+            <Chip variant="common">{t(badge, lang)}</Chip>
+          ))}
+        </div>
+
+        <!-- Bio -->
+        <div class="max-w-xl space-y-space-sm">
+          {profile.bio.map((para) => (
+            <p class="font-body-md text-on-surface-variant">
+              <RichText value={t(para, lang)} />
+            </p>
+          ))}
+        </div>
+
+        <!-- CTA -->
+        <div class="flex flex-wrap gap-space-md">
+          <Button variant="primary" href={ctaHref} icon="send">
+            {t(hero.cta.label, lang)}
+          </Button>
+          <Button
+            variant="ghost"
+            href={profile.cv.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            icon="download"
+          >
+            {t(profile.cv.label, lang)}
+          </Button>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: foto + stats + ubicación -->
+      <div class="flex flex-col gap-space-md">
+        <!-- Foto de perfil -->
+        <div class="relative w-full max-w-xs mx-auto lg:mx-0">
+          <div class="chamfer overflow-hidden border border-outline-variant/40">
+            <img
+              src={profile.image}
+              alt={t(profile.imageAlt, lang)}
+              class="w-full h-72 object-cover object-top grayscale brightness-90"
+              loading="eager"
+            />
+          </div>
+          <!-- Status badge -->
+          <div class="mt-space-sm flex justify-center lg:justify-start">
+            <Chip variant="tactical">{t(profile.status, lang)}</Chip>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-space-sm">
+          {hero.stats.map((stat) => (
+            <StatTile value={stat.value} label={t(stat.label, lang)} />
+          ))}
+        </div>
+
+        <!-- Ubicación -->
+        <div class="flex items-center gap-space-xs text-on-surface-variant">
+          <span class="material-symbols-outlined text-base text-primary-container">location_on</span>
+          <span class="font-label-micro text-label-micro uppercase tracking-wider">
+            {t(hero.location, lang)}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

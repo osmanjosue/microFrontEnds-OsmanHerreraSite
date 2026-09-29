@@ -1,0 +1,10 @@
+{
+  "pieza-01": {
+    "es": "Título de ejemplo",
+    "en": "Sample title",
+    "credit": {
+      "es": "Ilustración original por Nombre del Artista",
+      "en": "Original illustration by Artist Name"
+    }
+  }
+}

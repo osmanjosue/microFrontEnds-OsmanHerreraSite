@@ -1,0 +1,68 @@
+---
+// ===========================================================================
+// COMPONENTE UI: BUTTON (PRIMARY & GHOST; SOPORTA <A> Y <BUTTON>)
+// ===========================================================================
+
+interface Props {
+  variant?: 'primary' | 'ghost';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  icon?: string;
+  class?: string;
+  id?: string;
+  'aria-label'?: string;
+  target?: string;
+  rel?: string;
+}
+
+const {
+  variant = 'primary',
+  href,
+  type = 'button',
+  icon,
+  class: className = '',
+  id,
+  'aria-label': ariaLabel,
+  target,
+  rel,
+  ...rest
+} = Astro.props;
+
+const baseClasses =
+  'relative group inline-flex items-center justify-center gap-space-sm px-space-xl py-space-md font-label-caps text-label-caps uppercase tracking-wider transition-all duration-300 select-none cursor-pointer';
+
+const variantClasses = {
+  primary:
+    'chamfer bg-primary-container text-on-primary-fixed font-bold hover:shadow-[0_0_24px_rgba(0,240,255,0.65)] hover:bg-primary-fixed',
+  ghost:
+    'chamfer-border bg-surface-container text-on-surface hover:text-primary-container border border-outline-variant font-semibold hover:bg-surface-container-high hover:border-primary-container/60 hover:[--chamfer-line:rgba(0,240,255,0.6)]',
+};
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      id={id}
+      class:list={[baseClasses, variantClasses[variant], className]}
+      aria-label={ariaLabel}
+      target={target}
+      rel={rel}
+      {...rest}
+    >
+      {icon && <span class="material-symbols-outlined text-base">{icon}</span>}
+      <slot />
+    </a>
+  ) : (
+    <button
+      type={type}
+      id={id}
+      class:list={[baseClasses, variantClasses[variant], className]}
+      aria-label={ariaLabel}
+      {...rest}
+    >
+      {icon && <span class="material-symbols-outlined text-base">{icon}</span>}
+      <slot />
+    </button>
+  )
+}

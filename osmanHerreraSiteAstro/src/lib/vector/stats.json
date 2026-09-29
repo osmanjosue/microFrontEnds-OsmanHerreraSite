@@ -1,0 +1,90 @@
+{
+  "pieza-01": {
+    "paths": 5397,
+    "anchors": 246208,
+    "colors": 6,
+    "artboard": [
+      900,
+      1332
+    ],
+    "rasters": 1,
+    "outlineAnchors": false
+  },
+  "pieza-02": {
+    "paths": 5577,
+    "anchors": 88641,
+    "colors": 15,
+    "artboard": [
+      906,
+      1020
+    ],
+    "rasters": 0,
+    "outlineAnchors": false
+  },
+  "pieza-03": {
+    "paths": 491,
+    "anchors": 17174,
+    "colors": 5,
+    "artboard": [
+      790,
+      833
+    ],
+    "rasters": 0,
+    "outlineAnchors": true
+  },
+  "pieza-04": {
+    "paths": 3713,
+    "anchors": 82086,
+    "colors": 4,
+    "artboard": [
+      922,
+      1346
+    ],
+    "rasters": 0,
+    "outlineAnchors": false
+  },
+  "pieza-05": {
+    "paths": 1296,
+    "anchors": 25976,
+    "colors": 5,
+    "artboard": [
+      734,
+      977
+    ],
+    "rasters": 0,
+    "outlineAnchors": false
+  },
+  "pieza-06": {
+    "paths": 6921,
+    "anchors": 127626,
+    "colors": 4,
+    "artboard": [
+      777,
+      1175
+    ],
+    "rasters": 0,
+    "outlineAnchors": false
+  },
+  "pieza-07": {
+    "paths": 7387,
+    "anchors": 186970,
+    "colors": 13,
+    "artboard": [
+      719,
+      1064
+    ],
+    "rasters": 0,
+    "outlineAnchors": false
+  },
+  "pieza-08": {
+    "paths": 50759,
+    "anchors": 583259,
+    "colors": 2,
+    "artboard": [
+      764,
+      906
+    ],
+    "rasters": 0,
+    "outlineAnchors": false
+  }
+}

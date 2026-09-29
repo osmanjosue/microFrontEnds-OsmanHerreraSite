@@ -1,0 +1,210 @@
+---
+// ===========================================================================
+// SECCIÓN: PROJECTS / PORTAFOLIO DE PROYECTOS (02)
+// ===========================================================================
+// Muestra los 4 proyectos principales organizados por categoría con filtro interactivo.
+// Los contadores de cada categoría se calculan en build time.
+// El filtro se maneja con un script de Astro (TS) que actualiza aria-pressed y alterna hidden.
+// El proyecto Vector Work utiliza route: 'vectorwork' resuelto mediante linkHref(link, lang).
+
+import { siteConfig, type Lang, t, linkHref } from '@config';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Card from '../ui/Card.astro';
+import Chip from '../ui/Chip.astro';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { projects } = siteConfig;
+
+// Conteo por categoría calculado en el build
+const counts: Record<string, number> = {
+  all: projects.items.length,
+  web: projects.items.filter((item) => item.category === 'web').length,
+  modulos: projects.items.filter((item) => item.category === 'modulos').length,
+  diseno: projects.items.filter((item) => item.category === 'diseno').length,
+};
+---
+
+<section id="projects" class="py-space-xl">
+  <div class="max-w-7xl mx-auto px-margin">
+    <SectionHeader
+      kicker={t(projects.kicker, lang)}
+      title={t(projects.title, lang)}
+      subtitle={projects.subtitle ? t(projects.subtitle, lang) : undefined}
+      index={2}
+      class="mb-space-lg border-b border-outline-variant pb-space-md"
+    />
+
+    <!-- FILTROS DE CATEGORÍA -->
+    <div
+      class="flex flex-wrap gap-space-xs mt-space-md mb-space-xl"
+      role="group"
+      aria-label={t(projects.filterAria, lang)}
+    >
+      {projects.filters.map((filter) => (
+        <button
+          type="button"
+          data-filter-btn={filter.id}
+          aria-pressed={filter.id === 'all' ? 'true' : 'false'}
+          class:list={[
+            'project-filter-btn px-space-md py-space-xs font-label-caps text-label-caps uppercase tracking-wider transition-all duration-200 border cursor-pointer select-none chamfer',
+            filter.id === 'all'
+              ? 'bg-primary-container text-on-primary-fixed border-primary-container font-bold shadow-[0_0_12px_rgba(0,240,255,0.4)]'
+              : 'bg-surface-container text-on-surface-variant border-outline-variant hover:text-on-surface hover:border-outline',
+          ]}
+        >
+          {t(filter.label, lang)}
+          <span class="opacity-70 ml-1 font-mono text-label-micro">
+            [{counts[filter.id] ?? 0}]
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <!-- LISTA DE PROYECTOS -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-space-xl" id="projects-grid">
+      {projects.items.map((project) => (
+        <article
+          data-project-item
+          data-category={project.category}
+          class:list={[
+            'group flex flex-col',
+            project.featured && 'md:col-span-2 lg:col-span-2',
+          ]}
+        >
+          <Card
+            variant="interactive"
+            cornerMarks={true}
+            class="h-full flex flex-col p-0 overflow-hidden"
+          >
+            <div class:list={[
+              'grid grid-cols-1 gap-space-lg p-space-lg lg:p-space-xl h-full',
+              project.featured ? 'lg:grid-cols-[1.1fr_1fr]' : 'flex flex-col',
+            ]}>
+              <!-- Imagen del proyecto -->
+              <div class="relative overflow-hidden chamfer border border-outline-variant/60 bg-surface-container-lowest min-h-[220px]">
+                <img
+                  src={project.image}
+                  alt={t(project.title, lang)}
+                  loading="lazy"
+                  class="w-full h-full object-cover object-center grayscale brightness-90 contrast-105 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                />
+                {project.badge && (
+                  <div class="absolute top-space-sm left-space-sm">
+                    <Chip variant="tactical">{t(project.badge, lang)}</Chip>
+                  </div>
+                )}
+              </div>
+
+              <!-- Contenido e información -->
+              <div class="flex flex-col justify-between gap-space-md">
+                <div class="space-y-space-sm">
+                  <div class="flex items-center gap-space-xs text-on-surface-variant">
+                    <span class="font-label-micro text-label-micro uppercase tracking-wider text-primary-container">
+                      // {(() => {
+                        const filterMatch = projects.filters.find((f) => f.id === project.category);
+                        return filterMatch ? t(filterMatch.label, lang).toUpperCase() : project.category.toUpperCase();
+                      })()}
+                    </span>
+                  </div>
+
+                  <h3 class="font-headline-md text-headline-md text-primary leading-tight">
+                    {t(project.title, lang)}
+                  </h3>
+
+                  <p class="font-body-sm text-on-surface-variant leading-relaxed">
+                    {t(project.description, lang)}
+                  </p>
+                </div>
+
+                <div class="space-y-space-md pt-space-sm">
+                  <!-- Tecnologías -->
+                  <div class="flex flex-wrap gap-1">
+                    {project.technologies.map((tech) => (
+                      <Chip variant="common">
+                        {typeof tech === 'string' ? tech : t(tech, lang)}
+                      </Chip>
+                    ))}
+                  </div>
+
+                  <!-- Enlaces -->
+                  <div class="flex flex-wrap gap-space-sm pt-space-xs border-t border-outline-variant/30">
+                    {project.links.map((link) => {
+                      const href = linkHref(link, lang);
+                      const isExternal = 'url' in link && Boolean(link.url && link.url.startsWith('http'));
+                      return (
+                        <Button
+                          variant="ghost"
+                          href={href}
+                          target={isExternal ? '_blank' : undefined}
+                          rel={isExternal ? 'noopener noreferrer' : undefined}
+                          icon={isExternal ? 'open_in_new' : 'arrow_forward'}
+                          class="text-xs py-1.5 px-3"
+                        >
+                          {t(link.label, lang)}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function setupProjectFilters() {
+    const filterBtns = document.querySelectorAll<HTMLButtonElement>('[data-filter-btn]');
+    const projectItems = document.querySelectorAll<HTMLElement>('[data-project-item]');
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filterBtn;
+        if (!filter) return;
+
+        filterBtns.forEach((b) => {
+          const active = b === btn;
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+          if (active) {
+            b.classList.remove('bg-surface-container', 'text-on-surface-variant', 'border-outline-variant');
+            b.classList.add(
+              'bg-primary-container',
+              'text-on-primary-fixed',
+              'border-primary-container',
+              'font-bold',
+              'shadow-[0_0_12px_rgba(0,240,255,0.4)]'
+            );
+          } else {
+            b.classList.remove(
+              'bg-primary-container',
+              'text-on-primary-fixed',
+              'border-primary-container',
+              'font-bold',
+              'shadow-[0_0_12px_rgba(0,240,255,0.4)]'
+            );
+            b.classList.add('bg-surface-container', 'text-on-surface-variant', 'border-outline-variant');
+          }
+        });
+
+        projectItems.forEach((item) => {
+          const category = item.dataset.category;
+          if (filter === 'all' || category === filter) {
+            item.classList.remove('hidden');
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+      });
+    });
+  }
+
+  setupProjectFilters();
+</script>

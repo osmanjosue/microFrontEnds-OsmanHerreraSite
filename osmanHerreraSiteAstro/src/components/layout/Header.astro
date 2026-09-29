@@ -1,0 +1,189 @@
+---
+// ===========================================================================
+// COMPONENTE LAYOUT: HEADER (CABECERA BILINGÜE APEX DOSSIER)
+// ===========================================================================
+import { siteConfig, type Lang, type RouteKey, t, localizedPath } from '@config';
+
+interface Props {
+  lang: Lang;
+  currentRoute?: RouteKey;
+}
+
+const { lang, currentRoute = 'home' } = Astro.props;
+const otherLang: Lang = lang === 'es' ? 'en' : 'es';
+const targetTogglePath = localizedPath(currentRoute, otherLang);
+const homePath = localizedPath('home', lang);
+const vectorPath = localizedPath(siteConfig.vectorWorkLink.targetRoute, lang);
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-md border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(0,0,0,0.4)]">
+  <div class="max-w-7xl mx-auto px-margin py-space-xs flex flex-col justify-between gap-space-xs">
+    <!-- BARRA SUPERIOR: MARCA, DISPONIBILIDAD, TELEMETRÍA Y CONTROLES -->
+    <div class="flex items-center justify-between gap-gutter">
+      <!-- MARCA Y SUBTÍTULO -->
+      <div class="flex items-center gap-space-md">
+        <a href={homePath} class="flex flex-col group">
+          <span class="font-headline-sm text-headline-sm uppercase tracking-wider text-primary font-bold group-hover:text-primary-container transition-colors">
+            <span>{siteConfig.brand.highlight}</span><span>{siteConfig.brand.rest}</span>
+          </span>
+          <span class="font-label-micro text-label-micro text-on-surface-variant uppercase tracking-widest">
+            {t(siteConfig.hero.subtitle, lang)}
+          </span>
+        </a>
+
+        <!-- BADGE DE DISPONIBILIDAD (DESKTOP) -->
+        <div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1 bg-surface-container border border-outline-variant">
+          <span class="inline-block w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+          <span class="font-label-micro text-label-micro text-primary-fixed uppercase tracking-wider font-semibold">
+            {t(siteConfig.ui.availableBadge, lang)}
+          </span>
+        </div>
+      </div>
+
+      <!-- UBICACIÓN, TOGGLE ES/EN, SLOT EXTRA Y MENÚ MÓVIL -->
+      <div class="flex items-center gap-space-md">
+        <!-- TELEMETRÍA DE UBICACIÓN -->
+        <div class="hidden md:flex flex-col items-end text-right">
+          <span class="font-label-micro text-label-micro text-outline tracking-wider uppercase">
+            {t(siteConfig.ui.locationLabel, lang)}
+          </span>
+          <span class="font-label-caps text-label-caps text-on-surface tracking-wider uppercase font-semibold">
+            {t(siteConfig.hero.location, lang)}
+          </span>
+        </div>
+
+        <!-- SLOT PARA ACCIONES ESPECÍFICAS DE PÁGINA (P. EJ. VECTOR WORK) -->
+        <slot name="header-actions" />
+
+        <!-- BOTÓN TOGGLE IDIOMA -->
+        <a
+          href={targetTogglePath}
+          data-lang-toggle
+          class="px-space-sm py-1 bg-surface-container hover:bg-surface-container-high text-on-surface hover:text-primary transition-colors border border-outline-variant font-label-caps text-label-caps tracking-wider uppercase"
+          aria-label={t(siteConfig.ui.langToggleAria, lang)}
+        >
+          {t(siteConfig.ui.langToggle, lang)}
+        </a>
+
+        <!-- BOTÓN MENÚ MÓVIL -->
+        <button
+          type="button"
+          id="mobile-menu-btn"
+          class="md:hidden p-2 text-on-surface hover:text-primary-container focus:outline-none"
+          aria-label={t(siteConfig.ui.menuOpenAria, lang)}
+          data-open-label={t(siteConfig.ui.menuOpenAria, lang)}
+          data-close-label={t(siteConfig.ui.menuCloseAria, lang)}
+          aria-expanded="false"
+        >
+          <span class="material-symbols-outlined text-2xl" id="mobile-menu-icon">menu</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- BARRA INFERIOR: NAVEGACIÓN Y ENLACE A VECTOR WORK (DESKTOP) -->
+    <div class="hidden md:flex items-center justify-between gap-gutter border-t border-outline-variant/30 pt-1">
+      <nav class="flex items-center gap-space-xs shrink-0">
+        {siteConfig.nav.map((item) => (
+          <a
+            href={`${homePath}#${item.target}`}
+            class="px-space-md py-1 bg-surface-container text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-label-caps text-label-caps uppercase transition-colors"
+          >
+            {t(item.label, lang)}
+          </a>
+        ))}
+      </nav>
+
+      <div class="flex items-center gap-space-xs shrink-0">
+        <a
+          href={vectorPath}
+          class="px-space-md py-1 bg-secondary-container/20 text-secondary hover:bg-secondary-container hover:text-on-secondary-container font-label-caps text-label-caps uppercase tracking-wider transition-colors font-semibold flex items-center gap-1 border border-secondary/40 chamfer"
+        >
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+          {t(siteConfig.vectorWorkLink.label, lang)}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL DESPLEGABLE DE MENÚ MÓVIL -->
+  <div
+    id="mobile-menu"
+    class="hidden md:hidden bg-surface-container border-b border-outline-variant px-margin py-space-md space-y-space-md shadow-2xl"
+  >
+    <nav class="flex flex-col gap-1">
+      {siteConfig.nav.map((item) => (
+        <a
+          href={`${homePath}#${item.target}`}
+          class="mobile-nav-link px-3 py-2 text-on-surface hover:text-primary-container font-label-caps text-label-caps uppercase border border-transparent hover:border-outline-variant transition-colors"
+        >
+          {t(item.label, lang)}
+        </a>
+      ))}
+      <a
+        href={vectorPath}
+        class="mobile-nav-link px-3 py-2 mt-2 bg-secondary-container/20 text-secondary hover:bg-secondary-container hover:text-on-secondary-container font-label-caps text-label-caps uppercase tracking-wider font-semibold flex items-center gap-2 border border-secondary/40"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+        {t(siteConfig.vectorWorkLink.label, lang)}
+      </a>
+    </nav>
+
+    <div class="pt-space-sm border-t border-outline-variant flex flex-col gap-2">
+      <div class="flex items-center gap-space-xs px-2 py-1 bg-surface-container-high border border-outline-variant">
+        <span class="inline-block w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+        <span class="font-label-micro text-label-micro text-primary-fixed uppercase tracking-wider font-semibold">
+          {t(siteConfig.ui.availableBadge, lang)}
+        </span>
+      </div>
+      <div class="flex items-center justify-between text-on-surface-variant font-label-micro text-label-micro uppercase px-1">
+        <span>{t(siteConfig.ui.locationLabel, lang)}:</span>
+        <span class="text-on-surface font-semibold">{t(siteConfig.hero.location, lang)}</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Control de apertura y cierre del menú móvil sin dependencias
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const icon = document.getElementById('mobile-menu-icon');
+
+  if (btn && menu && icon) {
+    btn.addEventListener('click', () => {
+      const isHidden = menu.classList.contains('hidden');
+      const openLabel = btn.dataset.openLabel ?? '';
+      const closeLabel = btn.dataset.closeLabel ?? '';
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.setAttribute('aria-label', closeLabel);
+        icon.textContent = 'close';
+      } else {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', openLabel);
+        icon.textContent = 'menu';
+      }
+    });
+
+    // Cerrar el menú al hacer clic en cualquier enlace
+    menu.querySelectorAll('.mobile-nav-link').forEach((link) => {
+      link.addEventListener('click', () => {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        icon.textContent = 'menu';
+      });
+    });
+  }
+
+  // Preservar el hash al cambiar de idioma
+  document.querySelectorAll('a[data-lang-toggle]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const anchor = el as HTMLAnchorElement;
+      if (window.location.hash) {
+        anchor.href = anchor.href.split('#')[0] + window.location.hash;
+      }
+    });
+  });
+</script>

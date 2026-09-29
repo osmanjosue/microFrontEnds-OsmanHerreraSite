@@ -1,0 +1,117 @@
+---
+// ===========================================================================
+// SECCIÓN: CONTACT / CANALES DE CONTACTO (05)
+// ===========================================================================
+// Presenta las vías de comunicación directas y la isla React interactiva
+// ContactForm (client:visible).
+
+import { siteConfig, type Lang, t } from '@config';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Card from '../ui/Card.astro';
+import ContactForm from '../islands/ContactForm';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { contact, socialIcons, contactForm } = siteConfig;
+
+const formTexts = {
+  name: {
+    label: t(contactForm.name.label, lang),
+    placeholder: t(contactForm.name.placeholder, lang),
+  },
+  email: {
+    label: t(contactForm.email.label, lang),
+    placeholder: t(contactForm.email.placeholder, lang),
+  },
+  message: {
+    label: t(contactForm.message.label, lang),
+    placeholder: t(contactForm.message.placeholder, lang),
+  },
+  minMessageLength: contactForm.minMessageLength,
+  errors: {
+    nameRequired: t(contactForm.errors.nameRequired, lang),
+    emailRequired: t(contactForm.errors.emailRequired, lang),
+    emailPattern: t(contactForm.errors.emailPattern, lang),
+    messageRequired: t(contactForm.errors.messageRequired, lang),
+    messageMinLength: t(contactForm.errors.messageMinLength, lang),
+    formInvalid: t(contactForm.errors.formInvalid, lang),
+  },
+  submit: t(contactForm.submit, lang),
+  sending: t(contactForm.sending, lang),
+  note: t(contactForm.note, lang),
+  alerts: {
+    success: t(contactForm.alerts.success, lang),
+    error: t(contactForm.alerts.error, lang),
+    close: t(contactForm.alerts.close, lang),
+  },
+};
+---
+
+<section id="contact" class="py-space-xl">
+  <div class="max-w-7xl mx-auto px-margin">
+    <SectionHeader
+      kicker={t(contact.kicker, lang)}
+      title={t(contact.title, lang)}
+      subtitle={t(contact.subtitle, lang)}
+      index={5}
+      class="mb-space-lg border-b border-outline-variant pb-space-md"
+    />
+
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-space-xl items-start">
+      <!-- COLUMNA IZQUIERDA: INFORMACIÓN Y REDES -->
+      <div class="space-y-space-lg">
+        <p class="font-body-md text-on-surface-variant leading-relaxed max-w-md">
+          {t(contact.intro, lang)}
+        </p>
+
+        <!-- Redes sociales directas -->
+        <div class="space-y-space-sm">
+          <h4 class="font-label-caps text-label-caps text-primary-container uppercase tracking-wider">
+            {t(contact.channelsTitle, lang)}
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+            {socialIcons.map((social) => (
+              <a
+                href={social.address}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-space-sm p-space-md bg-surface-container border border-outline-variant hover:border-primary-container/60 hover:bg-surface-container-high transition-all chamfer group"
+              >
+                <span
+                  class="icon-mask w-5 h-5 group-hover:brightness-125 transition-all"
+                  style={`--icon-url: url(${social.icon})`}
+                  aria-hidden="true"
+                ></span>
+                <span class="font-label-caps text-label-caps uppercase tracking-wider text-on-surface group-hover:text-primary-container transition-colors">
+                  {social.title}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: ISLA REACT DEL FORMULARIO -->
+      <div id="contact-form-island-container">
+        <Card variant="interactive" cornerMarks={true} class="p-space-lg lg:p-space-xl">
+          <div class="space-y-space-md">
+            <div class="flex items-center justify-between pb-space-sm border-b border-outline-variant/30">
+              <span class="font-label-caps text-label-caps text-primary-container uppercase tracking-wider">
+                {t(contact.formTitle, lang)}
+              </span>
+              <span class="font-mono text-label-micro text-on-surface-variant">
+                // FORM_CHANNEL
+              </span>
+            </div>
+
+            <!-- Isla interactiva de React con client:visible -->
+            <ContactForm client:visible texts={formTexts} />
+          </div>
+        </Card>
+      </div>
+    </div>
+  </div>
+</section>

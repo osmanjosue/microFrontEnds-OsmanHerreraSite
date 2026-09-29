@@ -1,0 +1,31 @@
+---
+// ===========================================================================
+// VISTA: INICIO / HOME (BILINGÜE)
+// ===========================================================================
+// Compone las 6 secciones principales del dossier profesional:
+// Hero, Technologies, Projects, Formation, Experience, Contact.
+
+import { type Lang } from '@config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import Technologies from '../components/sections/Technologies.astro';
+import Projects from '../components/sections/Projects.astro';
+import Formation from '../components/sections/Formation.astro';
+import Experience from '../components/sections/Experience.astro';
+import Contact from '../components/sections/Contact.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<BaseLayout lang={lang} route="home">
+  <Hero lang={lang} />
+  <Technologies lang={lang} />
+  <Projects lang={lang} />
+  <Formation lang={lang} />
+  <Experience lang={lang} />
+  <Contact lang={lang} />
+</BaseLayout>

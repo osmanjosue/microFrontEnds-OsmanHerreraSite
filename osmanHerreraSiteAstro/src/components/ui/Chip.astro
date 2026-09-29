@@ -1,0 +1,28 @@
+---
+// ===========================================================================
+// COMPONENTE UI: CHIP / BADGE TÉCNICO (COMMON, TACTICAL, GOLD)
+// ===========================================================================
+
+interface Props {
+  variant?: 'common' | 'tactical' | 'gold';
+  class?: string;
+}
+
+const { variant = 'common', class: className = '' } = Astro.props;
+
+const variantClasses = {
+  common: 'border-outline-variant bg-surface-container text-on-surface-variant',
+  tactical: 'border-primary-container/40 bg-primary-container/10 text-primary-container',
+  gold: 'border-secondary/40 bg-secondary-container/15 text-secondary',
+};
+---
+
+<span
+  class:list={[
+    'inline-flex items-center gap-1 px-2 py-0.5 border font-label-micro text-label-micro uppercase tracking-wider font-semibold whitespace-nowrap',
+    variantClasses[variant],
+    className,
+  ]}
+>
+  <slot />
+</span>

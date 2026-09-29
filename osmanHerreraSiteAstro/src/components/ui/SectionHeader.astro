@@ -1,0 +1,41 @@
+---
+// ===========================================================================
+// COMPONENTE UI: SECTION HEADER (KICKER // TÍTULO NN // SUBTÍTULO)
+// ===========================================================================
+
+interface Props {
+  kicker?: string;
+  title: string;
+  /** Número de sección (1, 2, …). Si se pasa, el título se formatea como "NN // TÍTULO". */
+  index?: number;
+  subtitle?: string;
+  class?: string;
+}
+
+const { kicker, title, index, subtitle, class: className = '' } = Astro.props;
+
+// Formatea "01 // TÍTULO" cuando se pasa index; de lo contrario, solo el título.
+const displayTitle =
+  index !== undefined ? `${String(index).padStart(2, '0')} // ${title}` : title;
+---
+
+<div class:list={['flex flex-col sm:flex-row sm:items-end justify-between gap-space-sm pb-space-xs', className]}>
+  <div class="flex flex-col gap-1">
+    {kicker && (
+      <span class="font-label-micro text-label-micro text-primary-container uppercase tracking-widest font-semibold">
+        {kicker}
+      </span>
+    )}
+    <h2 class="font-headline-lg text-headline-lg text-primary font-bold">
+      {displayTitle}
+    </h2>
+    {subtitle && (
+      <p class="font-body-md text-on-surface-variant max-w-2xl mt-1">
+        {subtitle}
+      </p>
+    )}
+  </div>
+  <div class="self-start sm:self-auto shrink-0">
+    <slot name="action" />
+  </div>
+</div>

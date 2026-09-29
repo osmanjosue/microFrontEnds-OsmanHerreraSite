@@ -1,0 +1,144 @@
+---
+// ===========================================================================
+// VISTA: POLÍTICA DE PRIVACIDAD / PRIVACY POLICY (BILINGÜE)
+// ===========================================================================
+// Porta completamente osmanHerreraSiteReact/src/pages/PrivacyPolicy.tsx
+// utilizando la configuración centralizada de privacyPolicy con soporte bilingüe,
+// formateo de fechas con Intl.DateTimeFormat(lang) y el nuevo sistema visual técnico.
+
+import { siteConfig, type Lang, t, localizedPath } from '@config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Card from '../components/ui/Card.astro';
+import Button from '../components/ui/Button.astro';
+import Chip from '../components/ui/Chip.astro';
+import RichText from '../components/ui/RichText.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const { privacyPolicy, brand } = siteConfig;
+const homePath = localizedPath('home', lang);
+
+// Formateo de fecha según el idioma mediante Intl.DateTimeFormat
+const [year, month, day] = privacyPolicy.lastUpdatedDate.split('-').map(Number);
+const updatedDate = new Date(year, month - 1, day);
+const formattedDate = new Intl.DateTimeFormat(lang === 'es' ? 'es-HN' : 'en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(updatedDate);
+
+const lastUpdatedDisplay = `${t(privacyPolicy.lastUpdatedLabel, lang)} ${formattedDate}`;
+
+const titleText = `${t(privacyPolicy.title, lang).map((s) => (typeof s === 'string' ? s : s.text)).join('')} — ${brand.highlight}${brand.rest}`;
+---
+
+<BaseLayout lang={lang} route="privacy" title={titleText}>
+  <div class="max-w-4xl mx-auto px-margin py-space-xl space-y-space-xl">
+    <!-- ENCABEZADO DE NAVEGACIÓN SUPERIOR -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md border-b border-outline-variant/60 pb-space-md">
+      <div>
+        <span class="font-label-micro text-label-micro text-primary-container uppercase tracking-widest font-semibold block mb-space-xs">
+          {t(privacyPolicy.kicker, lang)}
+        </span>
+        <h1 class="font-headline-xl text-headline-xl text-primary leading-tight">
+          <RichText value={t(privacyPolicy.title, lang)} />
+        </h1>
+        <p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mt-1">
+          {privacyPolicy.owner}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-space-sm">
+        <Button variant="ghost" href={homePath} icon="arrow_back">
+          {t(privacyPolicy.backLabel, lang)}
+        </Button>
+      </div>
+    </div>
+
+    <!-- TARJETA PRINCIPAL DEL DOCUMENTO -->
+    <Card chamfer={true} cornerMarks={true} class="space-y-space-xl p-space-lg lg:p-space-xl">
+      <!-- Badge de fecha de actualización e Introducción -->
+      <section class="space-y-space-md">
+        <div class="inline-flex">
+          <Chip variant="tactical">{lastUpdatedDisplay}</Chip>
+        </div>
+
+        <p class="font-body-md text-on-surface leading-relaxed text-base md:text-lg">
+          <RichText value={t(privacyPolicy.intro, lang)} />
+        </p>
+      </section>
+
+      <!-- Secciones numeradas -->
+      <div class="space-y-space-xl">
+        {privacyPolicy.sections.map((section) => (
+          <section class="space-y-space-md border-t border-outline-variant/30 pt-space-lg">
+            <h2 class="font-headline-md text-headline-md text-primary pb-space-xs flex items-center gap-space-xs">
+              <span>{t(section.title, lang)}</span>
+            </h2>
+
+            {section.paragraphs && section.paragraphs.map((paragraph) => (
+              <p class="font-body-md text-on-surface-variant leading-relaxed">
+                <RichText value={t(paragraph, lang)} />
+              </p>
+            ))}
+
+            {section.cards && (
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mt-space-md">
+                {section.cards.map((card) => (
+                  <Card variant="low" class="p-space-md flex flex-col justify-between gap-space-sm border-outline-variant/40">
+                    <div>
+                      <div class="mb-space-xs">
+                        <Chip variant="tactical">{t(card.title, lang)}</Chip>
+                      </div>
+                      <p class="font-body-sm text-on-surface-variant leading-relaxed">
+                        {t(card.text, lang)}
+                      </p>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
+
+            {section.bullets && (
+              <ul class="list-disc pl-space-xl space-y-space-xs font-body-md text-on-surface-variant leading-relaxed marker:text-primary-container">
+                {section.bullets.map((bullet) => (
+                  <li>
+                    <RichText value={t(bullet, lang)} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
+      </div>
+
+      <!-- CIERRE Y CANAL DE CONSULTAS -->
+      <div class="mt-space-xl pt-space-lg border-t border-outline-variant/60 flex flex-col items-center text-center space-y-space-md">
+        <p class="font-body-md text-on-surface-variant max-w-xl">
+          {t(privacyPolicy.closing.question, lang)}
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-space-md">
+          <Button
+            variant="primary"
+            href={privacyPolicy.closing.href}
+            icon="mail"
+          >
+            {t(privacyPolicy.closing.linkLabel, lang)}
+          </Button>
+
+          <Button
+            variant="ghost"
+            href={homePath}
+            icon="home"
+          >
+            {t(privacyPolicy.homeLabel, lang)}
+          </Button>
+        </div>
+      </div>
+    </Card>
+  </div>
+</BaseLayout>
