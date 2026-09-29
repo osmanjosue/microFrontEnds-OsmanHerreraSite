@@ -106,8 +106,8 @@ export const siteConfig: SiteConfig = {
 
   ui: {
     availableBadge: {
-      es: 'DISPONIBLE PARA TRABAJO REMOTO',
-      en: 'AVAILABLE FOR REMOTE WORK',
+      es: 'DESARROLLADOR FREELANCER',
+      en: 'FREELANCE DEVELOPER',
     },
     locationLabel: {
       es: 'UBICACIÓN',
@@ -236,15 +236,11 @@ export const siteConfig: SiteConfig = {
         es: [
           '¡Hola! Soy ',
           { text: 'desarrollador web independiente', highlight: true, bold: true },
-          ' y un ',
-          { text: 'eterno aprendiz', highlight: true, bold: true },
           '. Mi fortaleza es una lógica sólida para hacer realidad cualquier proyecto.',
         ],
         en: [
           'Hi! I\'m an ',
           { text: 'independent web developer', highlight: true, bold: true },
-          ' and a ',
-          { text: 'lifelong learner', highlight: true, bold: true },
           '. My strength is solid logical thinking that brings any project to life.',
         ],
       },
