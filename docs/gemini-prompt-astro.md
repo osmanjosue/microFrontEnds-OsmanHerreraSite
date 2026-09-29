@@ -9,7 +9,7 @@ Vas a implementar el rediseño de mi portafolio `osmanherrera.dev` en el monorep
 
 Reglas:
 1. Trabaja en la rama `feat/astro-apex-dossier`, creada desde `main`. Haz un commit por fase, con mensaje en español (p. ej. `Fase 1: crea proyecto Astro y preset Tailwind compartido`).
-2. **Al terminar cada fase, escribe el reporte en `docs/handoff/fase-NN.md`** (NN = 01…08) con la plantilla de abajo. Inclúyelo en el mismo commit de la fase. Luego **DETENTE** y responde en el chat solo con la ruta del reporte y el hash del commit. No avances sin aprobación.
+2. **Al terminar cada fase, escribe el reporte en `docs/handoff/fase-NN.md`** (NN = 01…09) con la plantilla de abajo. Inclúyelo en el mismo commit de la fase. Luego **DETENTE** y responde en el chat solo con la ruta del reporte y el hash del commit. No avances sin aprobación.
    - Si la revisión pide correcciones:
      - aparecerán en `docs/handoff/fase-NN.review.md`;
      - corrígelas en un commit nuevo (`Fase N: corrige observaciones de revisión`);
@@ -269,9 +269,109 @@ Actualiza también las referencias a `/vectorwork/` en `docs/nginx-astro.md` si 
 - `git grep -nE "osmanHerreraSite(React|Vector)?/|shared/content"`: solo pueden quedar menciones en `docs/handoff/` y `docs/gemini-prompt-astro.md`.
 - Deja `docs/handoff/` tal cual: es el registro de la migración.
 
+## Fase 9: perfil público → página /cv, experiencia, hero, tecnologías y proyectos
+**Rama:** sigue en `chore/fase-8-limpieza` (aún no tiene PR). Reporte en `docs/handoff/fase-09.md`. **No ejecutes el orquestador (regla 7).** Al terminar, detente y el usuario pedirá la revisión.
+
+**Fuente de contenido: `docs/perfil-publico.html`** (el perfil bilingüe del usuario, actualizado el 2026-09-28). Cada texto en inglés y en español se copia **literalmente** de ese archivo: no lo reescribas, no lo resumas salvo donde se indica, no inventes cifras ni enlaces. Como el perfil ya trae las dos versiones, en esta fase no debería haber traducciones tuyas. Si traduces algo, lístalo en "Traducciones a revisar".
+
+**1. Tipos y datos (`shared/config/site.types.ts`, `site.config.ts`)**
+- `Experience`: agrega `highlights?: Localized<string[]>` (las viñetas) y `location?: Localized`. `description` pasa a ser un resumen de 1-2 frases. Tómalo de la primera viñeta del puesto o, si el puesto tiene una sola viñeta, déjala como `description` sin `highlights`. Anota en el reporte qué recortaste.
+- `experience.items`: reemplázalos por los **7 puestos** del perfil, en este orden:
+  1. Freelance Web Developer & Automation Engineer
+  2. Fundación Prolancho
+  3. Hyatt Place San Pedro Sula
+  4. Beo Shirts
+  5. Del Tropico Designs
+  6. Allied Global Technology Services
+  7. Startek
+
+  Para cada puesto, copia del perfil el rol (es/en), la empresa, el periodo tal como aparece (`Nov 2023 – Presente` / `Nov 2023 – Present`; `period` pasa a ser `Localized`) y la ubicación. En Allied y Startek, el cliente va en la ubicación o en la descripción, igual que en el perfil.
+  - Conserva los `links` actuales: repositorio y sitio de Prolancho, y Facebook de Beo Shirts (Beo Shirts era "Empresa de Diseño y Estampado").
+  - Agrega el link `https://drafrancisherrera.com` al puesto Freelance.
+  - Las `technologies` de cada puesto salen de lo que nombra el propio puesto en el perfil. No agregues otras.
+- Nueva clave `cv` en `SiteConfig`, con los bloques que solo existen en /cv:
+  - resumen "Perfil";
+  - "Qué hago" (4 tarjetas: título + texto);
+  - grupos de "Habilidades" (título + lista);
+  - "Fortalezas";
+  - "Idiomas";
+  - "Sobre mí", más la línea de taekwondo;
+  - los 3 proyectos breves: infraestructura n8n autoalojada, pipeline de e-learning y portafolio de diseño;
+  - la fecha "Actualizado";
+  - los textos de la UI de /cv: títulos de sección, "Imprimir / PDF" y "Ver CV".
+
+  Para Experiencia, Educación y el proyecto Night Audit, /cv **reutiliza** `experience.items`, `formation` y `projects.items`. No dupliques datos.
+- `socialIcons`, WhatsApp: cambia a `https://wa.me/50489709021`. El número correcto es **+504 8970-9021**. Agrega `PHONE = '+504 8970-9021'` como constante junto a `CONTACT_EMAIL`.
+
+**2. Página /cv**
+- `shared/config/i18n.ts`: agrega `RouteKey` `'cv'` y `ROUTES.cv = { es: '/cv/', en: '/en/cv/' }`.
+- Crea `src/pages/cv/index.astro`, `src/pages/en/cv/index.astro` y `src/views/CvView.astro` con `BaseLayout` (hreflang y canonical como en las otras páginas) y los componentes UI existentes: `Card`, `Chip`, `SectionHeader`, `RichText`, `Button` y `CornerMarks`.
+- Orden de la página (el mismo del perfil):
+  1. encabezado: nombre, título, ubicación y contacto (correo, teléfono, LinkedIn, GitHub, sitio);
+  2. Perfil;
+  3. Qué hago;
+  4. Experiencia (todas las viñetas);
+  5. Proyectos destacados (Night Audit con Problema/Solución/Resultado y el link "Ver código", más los 3 breves);
+  6. Habilidades;
+  7. Fortalezas;
+  8. Educación y certificaciones;
+  9. Idiomas;
+  10. Sobre mí.
+- Botón "Imprimir / PDF" que llama a `window.print()` (script inline mínimo, sin dependencias).
+- `@media print`:
+  - fondo blanco y texto oscuro;
+  - oculta header, footer, nav y el botón de imprimir;
+  - `break-inside: avoid` en tarjetas y puestos;
+  - sin sombras ni efectos.
+
+  Debe caber de forma legible en A4/Letter.
+- Accesos a /cv:
+  - En el Hero/perfil, un botón "Ver CV" junto a "Descargar CV" (el PDF se mantiene).
+  - En la navegación, un link "CV". Si hace falta, extiende `NavItem` para aceptar `route?: RouteKey` además de `target`. Desde /cv, los links de secciones del nav deben apuntar al home (`/#experience`, `/en/#experience`).
+- El toggle de idioma en /cv lleva a la /cv del otro idioma.
+
+**3. Hero y perfil**
+- `hero.subtitle`: `Desarrollador Full Stack · Ingeniero de Automatización y Datos` / `Full Stack Developer · Automation & Data Engineer`.
+- `profile.focus`: el mismo título del perfil.
+- `profile.badges`: agrega `{ es: 'Automatización y Datos', en: 'Automation & Data' }`.
+- `profile.bio`: el párrafo "Perfil", con `highlight` solo en la primera frase ("Construyo software que elimina trabajo manual." / "I build software that removes manual work.").
+- `seo.es/en.title`: `Osman Herrera — Full Stack Developer · Automation & Data Engineer`. `seo.description`: adáptala con el nuevo foco, sin inventar datos, y lístala en "Traducciones a revisar".
+- No cambies `hero.title` ni las stats. La de tecnologías se actualiza sola.
+
+**4. Tecnologías**
+- Agrega `React`, `PostgreSQL`, `Nginx` y `Linux` a `TECHNOLOGIES`.
+- Crea `public/assets/icons/technologies-{React,PostgreSQL,Nginx,Linux}.svg`: monocromos, con el mismo formato limpio de los íconos actuales (sin metadatos de Illustrator) para que funcionen con `icon-mask`. Usa los trazados de Simple Icons (licencia CC0) e indícalo en un comentario dentro del SVG.
+
+**5. Proyectos**
+- Nuevo item `night-audit-revenue-pipeline`, en una nueva categoría `datos`. Agrega `'datos'` a `ProjectCategory` y el filtro `{ id: 'datos', label: { es: 'Datos', en: 'Data' } }`.
+  - Título: "Night Audit Revenue Report Pipeline". En español, usa el mismo nombre.
+  - `description`: dos o tres frases tomadas de Problema/Solución/Resultado del perfil. Guarda los tres bloques completos en el item (`caseStudy?: { problem, solution, result }` como `Localized`) para que /cv los muestre.
+  - `technologies`: las del perfil (Python, pandas, openpyxl, pdfplumber, PyMuPDF, tabula, regex, PyAutoGUI).
+  - Link: `https://github.com/osmanjosue/night-audit-revenue-report`.
+  - `image`: no hay captura. Crea un placeholder SVG sobrio con el estilo del sitio en `public/assets/images/projects/night-audit.svg` y regístralo en TODO de contenido.
+  - `badge`: `{ es: 'AUTOMATIZACIÓN', en: 'AUTOMATION' }`; `featured: true`.
+
+**6. Formación**
+- Agrega el certificado "Automate the Boring Stuff with Python Programming" (Udemy) con `month`, `date` y `link` en `'TODO: confirmar'`. Si el tipo no admite TODO en `date`, hazlo opcional y no muestres el enlace cuando falte.
+
+**7. Componente `Experience.astro`**
+- Muestra `location` junto al periodo y `highlights` como lista con viñetas del estilo Apex (marcador cian tipo `▸` o un cuadrado pequeño, sin librerías).
+- En el home, muestra **máximo 3 viñetas** por puesto, para no alargar la sección; /cv muestra todas. Haz esto con una prop (p. ej. `maxHighlights`), no duplicando el componente.
+- Los puestos sin `highlights` se ven igual que hoy.
+
+**8. Verificación**
+- `npm run build` (9 páginas), `npx astro check` (0 errors) y `npm run assets:test`.
+- Playwright contra `dist/` servido desde el mismo script:
+  - capturas de `/cv/`, `/en/cv/` y `/` (sección Experiencia) a 1440 px y a 390 px;
+  - captura de `/cv/` con `page.emulateMedia({ media: 'print' })` y `page.pdf()`, e indica cuántas páginas salen;
+  - sin scroll horizontal, sin errores de consola y sin respuestas 4xx.
+
+  Guarda las capturas en `osmanHerreraSiteAstro/scripts/vector/.screenshots/fase-09/` (ignorado por git).
+- En el reporte, incluye una tabla "Puesto → viñetas en home / en /cv" y lista cualquier texto que no sea copia literal del perfil.
+
 ## Criterios de aceptación globales
 - `npx astro check` sin errores y `npm run build` sin warnings nuevos.
-- Un solo `npm run dev` sirve las 6 rutas de la tabla y todos los enlaces del nav y del toggle funcionan en local, en ambos idiomas.
+- Un solo `npm run dev` sirve las 6 rutas de la tabla (8 desde la fase 9, con /cv/ y /en/cv/) y todos los enlaces del nav y del toggle funcionan en local, en ambos idiomas.
 - **Todo texto visible sale de `shared/config/`.** Una búsqueda de texto en español o inglés escrito a mano en `src/components`, `src/views` y `src/layouts` no debe encontrar nada; solo se permiten los separadores decorativos `//`.
 - Falta una traducción → el build falla (lo garantiza el tipo `Localized`).
 - La apariencia coincide con `screen.png` en desktop (1440px) y funciona en móvil (375px) sin scroll horizontal, en ambos idiomas; los textos en inglés más largos no rompen el layout.
