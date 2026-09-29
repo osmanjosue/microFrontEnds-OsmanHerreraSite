@@ -1,0 +1,86 @@
+---
+// ===========================================================================
+// VISTA: POLÍTICA DE PRIVACIDAD / PRIVACY POLICY (BILINGÜE)
+// ===========================================================================
+import { siteConfig, type Lang, t, localizedPath } from '@config';
+import { getSeoMetadata } from '../lib/seo';
+import '../styles/global.css';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const seo = getSeoMetadata({ route: 'privacy', lang });
+const otherLang: Lang = lang === 'es' ? 'en' : 'es';
+const targetTogglePath = localizedPath('privacy', otherLang);
+---
+
+<!doctype html>
+<html lang={seo.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{seo.title} — {t(siteConfig.footer.privacyLink.label, lang)}</title>
+    <meta name="description" content={seo.description} />
+    <link rel="canonical" href={seo.canonicalUrl} />
+    <meta property="og:locale" content={seo.ogLocale} />
+    <meta property="og:locale:alternate" content={seo.ogLocaleAlternate} />
+    {seo.alternateLinks.map((link) => (
+      <link rel="alternate" hreflang={link.hreflang} href={link.href} />
+    ))}
+  </head>
+  <body class="bg-surface text-on-surface min-h-screen p-8 flex flex-col items-center justify-center">
+    <main class="border border-outline-variant bg-surface-container p-6 chamfer max-w-lg w-full space-y-4">
+      <div class="flex items-center justify-between">
+        <a
+          href={localizedPath('home', lang)}
+          class="font-label-caps text-label-caps text-surface-tint hover:underline uppercase"
+        >
+          ← {t(siteConfig.privacyPolicy.backLabel, lang)}
+        </a>
+        <a
+          href={targetTogglePath}
+          data-lang-toggle
+          class="font-label-caps text-label-caps border border-outline-variant px-2 py-1 text-primary hover:bg-surface-bright transition-colors"
+          aria-label={t(siteConfig.ui.langToggleAria, lang)}
+        >
+          {t(siteConfig.ui.langToggle, lang)}
+        </a>
+      </div>
+
+      <h1 class="text-headline-lg font-bold text-primary-container">
+        {t(siteConfig.footer.privacyLink.label, lang)}
+      </h1>
+
+      <p class="font-label-micro text-label-micro text-on-surface-variant">
+        {t(siteConfig.privacyPolicy.lastUpdated, lang)}
+      </p>
+
+      <p class="text-body-md text-on-surface-variant">
+        {siteConfig.privacyPolicy.owner}
+      </p>
+
+      <div class="pt-4 border-t border-outline-variant text-body-sm">
+        <a
+          href={localizedPath('home', lang)}
+          class="text-primary hover:underline"
+        >
+          {t(siteConfig.privacyPolicy.homeLabel, lang)}
+        </a>
+      </div>
+    </main>
+
+    <script>
+      // Preserva el hash al cambiar de idioma
+      document.querySelectorAll('a[data-lang-toggle]').forEach((el) => {
+        el.addEventListener('click', () => {
+          const anchor = el as HTMLAnchorElement;
+          if (window.location.hash) {
+            anchor.href = anchor.href.split('#')[0] + window.location.hash;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

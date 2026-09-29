@@ -3,6 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@config": ["../shared/config"],
+      "@config/*": ["../shared/config/*"],
       "@shared/*": ["../shared/*"]
     }
   },

@@ -10,10 +10,18 @@ import { fileURLToPath } from 'node:url';
 export default defineConfig({
   output: 'static',
   site: 'https://osmanherrera.dev',
+  i18n: {
+    locales: ['es', 'en'],
+    defaultLocale: 'es',
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   integrations: [react()],
   vite: {
     resolve: {
       alias: {
+        '@config': fileURLToPath(new URL('../shared/config', import.meta.url)),
         '@shared': fileURLToPath(new URL('../shared', import.meta.url)),
       },
     },
