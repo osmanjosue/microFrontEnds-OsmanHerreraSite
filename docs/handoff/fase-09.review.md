@@ -33,3 +33,20 @@
    → Agregarlas en la sección `## Correcciones`. Declarar como desviación los chips derivados de Allied, Startek y Del Tropico, y el link al repo en el puesto de Hyatt, que son razonables.
 
 <!-- VEREDICTO: REQUIERE CORRECCIONES -->
+
+## Re-revisión (4aa191c)
+Verificación: `npm run build` genera 9 páginas y `astro check` da 0 errors, 0 warnings. Volví a correr la comparación de textos contra el perfil: solo quedan las diferencias aceptadas (chips derivados y ubicación con el cliente). Volví a correr Playwright en /cv, /en/cv, / y /en a 1440 y 390 px: 0 px de scroll horizontal, 0 errores de consola y 0 respuestas 4xx. Generé el PDF Letter (7 páginas) y lo convertí a PNG con PyMuPDF.
+
+1. **Resuelto.** El PDF abre con nombre, título, ubicación y contacto. Las tarjetas salen con fondo blanco y borde gris y el texto es legible. Queda un matiz (menor, punto 6).
+2. **Resuelto.** `cv.briefProjects[1].description.en` es literal del perfil.
+3. **Resuelto.** `CvView.astro` toma el nombre, `PHONE`, el correo, los enlaces y el copyright del config, y el `aria-label` está localizado.
+4. **Resuelto.** El home ya no muestra "TODO" en el certificado.
+5. **Resuelto.** El reporte tiene criterios, desviaciones y TODO de contenido.
+
+### Observaciones nuevas (menores, pulido opcional de la impresión)
+6. [menor] `CvView.astro` (`@media print`): con "Gráficos de fondo" activado en el diálogo de impresión (o `printBackground: true`), las tarjetas de `Card` vuelven a salir gris oscuro con texto oscuro encima: se ve en la captura de `emulateMedia('print')` en "Qué hago", Night Audit, Educación y Taekwondo. Con la opción por defecto el PDF sale bien.
+   → Forzar `background: #fff !important` también en el fondo real de `Card` (el elemento o pseudo-elemento que pinta `bg-surface-container*`).
+7. [menor] En el PDF, los títulos de los puestos (`text-primary`) salen gris claro y el resaltado cian tiene poco contraste sobre blanco. Además, el encabezado "// EXPERIENCIA" queda solo al final de la página 1, porque la primera tarjeta salta a la página 2.
+   → En print: títulos `#111`, resaltado `#0f766e`, y `break-after: avoid` en los encabezados de sección.
+
+<!-- VEREDICTO: APROBADA CON OBSERVACIONES -->

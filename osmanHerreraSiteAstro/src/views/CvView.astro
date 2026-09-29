@@ -342,6 +342,7 @@ const phoneHref = `tel:${PHONE.replace(/[^\d+]/g, '')}`;
     :global(.site-header),
     :global(.site-footer),
     :global(#mobile-menu),
+    :global(.no-print),
     .no-print {
       display: none !important;
     }
@@ -349,108 +350,141 @@ const phoneHref = `tel:${PHONE.replace(/[^\d+]/g, '')}`;
     :global(main) {
       padding-top: 0 !important;
       background: #ffffff !important;
+      background-color: #ffffff !important;
       color: #18181b !important;
     }
 
-    :global(body) {
+    :global(body),
+    :global(html) {
       background: #ffffff !important;
+      background-color: #ffffff !important;
       color: #18181b !important;
       font-size: 10pt !important;
     }
 
-    .print-page {
+    :global(.print-page) {
       max-width: 100% !important;
       padding: 0 !important;
       margin: 0 !important;
       background: #ffffff !important;
+      background-color: #ffffff !important;
       color: #18181b !important;
     }
 
     /* El header propio del CV debe ser visible en print */
-    .print-page header.cv-header {
+    :global(.print-page header.cv-header) {
       display: block !important;
       border-color: #d1d5db !important;
       padding-bottom: 12px !important;
       margin-bottom: 16px !important;
+      break-after: avoid !important;
+      page-break-after: avoid !important;
+    }
+
+    /* Encabezados de sección: evitar que queden huérfanos al final de página */
+    :global(.print-page h2),
+    :global(.print-page .cv-section-title),
+    :global(.print-page section > h2) {
+      break-after: avoid !important;
+      page-break-after: avoid !important;
+      color: #0f766e !important;
+      font-weight: 700 !important;
     }
 
     /* Todos los textos oscuros y legibles sobre papel blanco */
-    .print-page,
-    .print-page * {
+    :global(.print-page),
+    :global(.print-page *) {
       color: #18181b !important;
       text-shadow: none !important;
       box-shadow: none !important;
     }
 
-    /* Títulos principales y negritas en negro */
-    .print-page h1,
-    .print-page h2,
-    .print-page h3,
-    .print-page h4,
-    .print-page strong,
-    .print-page b {
+    /* Títulos principales y negritas en negro / oscuro #111 */
+    :global(.print-page h1) {
       color: #000000 !important;
-    }
-
-    /* Título del CV */
-    .print-page h1 {
       font-size: 26pt !important;
       line-height: 1.1 !important;
     }
 
-    /* Acento de kicker / etiquetas / subtítulo en teal oscuro legible */
-    .print-page .text-primary-container,
-    .print-page [class*="text-primary-container"],
-    .print-page h2 {
+    :global(.print-page h3),
+    :global(.print-page h4),
+    :global(.print-page strong),
+    :global(.print-page b) {
+      color: #111111 !important;
+    }
+
+    /* Títulos de los puestos en Experience: forzar color oscuro #111111 */
+    :global(.print-page .text-primary),
+    :global(.print-page [class*="text-primary"]:not([class*="text-primary-container"]):not([class*="text-primary-fixed"])) {
+      color: #111111 !important;
+    }
+
+    /* Resaltados de palabras clave y kickers: teal oscuro con alto contraste sobre papel blanco */
+    :global(.print-page .text-primary-container),
+    :global(.print-page [class*="text-primary-container"]),
+    :global(.print-page mark),
+    :global(.print-page .highlight) {
       color: #0f766e !important;
     }
 
     /* Textos secundarios / fechas / ubicaciones en gris oscuro legible */
-    .print-page .text-on-surface-variant,
-    .print-page [class*="text-on-surface-variant"],
-    .print-page [class*="text-outline"] {
+    :global(.print-page .text-on-surface-variant),
+    :global(.print-page [class*="text-on-surface-variant"]),
+    :global(.print-page [class*="text-outline"]) {
       color: #374151 !important;
     }
 
     /* Quitar cortes angulados chamfer para impresión */
-    :global(.print-page .chamfer) {
+    :global(.print-page .chamfer),
+    :global(.print-page [class*="chamfer"]) {
       clip-path: none !important;
     }
 
-    /* Forzar fondo blanco y borde fino en todas las tarjetas de la página (Experiencia, Proyectos, etc.) */
-    .print-page .cv-card,
-    .print-page :global(.cv-card),
-    .print-page :global([class*="bg-surface"]),
-    .print-page :global([class*="bg-background"]),
-    .print-page :global(article),
-    .print-page :global(.chamfer) {
+    /* Forzar fondo blanco REAL en todas las tarjetas de Card incluso con printBackground: true */
+    :global(.print-page .cv-card),
+    :global(.print-page [class*="bg-surface"]),
+    :global(.print-page [class*="bg-background"]),
+    :global(.print-page article),
+    :global(.print-page .chamfer),
+    :global(.print-page [class*="chamfer"]) {
       background: #ffffff !important;
       background-color: #ffffff !important;
+      background-image: none !important;
       border-color: #e5e7eb !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
     }
 
+    :global(.print-page [class*="chamfer"])::after {
+      display: none !important;
+    }
+
     /* Chips en impresión: fondo gris suave con borde fino y texto oscuro */
-    .print-page :global(span[class*="border"]),
-    .print-page :global(.chip) {
+    :global(.print-page span[class*="border"]),
+    :global(.print-page .chip) {
       background: #f3f4f6 !important;
+      background-color: #f3f4f6 !important;
       border-color: #d1d5db !important;
       color: #111827 !important;
     }
 
     /* Ocultar marcas de esquina de Card en impresión */
-    .print-page :global(svg[class*="pointer-events-none"]),
-    .print-page :global([class*="corner-mark"]) {
+    :global(.print-page svg[class*="pointer-events-none"]),
+    :global(.print-page div.pointer-events-none[aria-hidden="true"]) {
       display: none !important;
     }
 
     /* Enlaces impresos limpios */
-    .print-page a {
+    :global(.print-page a) {
       color: #18181b !important;
       text-decoration: none !important;
       border-color: #d1d5db !important;
       background: transparent !important;
+    }
+
+    :global(.print-page header.cv-header nav a) {
+      background: #f9fafb !important;
+      border: 1px solid #d1d5db !important;
     }
   }
 </style>

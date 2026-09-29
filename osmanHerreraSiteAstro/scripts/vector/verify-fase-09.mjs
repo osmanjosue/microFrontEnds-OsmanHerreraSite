@@ -148,7 +148,23 @@ try {
   const siteFooterVisible = await printPage.isVisible('.site-footer');
   const h1Text = (await printPage.textContent('h1'))?.trim();
 
+  // Comprobar estilos computados en modo print
+  const printStyles = await printPage.evaluate(() => {
+    const card = document.querySelector('.print-page .cv-card') || document.querySelector('.print-page [class*="bg-surface"]');
+    const expRole = document.querySelector('#experience h3');
+    const highlight = document.querySelector('#experience .text-primary-container');
+    const h2Exp = document.querySelector('#experience')?.closest('section')?.querySelector('h2') || document.querySelector('.print-page h2');
+
+    return {
+      cardBg: card ? window.getComputedStyle(card).backgroundColor : null,
+      expRoleColor: expRole ? window.getComputedStyle(expRole).color : null,
+      highlightColor: highlight ? window.getComputedStyle(highlight).color : null,
+      h2BreakAfter: h2Exp ? (window.getComputedStyle(h2Exp).breakAfter || window.getComputedStyle(h2Exp).pageBreakAfter) : null,
+    };
+  });
+
   console.log(`[Print Assertions] cv-header visible: ${cvHeaderVisible}, site-header visible: ${siteHeaderVisible}, site-footer visible: ${siteFooterVisible}, h1: "${h1Text}"`);
+  console.log(`[Print Computed Styles] Card bg: ${printStyles.cardBg}, Role color: ${printStyles.expRoleColor}, Highlight color: ${printStyles.highlightColor}, H2 breakAfter: ${printStyles.h2BreakAfter}`);
 
   if (!cvHeaderVisible) {
     throw new Error('Fallo crítico: header.cv-header está oculto en modo print!');

@@ -156,3 +156,8 @@ Todos los textos de puestos, biografía, fortalezas, educación, taekwondo y cas
    - En `Formation.astro` se condicionó la visualización de la fecha para que no renderice el badge cuando `month` o `date` contengan `'TODO'`.
 5. **[Menor 5] Actualización del documento de handoff:**
    - Incorporadas las secciones "Criterios de la fase", "Desviaciones del prompt", "TODO de contenido" y "Correcciones de la revisión" siguiendo la plantilla oficial.
+6. **[Menor 6] Fondo blanco estricto en tarjetas (`printBackground: true`):**
+   - Se reforzó `@media print` tanto en `src/styles/global.css` como en `src/views/CvView.astro` apuntando a `:global(.print-page [class*="bg-surface"])`, `:global(.print-page [class*="bg-background"])`, `.cv-card`, `article`, y `.chamfer` con `background: #ffffff !important` y `background-color: #ffffff !important`. Con esto, las tarjetas renderizadas mediante el componente `Card` se imprimen siempre en blanco incluso con "Gráficos de fondo" (`printBackground: true`) habilitado en el diálogo del navegador.
+7. **[Menor 7] Contraste tipográfico y prevención de encabezados huérfanos:**
+   - Se forzó el color `#111111 !important` en `.text-primary` (títulos de puestos de experiencia) y `#0f766e !important` (verde azulado de alto contraste) en `.text-primary-container` y resaltados sobre blanco.
+   - Se añadió `break-after: avoid !important; page-break-after: avoid !important;` a los encabezados de sección (`h2` y `header.cv-header`), evitando que títulos como `"// EXPERIENCIA"` queden aislados al pie de la página 1.
