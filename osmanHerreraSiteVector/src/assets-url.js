@@ -7,7 +7,7 @@
  * Si VITE_ASSETS_BASE_URL existe, resuelve con respecto a ese origen.
  * Si no, resuelve con respecto a la ruta base de la aplicación (BASE_URL).
  *
- * @param {string} path - Ruta relativa del asset (ej: 'works/demo-01/original.webp')
+ * @param {string} path - Ruta relativa del asset (ej: 'works/pieza-01/original.webp')
  * @returns {string} URL absoluta o relativa lista para usarse
  */
 export function assetUrl(path) {

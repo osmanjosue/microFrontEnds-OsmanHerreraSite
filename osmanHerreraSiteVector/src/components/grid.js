@@ -79,7 +79,7 @@ export function renderGrid({
       const indexNum = String(globalIndex + 1).padStart(2, '0');
       const isSelected = work.slug === activeSlug;
       const defaultTitle = getDefaultTitle(globalIndex);
-      const thumbUrl = assetUrl(work.original);
+      const thumbUrl = assetUrl(work.thumb || work.vector);
 
       const itemCardClass = isSelected
         ? 'ring-2 ring-primary-container shadow-[0_0_18px_rgba(0,240,255,0.45)]'

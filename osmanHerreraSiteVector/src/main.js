@@ -16,9 +16,9 @@ import { renderFooter } from './components/footer.js';
 const app = document.getElementById('app');
 
 // ===========================================================================
-// LISTA DISPONIBLE DE PIEZAS (EN PRODUCCIÓN SE EXCLUYEN LAS DEMOS)
+// LISTA DISPONIBLE DE PIEZAS
 // ===========================================================================
-const works = vectorConfig.works.filter((w) => import.meta.env.DEV || !w.demo);
+const works = vectorConfig.works;
 
 // ===========================================================================
 // ESTADO GLOBAL DE LA APLICACIÓN

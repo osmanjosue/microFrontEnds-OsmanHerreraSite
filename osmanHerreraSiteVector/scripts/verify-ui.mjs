@@ -6,11 +6,15 @@ import { chromium } from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { vectorConfig } from '../src/content/vector.config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..');
 const screenshotsDir = path.join(projectRoot, '.screenshots');
+
+// Slugs de las dos primeras piezas del config (para verificar la navegación por teclado)
+const [firstSlug, secondSlug] = vectorConfig.works.map((w) => w.slug);
 
 fs.mkdirSync(screenshotsDir, { recursive: true });
 
@@ -240,7 +244,7 @@ async function verifyViewport(width, height, filename) {
     await page.waitForTimeout(300);
     const hashAfterRangeArrow = await page.evaluate(() => window.location.hash);
     console.log(`[Playwright Headless] Con foco en #slider-range-input, tras ArrowRight hash es: "${hashAfterRangeArrow}" (no cambia de pieza)`);
-    if (hashAfterRangeArrow && hashAfterRangeArrow !== '#demo-01') {
+    if (hashAfterRangeArrow && hashAfterRangeArrow !== `#${firstSlug}`) {
       throw new Error(`El foco en slider-range-input cambió la pieza a ${hashAfterRangeArrow}`);
     }
 
@@ -249,9 +253,9 @@ async function verifyViewport(width, height, filename) {
     await page.keyboard.press('ArrowRight');
     await page.waitForTimeout(400);
     const hashAfterGlobalArrow = await page.evaluate(() => window.location.hash);
-    console.log(`[Playwright Headless] Sin foco en controles, tras ArrowRight hash es: "${hashAfterGlobalArrow}" (debe ser #demo-02)`);
-    if (hashAfterGlobalArrow !== '#demo-02') {
-      throw new Error(`Navegación global por teclado esperada #demo-02, pero fue "${hashAfterGlobalArrow}"`);
+    console.log(`[Playwright Headless] Sin foco en controles, tras ArrowRight hash es: "${hashAfterGlobalArrow}" (debe ser #${secondSlug})`);
+    if (hashAfterGlobalArrow !== `#${secondSlug}`) {
+      throw new Error(`Navegación global por teclado esperada #${secondSlug}, pero fue "${hashAfterGlobalArrow}"`);
     }
   }
 

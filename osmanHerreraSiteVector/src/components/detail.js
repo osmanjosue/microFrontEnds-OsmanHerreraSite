@@ -80,12 +80,18 @@ export function renderDetail({
   }
 
   // Métrica opcional de horas
+  const hoursUnitConfig = vectorConfig.ui.hoursUnit;
+  const langUnit = hoursUnitConfig ? (hoursUnitConfig[currentLang] || hoursUnitConfig.es || hoursUnitConfig) : null;
+  const hoursUnit = langUnit
+    ? (work.hours === 1 ? langUnit.one : langUnit.other)
+    : (work.hours === 1 ? 'HR' : 'HRS');
+
   const hoursMetric =
     typeof work.hours === 'number'
       ? `
     <div class="col-span-2 sm:col-span-1 bg-surface-container-low p-space-xs rounded flex flex-col">
       <span class="font-label-micro text-label-micro text-on-surface-variant uppercase">${escapeHtml(t(vectorConfig.ui.metrics.hours))}</span>
-      <span class="font-stat-display text-stat-display text-secondary">${escapeHtml(work.hours.toLocaleString(currentLang))} HRS</span>
+      <span class="font-stat-display text-stat-display text-secondary">${escapeHtml(work.hours.toLocaleString(currentLang))} ${escapeHtml(hoursUnit)}</span>
     </div>
   `
       : '';

@@ -336,18 +336,18 @@ async function runFixtureTest() {
 }
 
 // ---------------------------------------------------------------------------
-// 3. TESTS DE VALIDACIONES PREVIAS (13 REGLAS DE CONTROL DE CALIDAD)
+// 3. TESTS DE VALIDACIONES PREVIAS (14 REGLAS DE CONTROL DE CALIDAD)
 // ---------------------------------------------------------------------------
 function runValidationTests() {
   console.log('\n═════════════════════════════════════════════════════════════════');
-  console.log('  TESTS DE VALIDACIÓN: 13 REGLAS PREVIAS DE CONTROL DE CALIDAD');
+  console.log('  TESTS DE VALIDACIÓN: 14 REGLAS PREVIAS DE CONTROL DE CALIDAD');
   console.log('═════════════════════════════════════════════════════════════════\n');
 
   const vResults = [];
 
   // V1: Sin viewBox -> ERROR
   const v1 = validateSvgPiece({
-    slug: 'demo-01',
+    slug: 'pieza-01',
     svgContent: '<svg width="100" height="100"><rect width="10" height="10"/></svg>',
   });
   const v1Pass = v1.status === 'ERROR' && v1.errors.some((e) => e.includes('viewBox'));
@@ -360,7 +360,7 @@ function runValidationTests() {
 
   // V2: Proporción difiere > 0.5% -> ERROR
   const v2 = validateSvgPiece({
-    slug: 'demo-01',
+    slug: 'pieza-01',
     svgContent: '<svg viewBox="0 0 100 100"><rect width="10" height="10"/></svg>',
     originalMeta: { width: 100, height: 120 },
   });
@@ -374,7 +374,7 @@ function runValidationTests() {
 
   // V3: <image> cubre >= 50% -> ERROR
   const v3 = validateSvgPiece({
-    slug: 'demo-01',
+    slug: 'pieza-01',
     svgContent: '<svg viewBox="0 0 100 100"><image x="0" y="0" width="80" height="80" href="data:image/png;base64,abc"/><rect width="10" height="10"/></svg>',
   });
   const v3Pass = v3.status === 'ERROR' && v3.errors.some((e) => e.includes('original quedó incrustado'));
@@ -387,7 +387,7 @@ function runValidationTests() {
 
   // V4: <image> cubre < 50% -> AVISO (técnica mixta: chip y outline atenuado)
   const v4 = validateSvgPiece({
-    slug: 'demo-01',
+    slug: 'pieza-01',
     svgContent: '<svg viewBox="0 0 100 100"><image x="0" y="0" width="20" height="20" href="data:image/png;base64,abc"/><rect width="10" height="10"/></svg>',
   });
   const v4Pass =
@@ -405,7 +405,7 @@ function runValidationTests() {
 
   // V5: <image> duplicadas -> AVISO
   const v5 = validateSvgPiece({
-    slug: 'demo-01',
+    slug: 'pieza-01',
     svgContent: '<svg viewBox="0 0 100 100"><image x="0" y="0" width="10" height="10" href="data:image/png;base64,duplicate"/><image x="20" y="20" width="10" height="10" href="data:image/png;base64,duplicate"/><rect width="10" height="10"/></svg>',
   });
   const v5Pass = v5.status === 'AVISOS' && v5.warnings.some((w) => w.includes('duplicadas'));
@@ -418,7 +418,7 @@ function runValidationTests() {
 
   // V6: Contiene <text -> AVISO
   const v6 = validateSvgPiece({
-    slug: 'demo-01',
+    slug: 'pieza-01',
     svgContent: '<svg viewBox="0 0 100 100"><text x="10" y="10">ABC</text></svg>',
   });
   const v6Pass = v6.status === 'AVISOS' && v6.warnings.some((w) => w.includes('Texto sin convertir'));
@@ -431,7 +431,7 @@ function runValidationTests() {
 
   // V7: Contiene <style -> AVISO
   const v7 = validateSvgPiece({
-    slug: 'demo-01',
+    slug: 'pieza-01',
     svgContent: '<svg viewBox="0 0 100 100"><style>.cls{fill:red;}</style><rect class="cls" width="10" height="10"/></svg>',
   });
   const v7Pass = v7.status === 'AVISOS' && v7.warnings.some((w) => w.includes('Internal CSS'));
@@ -444,7 +444,7 @@ function runValidationTests() {
 
   // V8: Contiene data-name= -> AVISO
   const v8 = validateSvgPiece({
-    slug: 'demo-01',
+    slug: 'pieza-01',
     svgContent: '<svg viewBox="0 0 100 100"><g data-name="Layer 1"><rect width="10" height="10"/></g></svg>',
   });
   const v8Pass = v8.status === 'AVISOS' && v8.warnings.some((w) => w.includes('Object IDs = Layer Names'));
@@ -457,7 +457,7 @@ function runValidationTests() {
 
   // V9: Formas degeneradas ignoradas -> AVISO
   const v9 = validateSvgPiece({
-    slug: 'demo-01',
+    slug: 'pieza-01',
     svgContent: '<svg viewBox="0 0 100 100"><rect width="0" height="10"/><rect width="10" height="10"/></svg>',
   });
   const v9Pass = v9.status === 'AVISOS' && v9.warnings.some((w) => w.includes('objetos vacíos'));
@@ -468,7 +468,7 @@ function runValidationTests() {
     Resultado: v9Pass ? '✔ PASS' : '✖ FAIL',
   });
 
-  // V10: Nombre no sigue pieza-NN / demo-NN o con espacios -> ERROR
+  // V10: Nombre no sigue pieza-NN o con espacios -> ERROR
   const v10 = validateSvgPiece({
     slug: 'mi arte final',
     svgContent: '<svg viewBox="0 0 100 100"><rect width="10" height="10"/></svg>',
@@ -476,7 +476,7 @@ function runValidationTests() {
   const v10Pass = v10.status === 'ERROR' && v10.errors.some((e) => e.includes('no sigue'));
   vResults.push({
     Regla: '10. Nombre inválido o con espacios',
-    Esperado: 'ERROR (formato no cumple pieza-NN/demo-NN)',
+    Esperado: 'ERROR (formato no cumple pieza-NN)',
     Obtenido: `${v10.status} (${v10.errors[0] || 'sin mensaje'})`,
     Resultado: v10Pass ? '✔ PASS' : '✖ FAIL',
   });
@@ -519,7 +519,7 @@ function runValidationTests() {
 
   // V13: Clave outline objeto -> ERROR; con outlineOptions -> OK
   const v13Bad = validateSvgPiece({
-    slug: 'demo-01',
+    slug: 'pieza-01',
     svgContent: '<svg viewBox="0 0 100 100"><rect width="10" height="10"/></svg>',
     pieceConfig: {
       outline: { anchors: 'on' },
@@ -532,10 +532,10 @@ function runValidationTests() {
     );
 
   const v13Good = validateSvgPiece({
-    slug: 'demo-01',
+    slug: 'pieza-01',
     svgContent: '<svg viewBox="0 0 100 100"><rect width="10" height="10"/></svg>',
     pieceConfig: {
-      outline: 'works/demo-01/outline.webp',
+      outline: 'works/pieza-01/outline.webp',
       outlineOptions: { anchors: 'on' },
     },
   });
@@ -547,6 +547,37 @@ function runValidationTests() {
     Esperado: 'ERROR si outline es objeto, OK si outline es string con outlineOptions',
     Obtenido: `Bad: ${v13Bad.status} (${v13Bad.errors[0] || 'sin mensaje'}) | Good: ${v13Good.status}`,
     Resultado: v13Pass ? '✔ PASS' : '✖ FAIL',
+  });
+
+  // V14: Clave thumb objeto -> ERROR; con string -> OK
+  const v14Bad = validateSvgPiece({
+    slug: 'pieza-01',
+    svgContent: '<svg viewBox="0 0 100 100"><rect width="10" height="10"/></svg>',
+    pieceConfig: {
+      thumb: { size: 480 },
+    },
+  });
+  const v14BadPass =
+    v14Bad.status === 'ERROR' &&
+    v14Bad.errors.some((e) =>
+      e.includes('Usa `thumb` solo para la ruta de la miniatura (string).')
+    );
+
+  const v14Good = validateSvgPiece({
+    slug: 'pieza-01',
+    svgContent: '<svg viewBox="0 0 100 100"><rect width="10" height="10"/></svg>',
+    pieceConfig: {
+      thumb: 'works/pieza-01/thumb.webp',
+    },
+  });
+  const v14GoodPass = v14Good.status === 'OK' && v14Good.errors.length === 0;
+
+  const v14Pass = v14BadPass && v14GoodPass;
+  vResults.push({
+    Regla: '14. thumb string vs objeto',
+    Esperado: 'ERROR si thumb es objeto, OK si thumb es string',
+    Obtenido: `Bad: ${v14Bad.status} (${v14Bad.errors[0] || 'sin mensaje'}) | Good: ${v14Good.status}`,
+    Resultado: v14Pass ? '✔ PASS' : '✖ FAIL',
   });
 
   console.table(vResults);

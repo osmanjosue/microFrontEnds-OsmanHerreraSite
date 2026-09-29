@@ -53,7 +53,5 @@ yarn-error.log*
 
 # Vector Work: fuentes editables, artes y títulos reales NUNCA en git (repo público)
 osmanHerreraSiteVector/source/*
-!osmanHerreraSiteVector/source/demo-*
 osmanHerreraSiteVector/public/works/*
-!osmanHerreraSiteVector/public/works/demo-*/
 osmanHerreraSiteVector/public/data/titles.json

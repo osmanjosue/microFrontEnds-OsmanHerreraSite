@@ -6,6 +6,7 @@
 //   - vector.webp (máx 2400px lado largo, calidad 90)
 //   - outline.webp (trazados cian adaptativos #00f0ff + anclas #ffb703 sobre fondo #0d0e13, máx 2400px, calidad 90)
 //   - original.webp (máx 2400px lado largo, calidad 85, withoutEnlargement: true)
+//   - thumb.webp (cuadrada 320×320 a partir de vector.webp, fit: contain, calidad 85)
 //   - src/content/stats.json (métricas numéricas precalculadas + outlineAnchors)
 // ===========================================================================
 
@@ -180,6 +181,7 @@ async function main() {
       inConfig,
       pieceConfig,
       outline: pieceConfig.outline,
+      thumb: pieceConfig.thumb,
     });
 
     const isError = validation.status === 'ERROR';
@@ -206,6 +208,7 @@ async function main() {
         colors: '—',
         artboard: '—',
         vectorSize: '—',
+        thumbSize: '—',
         outlineSize: '—',
         origSize: '—',
         Validación: 'ERROR',
@@ -222,6 +225,7 @@ async function main() {
         colors: validation.analysis.stats.colors,
         artboard: `${validation.analysis.artboard[0]}×${validation.analysis.artboard[1]}`,
         vectorSize: '—',
+        thumbSize: '—',
         outlineSize: '—',
         origSize: '—',
         Validación: 'ERROR',
@@ -268,7 +272,14 @@ async function main() {
     }
     await vectorPipeline.webp({ quality: 90 }).toFile(vectorOutPath);
 
-    // 2.2 outline.webp adaptativo según densidad
+    // 2.2 thumb.webp (cuadrada 320×320 a partir de vector.webp, fit: contain, fondo transparente)
+    const thumbOutPath = path.join(outDir, 'thumb.webp');
+    await sharp(vectorOutPath)
+      .resize(320, 320, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .webp({ quality: 85 })
+      .toFile(thumbOutPath);
+
+    // 2.3 outline.webp adaptativo según densidad
     const totalAnchors = stats.anchors;
     let defAnchors = 'on';
     let defAnchorSize = 16;
@@ -358,15 +369,31 @@ async function main() {
       rasters: stats.rasters,
       artboard: `${stats.artboard[0]}×${stats.artboard[1]}`,
       vectorSize: (fs.statSync(vectorOutPath).size / 1024).toFixed(1) + ' KB',
+      thumbSize: (fs.statSync(thumbOutPath).size / 1024).toFixed(1) + ' KB',
       outlineSize: (fs.statSync(outlineOutPath).size / 1024).toFixed(1) + ' KB',
       origSize: (fs.statSync(originalOutPath).size / 1024).toFixed(1) + ' KB',
       Validación: validation.status,
     });
   }
 
+  // Ordenar claves de stats.json según el orden de vectorConfig.works (y alfabéticamente las restantes)
+  const sortedStatsData = {};
+  const configSlugs = (vectorConfig.works || []).map((w) => w.slug);
+  for (const slug of configSlugs) {
+    if (statsData[slug]) {
+      sortedStatsData[slug] = statsData[slug];
+    }
+  }
+  const remainingSlugs = Object.keys(statsData)
+    .filter((slug) => !configSlugs.includes(slug))
+    .sort();
+  for (const slug of remainingSlugs) {
+    sortedStatsData[slug] = statsData[slug];
+  }
+
   // Guardar src/content/stats.json
-  fs.writeFileSync(statsFilePath, JSON.stringify(statsData, null, 2), 'utf8');
-  console.log(`\n✔ src/content/stats.json actualizado con ${Object.keys(statsData).length} pieza(s).`);
+  fs.writeFileSync(statsFilePath, JSON.stringify(sortedStatsData, null, 2), 'utf8');
+  console.log(`\n✔ src/content/stats.json actualizado con ${Object.keys(sortedStatsData).length} pieza(s).`);
 
   // Imprimir tabla resumen
   console.log('\n--- TABLA RESUMEN DE ASSETS GENERADOS ---');

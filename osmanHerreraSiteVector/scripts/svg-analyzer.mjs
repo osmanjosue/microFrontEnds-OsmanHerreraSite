@@ -648,6 +648,7 @@ export function validateSvgPiece({
   inConfig = true,
   pieceConfig,
   outline,
+  thumb,
 }) {
   const errors = [];
   const warnings = [];
@@ -675,11 +676,19 @@ export function validateSvgPiece({
     );
   }
 
+  // Regla 14: La clave thumb debe ser la ruta de la miniatura (string)
+  const thumbVal = thumb !== undefined ? thumb : pieceConfig?.thumb;
+  if (thumbVal !== undefined && typeof thumbVal !== 'string') {
+    errors.push(
+      'Usa `thumb` solo para la ruta de la miniatura (string).'
+    );
+  }
+
   // Regla 10: Validación del nombre del archivo (formato y espacios)
-  const validSlug = /^(pieza|demo)-\d{2}$/.test(slug) && !/\s/.test(slug);
+  const validSlug = /^pieza-\d{2}$/.test(slug) && !/\s/.test(slug);
   if (!validSlug) {
     errors.push(
-      `El nombre del archivo "${slug}.svg" no sigue 'pieza-NN' / 'demo-NN' o contiene espacios. Nombre esperado: ej. 'pieza-01.svg'.`
+      `El nombre del archivo "${slug}.svg" no sigue 'pieza-NN' o contiene espacios. Nombre esperado: ej. 'pieza-01.svg'.`
     );
   }
 
