@@ -1,6 +1,6 @@
 # Revisión fase 9
 - Commit revisado: 9cd4744
-- Veredicto: REQUIERE CORRECCIONES
+- Veredicto: APROBADA (tras 2 rondas de correcciones)
 
 ## Verificación propia
 - `git show --stat 9cd4744`: 18 archivos. Coinciden con el reporte. No se tocó nada fuera del alcance.
@@ -50,3 +50,21 @@ Verificación: `npm run build` genera 9 páginas y `astro check` da 0 errors, 0 
    → En print: títulos `#111`, resaltado `#0f766e`, y `break-after: avoid` en los encabezados de sección.
 
 <!-- VEREDICTO: APROBADA CON OBSERVACIONES -->
+
+## Re-revisión (b1e5bfa)
+Verificación: `npm run build` genera 9 páginas y `astro check` da 0 errors, 0 warnings. Playwright en /cv, /en/cv, / y /en a 1440 y 390 px: 0 px de scroll horizontal, 0 errores de consola y 0 respuestas 4xx. Generé el PDF Letter con y sin `printBackground` (5 páginas cada uno) y lo convertí a PNG con PyMuPDF.
+
+6. **Resuelto.** Con `printBackground: true`, todas las tarjetas salen en blanco con borde gris y el texto es legible.
+7. **Resuelto.** Los títulos de puesto salen casi negros y el resaltado en teal oscuro. "// EXPERIENCIA" ya no queda huérfano. El PDF bajó de 7 a 5 páginas.
+
+Notas (no requieren acción):
+- Las reglas de impresión quedaron duplicadas en `global.css` y `CvView.astro`. Todo está bajo `.print-page`, salvo el fondo blanco de `html/body`, así que no afecta a otras páginas. Conviene dejarlas en un solo lugar si se vuelven a tocar.
+- En el PDF, el chip largo de Excel en "Datos" ("EXCEL (FORMULAS, LOOKUPS, … MACRO-SAFE AUTOMATION)") se corta en el borde de la tarjeta. Es cosmético.
+
+## Pulido final (Claude)
+- Reglas de impresión: se eliminó el bloque duplicado de `src/styles/global.css`. Ahora viven solo en `CvView.astro` (se cargan solo en /cv) y se agregó `clip-path: none` a las tarjetas. **Resuelto.**
+- Chip largo de Excel: `Chip.astro` cambia `whitespace-nowrap` por `max-w-full whitespace-normal break-words`. En el PDF se parte en dos líneas dentro de la tarjeta. **Resuelto.**
+
+Verificación: build de 9 páginas y `astro check` con 0 errores. Playwright en /cv, /en/cv, / y /en a 1440 y 390 px, sin scroll horizontal, errores ni 4xx. PDF Letter con y sin `printBackground`: 5 páginas, blanco y legible.
+
+<!-- VEREDICTO: APROBADA -->
