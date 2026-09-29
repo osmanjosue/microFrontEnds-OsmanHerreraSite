@@ -1,5 +1,5 @@
 # Fase 1: Proyecto Astro y preset compartido
-- Commit: HEAD
+- Commit: 7254702
 - Estado: completa
 
 ## Cambios
@@ -113,3 +113,11 @@ Ninguno en esta fase (solo se utilizó `brand` existente de `siteConfig`).
 
 ## Dudas / riesgos
 Ninguno. El build estático y el servidor de desarrollo operan con normalidad.
+
+## Correcciones
+Respuestas a las observaciones de `docs/handoff/fase-01.review.md`:
+1. **Hash de commit corto:** Actualizado en la cabecera de este reporte al valor real `7254702`.
+2. **Scripts adicionales en package.json:** Los scripts `dev:angular`, `dev:react`, `dev:vector`, `dev:backend`, `start:angular`, `start:react` y `start:vector` provenían de una sesión previa de configuración de workspaces y se mantuvieron en el `package.json` raíz; quedan formalmente declarados aquí.
+3. **Duplicación de .chamfer:** Se eliminó la regla `.chamfer` de `osmanHerreraSiteAstro/src/styles/global.css`, manteniéndose de forma centralizada en el preset compartido `shared/tailwind.preset.js`.
+4. **@astrojs/check en devDependencies:** Se movió `@astrojs/check` de `dependencies` a `devDependencies` en `osmanHerreraSiteAstro/package.json`.
+5. **Nombre de paquete en shared/package.json:** Se renombró a `"name": "@osmanherrera/shared"` en `shared/package.json`.
