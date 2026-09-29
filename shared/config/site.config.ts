@@ -890,6 +890,10 @@ export const siteConfig: SiteConfig = {
       en: 'ERROR 404 // RESOURCE NOT FOUND',
     },
     code: '404',
+    langLabel: {
+      es: 'ES // ESPAÑOL',
+      en: 'EN // ENGLISH',
+    },
     title: {
       es: 'Página no encontrada',
       en: 'Page Not Found',

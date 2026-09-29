@@ -92,14 +92,34 @@ Test-Path "osmanHerreraSiteAstro/dist/404.html"
 - [x] Servidor no modificado (solo documentación).
 
 ## Desviaciones del prompt
-- Ninguna. Se siguió la especificación al pie de la letra.
+- Directivas complementarias en la configuración de Nginx (`docs/nginx-astro.md`): se agregaron configuraciones de producción recomendadas que no estaban detalladas en el prompt mínimo ni en la sección 8 de `osmanHerreraSiteVector/README.md`:
+  - Bloque HTTPS con redirección automática HTTP -> HTTPS y soporte para HTTP/2 (con nota de compatibilidad para Nginx >= 1.25.1).
+  - Cabeceras de seguridad globales (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`) y su réplica explícita en bloques secundarios (`data/`, `works/`, `_astro/`) debido al comportamiento de herencia de Nginx.
+  - Compresión Gzip para tipos MIME de texto, SVG y JSON.
+  - Caché inmutable (`1y`) para assets generados por Vite/Astro con hash (`/_astro/`).
+  - Cache-Control `no-cache` en `/vectorwork/data/` (alineado a `osmanHerreraSiteVector/README.md`).
+- Soporte para `noindex` en `BaseLayout.astro`: se incorporó la prop booleana opcional `noindex?: boolean` para permitir que páginas de error como la 404 emitan `<meta name="robots" content="noindex, nofollow" />` y omitan las etiquetas canónicas y de enlaces alternativos `hreflang` del home.
 
 ## TODO de contenido
 - Módulo de reclutamiento: descripción y URL exacta pendiente de confirmación (`TODO: confirmar`).
 - Reemplazar los 4 placeholders SVG en `public/assets/images/projects/` por las capturas reales webp (~1200×750) cuando estén disponibles.
+- Confirmar rutas reales del sitio en el VPS y rutas de certificados SSL en `docs/nginx-astro.md`.
 
 ## Traducciones a revisar
 Ninguna nueva requerida para esta fase. Los textos de la página 404 fueron incorporados en `site.config.ts` en ambos idiomas.
 
 ## Dudas / riesgos
 Ninguno. El sitio compila 7 páginas estáticas limpiamente y la configuración de Nginx contempla todas las transiciones y redirecciones de las rutas legado.
+
+## Correcciones de fase-07.md
+Respuestas a las observaciones de `docs/handoff/fase-07.review.md`:
+
+1. **[menor] Estructura de landmarks HTML en 404:** Se sustituyó la etiqueta `<main>` en `osmanHerreraSiteAstro/src/pages/404.astro` por `<section class="min-h-[70vh] flex flex-col justify-center">`, eliminando el anidamiento inválido dentro del `<main>` global de `BaseLayout.astro` y asegurando cumplimiento de accesibilidad axe/Lighthouse.
+2. **[menor] Textos de idiomas y metadatos desde configuración:** Se añadió la propiedad `langLabel: Localized` a `NotFoundConfig` en `shared/config/site.types.ts` y sus valores (`{ es: 'ES // ESPAÑOL', en: 'EN // ENGLISH' }`) en `shared/config/site.config.ts`. En `404.astro` se sustituyeron los literales por `{notFound.langLabel.es}` y `{notFound.langLabel.en}`, y se enlazaron el título y descripción del layout a `notFound.metaTitle.es` y `notFound.metaDescription.es`.
+3. **[menor] SEO y accesibilidad en 404:** Se agregó a `BaseLayout.astro` la propiedad `noindex?: boolean`. Cuando es `true`, renderiza `<meta name="robots" content="noindex, nofollow" />` y omite el `<link rel="canonical">` y los `<link rel="alternate" hreflang="...">`. Se activó `noindex={true}` en `404.astro`, y se añadió el atributo `lang="en"` en la tarjeta en inglés (actualizando la interfaz de props de `Card.astro`) para que los lectores de pantalla utilicen la pronunciación inglesa.
+4. **[menor] Herencia de cabeceras Nginx en bloques location secundarios:** Dado que Nginx descarta los `add_header` heredados del contexto `server` si un bloque `location` define sus propias cabeceras, se replicaron explícitamente `X-Content-Type-Options`, `X-Frame-Options` y `Referrer-Policy` dentro de `/vectorwork/data/`, `/vectorwork/works/` y `/_astro/`, añadiendo una nota técnica explicativa en `docs/nginx-astro.md`.
+5. **[menor] Ajuste de directivas de caché con README de Vector Work:** Se eliminó la directiva `immutable` del bloque `/vectorwork/works/` en `docs/nginx-astro.md` para permitir que ilustraciones o piezas actualizadas se refresquen dentro de la ventana de 30 días sin requerir hash en el nombre. Se mantuvo `no-cache` en `data/` y se documentaron las adiciones (HTTPS, Gzip, cabeceras de seguridad) en la sección "Desviaciones del prompt".
+6. **[menor] Rutas VPS, regex de redirección y modernización HTTP/2:** En `docs/nginx-astro.md`, se marcaron las rutas del sistema de archivos y certificados Certbot con `# TODO: confirmar`. Se amplió la expresión regular de la política de privacidad a `location ~ ^/react/politicadeprivacidad/?$` para capturar peticiones con o sin barra final. Se añadió nota técnica sobre la directiva moderna `http2 on;` (Nginx >= 1.25.1) frente al parámetro obsoleto en `listen`.
+7. **[info] Exclusión de `dist/` en análisis de TypeScript:** Se configuró `"exclude": ["dist", "node_modules"]` en `osmanHerreraSiteAstro/tsconfig.json`, evitando que `astro check` analice los archivos generados y minificados en `dist/` (eliminando los 38 hints espurios).
+8. **[menor] Exactitud del reporte:** Actualizada la sección `## Desviaciones del prompt` en `fase-07.md` para declarar todas las directivas complementarias de Nginx y el soporte de `noindex` en `BaseLayout`.
+

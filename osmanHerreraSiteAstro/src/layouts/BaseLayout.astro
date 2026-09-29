@@ -13,9 +13,10 @@ interface Props {
   route: RouteKey;
   title?: string;
   description?: string;
+  noindex?: boolean;
 }
 
-const { lang, route, title, description } = Astro.props;
+const { lang, route, title, description, noindex = false } = Astro.props;
 const seo = getSeoMetadata({ route, lang, title, description });
 ---
 
@@ -26,12 +27,18 @@ const seo = getSeoMetadata({ route, lang, title, description });
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{seo.title}</title>
     <meta name="description" content={seo.description} />
-    <link rel="canonical" href={seo.canonicalUrl} />
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <>
+        <link rel="canonical" href={seo.canonicalUrl} />
+        {seo.alternateLinks.map((link) => (
+          <link rel="alternate" hreflang={link.hreflang} href={link.href} />
+        ))}
+      </>
+    )}
     <meta property="og:locale" content={seo.ogLocale} />
     <meta property="og:locale:alternate" content={seo.ogLocaleAlternate} />
-    {seo.alternateLinks.map((link) => (
-      <link rel="alternate" hreflang={link.hreflang} href={link.href} />
-    ))}
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/oherrera.ico" />

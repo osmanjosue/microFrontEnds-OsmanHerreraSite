@@ -39,19 +39,26 @@ server {
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
+    # Nota para Nginx >= 1.25.1: el parámetro 'http2' en la directiva 'listen' está obsoleto.
+    # En instalaciones recientes, sustituir por:
+    # listen 443 ssl;
+    # http2 on;
+
     server_name osmanherrera.dev www.osmanherrera.dev;
 
     # Certificados SSL (gestionados por Certbot / Let's Encrypt)
+    # TODO: confirmar rutas de certificados SSL en el VPS
     ssl_certificate /etc/letsencrypt/live/osmanherrera.dev/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/osmanherrera.dev/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     # Directorio raíz del sitio (dist compilado por Astro)
+    # TODO: confirmar ruta base en el VPS (ej. /var/www/osmanherrera-site/osmanHerreraSiteAstro/dist)
     root /var/www/osmanherrera-site/osmanHerreraSiteAstro/dist;
     index index.html;
 
-    # Charset y cabeceras de seguridad
+    # Charset y cabeceras de seguridad globales
     charset utf-8;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-Frame-Options "SAMEORIGIN" always;
@@ -68,8 +75,8 @@ server {
     # --------------------------------------------------------------------------
     # 1. REDIRECCIONES DE RUTAS LEGADO (ANGULAR & REACT)
     # --------------------------------------------------------------------------
-    # Redirección de política de privacidad antigua en React
-    location = /react/politicadeprivacidad {
+    # Redirección de política de privacidad antigua en React (con o sin barra final)
+    location ~ ^/react/politicadeprivacidad/?$ {
         return 301 /politicadeprivacidad;
     }
 
@@ -109,20 +116,29 @@ server {
     # --------------------------------------------------------------------------
     # Longest prefix match asegura que /vectorwork/data/ y /vectorwork/works/
     # tengan precedencia absoluta sobre la raíz /vectorwork/
+    # NOTA: Nginx NO hereda los 'add_header' del bloque 'server' en ningún 'location'
+    # que defina sus propias cabeceras, por lo que se deben repetir explícitamente.
 
     # Títulos reales: protegidos contra indexación en buscadores y sin caché
     location /vectorwork/data/ {
         alias /var/www/vectorwork-assets/data/;
         add_header X-Robots-Tag "noindex, nofollow" always;
-        add_header Cache-Control "no-cache, no-store, must-revalidate" always;
+        add_header Cache-Control "no-cache" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     }
 
-    # Obras e ilustraciones WebP: excluidas de Google Imágenes con caché larga
-    # (Si se migra a Cloudflare R2, este bloque se redirige o delega al bucket)
+    # Obras e ilustraciones WebP: excluidas de Google Imágenes con caché
+    # NOTA: No se usa 'immutable' porque los archivos de obras en works/ no contienen
+    # hash en el nombre y deben poder actualizarse dentro de la ventana de 30 días.
     location /vectorwork/works/ {
         alias /var/www/vectorwork-assets/works/;
         add_header X-Robots-Tag "noindex" always;
-        add_header Cache-Control "public, max-age=2592000, immutable" always;
+        add_header Cache-Control "public, max-age=2592000" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     }
 
     # --------------------------------------------------------------------------
@@ -152,6 +168,9 @@ server {
     location ~* ^/_astro/.*\.(css|js|webp|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
         expires 1y;
         add_header Cache-Control "public, max-age=31536000, immutable";
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
         access_log off;
     }
 
@@ -187,7 +206,7 @@ server {
 
 ## 3. Guía de Despliegue en el VPS
 
-1. **Estructura de Directorios en el VPS:**
+1. **Estructura de Directorios en el VPS (TODO: confirmar rutas exactas):**
    ```bash
    # Carpeta del repositorio / build
    /var/www/osmanherrera-site/osmanHerreraSiteAstro/dist/

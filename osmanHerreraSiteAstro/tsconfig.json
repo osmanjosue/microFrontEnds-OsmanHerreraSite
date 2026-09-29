@@ -8,5 +8,6 @@
       "@shared/*": ["../shared/*"]
     }
   },
-  "include": [".astro/types.d.ts", "**/*", "../shared/**/*"]
+  "include": [".astro/types.d.ts", "**/*", "../shared/**/*"],
+  "exclude": ["dist", "node_modules"]
 }

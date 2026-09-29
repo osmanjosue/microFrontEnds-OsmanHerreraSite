@@ -14,12 +14,16 @@ import Card from '../components/ui/Card.astro';
 import Chip from '../components/ui/Chip.astro';
 
 const { notFound } = siteConfig;
-const metaTitle = `${notFound.code} // ${notFound.title.es} / ${notFound.title.en} — ${siteConfig.brand.highlight}${siteConfig.brand.rest}`;
-const metaDesc = `${notFound.description.es} / ${notFound.description.en}`;
 ---
 
-<BaseLayout lang="es" route="home" title={metaTitle} description={metaDesc}>
-  <main class="min-h-[70vh] flex items-center justify-center px-margin py-space-xl">
+<BaseLayout
+  lang="es"
+  route="home"
+  title={notFound.metaTitle.es}
+  description={notFound.metaDescription.es}
+  noindex={true}
+>
+  <section class="min-h-[70vh] flex items-center justify-center px-margin py-space-xl">
     <div class="max-w-3xl w-full mx-auto flex flex-col items-center text-center space-y-space-lg">
       <!-- KICKER TÁCTICO -->
       <div class="flex items-center gap-space-xs flex-wrap justify-center">
@@ -47,7 +51,7 @@ const metaDesc = `${notFound.description.es} / ${notFound.description.en}`;
           <div class="space-y-space-xs">
             <div class="flex items-center justify-between">
               <span class="font-label-caps text-label-caps text-primary-container font-bold tracking-wider">
-                ES // ESPAÑOL
+                {notFound.langLabel.es}
               </span>
               <span class="w-2 h-2 rounded-full bg-primary-container"></span>
             </div>
@@ -65,12 +69,12 @@ const metaDesc = `${notFound.description.es} / ${notFound.description.en}`;
           </div>
         </Card>
 
-        <!-- SECCIÓN EN INGLÉS -->
-        <Card chamfer class="p-space-md flex flex-col justify-between space-y-space-md border-surface-container-high/60">
+        <!-- SECCIÓN EN INGLÉS (ACCESIBLE CON lang="en") -->
+        <Card chamfer lang="en" class="p-space-md flex flex-col justify-between space-y-space-md border-surface-container-high/60">
           <div class="space-y-space-xs">
             <div class="flex items-center justify-between">
               <span class="font-label-caps text-label-caps text-secondary font-bold tracking-wider">
-                EN // ENGLISH
+                {notFound.langLabel.en}
               </span>
               <span class="w-2 h-2 rounded-full bg-secondary"></span>
             </div>
@@ -89,5 +93,5 @@ const metaDesc = `${notFound.description.es} / ${notFound.description.en}`;
         </Card>
       </div>
     </div>
-  </main>
+  </section>
 </BaseLayout>

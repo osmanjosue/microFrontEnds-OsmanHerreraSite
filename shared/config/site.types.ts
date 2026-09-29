@@ -235,6 +235,7 @@ export interface SiteConfig {
     metaDescription: Localized;
     kicker: Localized;
     code: string;
+    langLabel: Localized;
     title: Localized;
     description: Localized;
     homeLink: Localized;
