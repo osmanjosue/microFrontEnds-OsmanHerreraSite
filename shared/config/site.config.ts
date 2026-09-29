@@ -318,7 +318,7 @@ export const siteConfig: SiteConfig = {
           es: 'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en Hetzner con Ubuntu Server, NGINX y PM2.',
           en: 'Built the website with an Angular 15 frontend and a Node.js backend API. MongoDB database with Cloudinary for image management. JWT authentication and credential validation for the admin panel. Hosted on Hetzner with Ubuntu Server, NGINX, and PM2.',
         },
-        image: '/assets/images/projects/prolancho-web.svg',
+        image: '/assets/images/projects/prolancho-web.webp',
         technologies: ['Angular 15', 'NodeJS', 'MongoDB', 'JWT', 'Hetzner', 'NGINX'],
         links: [
           {
@@ -346,7 +346,7 @@ export const siteConfig: SiteConfig = {
           es: 'Sistema web integral de captación y administración de postulaciones laborales. Diseñado para optimizar la recepción de talento mediante un formulario público interactivo con carga segura de hojas de vida (PDF en Cloudinary) y notificaciones automatizadas. Incluye un directorio privado de evaluación protegido por autenticación segura sin contraseña (Magic Links criptográficos vía email), permitiendo al equipo directivo filtrar, auditar y consultar perfiles en tiempo real sin exponer credenciales.',
           en: 'End-to-end web system for sourcing and managing job applications. Built to streamline talent intake through an interactive public form with secure résumé uploads (PDFs on Cloudinary) and automated notifications. It includes a private review directory protected by secure passwordless authentication (cryptographic Magic Links via email), letting the leadership team filter, audit, and browse profiles in real time without exposing credentials.',
         },
-        image: '/assets/images/projects/prolancho-reclutamiento.svg',
+        image: '/assets/images/projects/prolancho-reclutamiento.webp',
         technologies: [
           'Angular 20',
           'NodeJS',
@@ -359,7 +359,7 @@ export const siteConfig: SiteConfig = {
         links: [
           {
             label: { es: 'Sitio Web', en: 'Website' },
-            url: 'https://www.fundacionprolancho.org',
+            url: 'https://fundacionprolancho.org/trabaja-con-nosotros',
             icon: '/assets/icons/website.svg',
           },
         ],
@@ -377,7 +377,7 @@ export const siteConfig: SiteConfig = {
           es: 'Proyecto freelance: sitio web profesional para una médica especialista en ginecología y obstetricia. Reserva de citas online, chat con IA que escala a WhatsApp y formulario de contacto, con todo el contenido centralizado en archivos de datos.',
           en: 'Freelance project: professional website for an OB-GYN specialist. Online appointment booking, an AI chat that escalates to WhatsApp, and a contact form, with all content centralized in data files.',
         },
-        image: '/assets/images/projects/drafrancisherrera.svg',
+        image: '/assets/images/projects/drafrancisherrera.webp',
         technologies: ['React 19', 'TypeScript', 'Vite', 'NodeJS', 'Cloudflare'],
         links: [
           {
@@ -400,7 +400,7 @@ export const siteConfig: SiteConfig = {
           es: 'Galería de conversión raster a vector con visor interactivo de doble capa, modo outline e inspección de trazados vectoriales de alta precisión.',
           en: 'Raster-to-vector gallery featuring an interactive split-slider viewer, outline mode, and high-precision vector path inspection.',
         },
-        image: '/assets/images/projects/vectorwork.svg',
+        image: '/assets/images/projects/vectorwork.webp',
         technologies: ['JavaScript', 'Vite', 'Tailwind CSS', 'Illustrator', 'SVG'],
         links: [
           {
