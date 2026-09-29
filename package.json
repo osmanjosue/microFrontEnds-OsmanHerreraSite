@@ -13,7 +13,7 @@
     "osmanHerreraSiteVector"
   ],
   "scripts": {
-    "dev": "npm run dev --prefix osmanHerreraSiteReact",
+    "dev": "npm run dev --prefix osmanHerreraSiteAstro",
     "dev:angular": "npm run dev --prefix osmanHerreraSite",
     "dev:react": "npm run dev --prefix osmanHerreraSiteReact",
     "dev:vector": "npm run dev --prefix osmanHerreraSiteVector",
@@ -25,13 +25,14 @@
     "start:backend": "pm2 restart oherrera-api || pm2 start osmanHerreraSiteBackend/dist/app.js --name oherrera-api",
     "install:all": "npm install",
     "clean": "rm -rf **/node_modules **/dist",
+    "build": "npm run build --prefix osmanHerreraSiteAstro",
     "build:angular": "npm run build --prefix osmanHerreraSite -- --base-href /angular/",
     "build:react": "npm run build --prefix osmanHerreraSiteReact -- --base /react/",
     "build:backend": "npm run build --prefix osmanHerreraSiteBackend",
     "build:vector": "npm run build --prefix osmanHerreraSiteVector",
     "build:astro": "npm run build --prefix osmanHerreraSiteAstro",
     "assets:test": "npm run assets:test --prefix osmanHerreraSiteAstro",
-    "build:all": "npm run build:angular && npm run build:react && npm run build:backend && npm run build:vector"
+    "build:all": "npm run build:astro && npm run build:backend"
   },
   "repository": {
     "type": "git",

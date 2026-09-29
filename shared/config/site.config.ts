@@ -875,4 +875,32 @@ export const siteConfig: SiteConfig = {
       href: `mailto:${CONTACT_EMAIL}`,
     },
   },
+
+  notFound: {
+    metaTitle: {
+      es: '404 // Página no encontrada — Osman Herrera',
+      en: '404 // Page Not Found — Osman Herrera',
+    },
+    metaDescription: {
+      es: 'La página solicitada no existe o ha sido movida.',
+      en: 'The requested page does not exist or has been moved.',
+    },
+    kicker: {
+      es: 'ERROR 404 // RECURSO NO LOCALIZADO',
+      en: 'ERROR 404 // RESOURCE NOT FOUND',
+    },
+    code: '404',
+    title: {
+      es: 'Página no encontrada',
+      en: 'Page Not Found',
+    },
+    description: {
+      es: 'La ruta a la que intentas acceder no existe, ha sido trasladada o el enlace es incorrecto.',
+      en: 'The route you are trying to access does not exist, has been moved, or the link is incorrect.',
+    },
+    homeLink: {
+      es: 'Volver al inicio',
+      en: 'Back to home',
+    },
+  },
 };

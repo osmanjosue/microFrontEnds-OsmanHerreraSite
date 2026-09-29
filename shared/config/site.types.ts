@@ -230,4 +230,13 @@ export interface SiteConfig {
       href: string;
     };
   };
+  notFound: {
+    metaTitle: Localized;
+    metaDescription: Localized;
+    kicker: Localized;
+    code: string;
+    title: Localized;
+    description: Localized;
+    homeLink: Localized;
+  };
 }
