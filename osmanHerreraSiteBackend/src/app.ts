@@ -63,12 +63,7 @@ app.use('/api/email', emailLimiter, (req: Request, res: Response, next: NextFunc
     next();
 }, emailRoutes);
 
-// --- 6. MANEJO DE SPA ---
-// app.get('*', (req: Request, res: Response) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-// });
-
-// --- 7. MANEJADOR DE ERRORES GLOBAL ---
+// --- 6. MANEJADOR DE ERRORES GLOBAL ---
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     console.error(`[LOG ERROR] ${req.method} ${req.url}: ${err.message}`);
     const status = err.message === 'No permitido por CORS' ? 403 : 500;
