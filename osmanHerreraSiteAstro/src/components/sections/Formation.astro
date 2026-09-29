@@ -59,21 +59,25 @@ const { formation } = siteConfig;
       </h3>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
-        {formation.certificates.map((cert) => (
-          <Card variant="interactive" class="flex flex-col justify-between gap-space-md p-space-md">
-            <div class="space-y-space-sm">
-              <div class="flex items-center justify-between gap-space-xs">
-                <Chip variant="common">{cert.platform}</Chip>
-                {(cert.month || cert.date) && (
-                  <span class="font-mono text-label-micro text-on-surface-variant">
-                    {cert.month ? t(cert.month, lang) : ''} {cert.date ?? ''}
-                  </span>
-                )}
+        {formation.certificates.map((cert) => {
+          const hasDate = cert.date && !String(cert.date).includes('TODO');
+          const hasMonth = cert.month && !t(cert.month, lang).includes('TODO');
+          const showDateBadge = Boolean(hasMonth || hasDate);
+          return (
+            <Card variant="interactive" class="flex flex-col justify-between gap-space-md p-space-md">
+              <div class="space-y-space-sm">
+                <div class="flex items-center justify-between gap-space-xs">
+                  <Chip variant="common">{cert.platform}</Chip>
+                  {showDateBadge && (
+                    <span class="font-mono text-label-micro text-on-surface-variant">
+                      {hasMonth && cert.month ? t(cert.month, lang) : ''} {hasDate ? cert.date : ''}
+                    </span>
+                  )}
+                </div>
+                <h4 class="font-title-md text-title-md text-primary font-semibold leading-snug">
+                  {cert.title}
+                </h4>
               </div>
-              <h4 class="font-title-md text-title-md text-primary font-semibold leading-snug">
-                {cert.title}
-              </h4>
-            </div>
 
             {cert.link && (
               <div class="pt-space-sm border-t border-outline-variant/30">
@@ -88,7 +92,8 @@ const { formation } = siteConfig;
               </div>
             )}
           </Card>
-        ))}
+        );
+      })}
       </div>
     </div>
   </div>

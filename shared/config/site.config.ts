@@ -1122,7 +1122,7 @@ export const siteConfig: SiteConfig = {
         title: 'E-learning data extraction pipeline',
         description: {
           es: 'Pipeline ETL automatizado (Python, webhooks, n8n) que extrae contenido de cursos técnicos y lo sincroniza en Markdown para una bóveda personal de conocimiento.',
-          en: 'Automated ETL pipeline (Python, webhooks, n8n) que extrae contenido de cursos técnicos y lo sincroniza en Markdown para una bóveda personal de conocimiento.',
+          en: 'Automated ETL pipeline (Python, webhooks, n8n) that extracts technical course data and syncs it into Markdown for a personal knowledge-management vault.',
         },
         chips: ['Python', 'webhooks', 'n8n', 'Markdown'],
       },
@@ -1139,6 +1139,10 @@ export const siteConfig: SiteConfig = {
     ui: {
       viewCvBtn: { es: 'Ver CV', en: 'View CV' },
       printPdfBtn: { es: 'Imprimir / PDF', en: 'Print / PDF' },
+      contactNavAria: {
+        es: 'Canales de contacto profesional',
+        en: 'Professional contact channels',
+      },
       profileSection: { es: 'Perfil', en: 'Profile' },
       whatIDoSection: { es: 'Qué hago', en: 'What I do' },
       experienceSection: { es: 'Experiencia', en: 'Experience' },

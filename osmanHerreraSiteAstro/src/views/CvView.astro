@@ -5,7 +5,7 @@
 // Renderiza el perfil público completo estructurado en 10 secciones,
 // optimizado para visualización web y exportación a impresión / PDF (A4/Letter).
 
-import { siteConfig, type Lang, t } from '@config';
+import { siteConfig, type Lang, t, PHONE } from '@config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../components/ui/Card.astro';
 import Chip from '../components/ui/Chip.astro';
@@ -16,11 +16,17 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const { cv, formation, projects } = siteConfig;
+const { cv, formation, projects, profile, contact, socialIcons, brand, footer } = siteConfig;
 
 const nightAudit = projects.items.find(
   (p) => p.id === 'night-audit-revenue-pipeline',
 );
+
+const linkedIn = socialIcons.find((s) => s.title === 'linkedin')?.address || 'https://linkedin.com/in/osmanherrera';
+const gitHub = socialIcons.find((s) => s.title === 'github')?.address || 'https://github.com/osmanjosue';
+const domain = `${brand.highlight.toLowerCase()}${brand.rest.toLowerCase()}`;
+const websiteUrl = `https://${domain}`;
+const phoneHref = `tel:${PHONE.replace(/[^\d+]/g, '')}`;
 ---
 
 <BaseLayout lang={lang} route="cv">
@@ -28,8 +34,8 @@ const nightAudit = projects.items.find(
     <!-- 1. ENCABEZADO -->
     <header class="border-b border-outline-variant/60 pb-space-lg cv-header">
       <div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-md">
-        <span class="font-mono text-label-micro text-primary-container tracking-wider">
-          osmanherrera.dev
+        <span class="font-mono text-label-micro text-primary-container tracking-wider cv-domain">
+          {domain}
         </span>
         <button
           type="button"
@@ -42,7 +48,7 @@ const nightAudit = projects.items.find(
       </div>
 
       <h1 class="font-headline-xl text-headline-xl text-primary font-bold tracking-tight">
-        Osman Herrera
+        {profile.name}
       </h1>
       <p class="font-headline-sm text-headline-sm text-primary-container font-medium mt-1">
         {t(cv.headline, lang)}
@@ -53,23 +59,23 @@ const nightAudit = projects.items.find(
       </p>
 
       <!-- Enlaces de contacto -->
-      <nav class="flex flex-wrap gap-space-xs pt-space-md" aria-label="Contacto CV">
+      <nav class="flex flex-wrap gap-space-xs pt-space-md" aria-label={t(cv.ui.contactNavAria, lang)}>
         <a
-          href={`mailto:${siteConfig.contact.email}`}
+          href={`mailto:${contact.email}`}
           class="inline-flex items-center gap-1 px-3 py-1 bg-surface-container border border-outline-variant hover:border-primary-container text-on-surface font-mono text-label-micro transition-colors"
         >
           <span class="text-primary-container">✉</span>
-          <span>{siteConfig.contact.email}</span>
+          <span>{contact.email}</span>
         </a>
         <a
-          href="tel:+50489709021"
+          href={phoneHref}
           class="inline-flex items-center gap-1 px-3 py-1 bg-surface-container border border-outline-variant hover:border-primary-container text-on-surface font-mono text-label-micro transition-colors"
         >
           <span class="text-primary-container">☎</span>
-          <span>(+504) 8970-9021</span>
+          <span>{PHONE}</span>
         </a>
         <a
-          href="https://linkedin.com/in/osmanherrera"
+          href={linkedIn}
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1 px-3 py-1 bg-surface-container border border-outline-variant hover:border-primary-container text-on-surface font-mono text-label-micro transition-colors"
@@ -78,7 +84,7 @@ const nightAudit = projects.items.find(
           <span>LinkedIn</span>
         </a>
         <a
-          href="https://github.com/osmanjosue"
+          href={gitHub}
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1 px-3 py-1 bg-surface-container border border-outline-variant hover:border-primary-container text-on-surface font-mono text-label-micro transition-colors"
@@ -87,13 +93,13 @@ const nightAudit = projects.items.find(
           <span>GitHub</span>
         </a>
         <a
-          href="https://osmanherrera.dev"
+          href={websiteUrl}
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1 px-3 py-1 bg-surface-container border border-outline-variant hover:border-primary-container text-on-surface font-mono text-label-micro transition-colors"
         >
           <span class="text-primary-container font-bold">◎</span>
-          <span>osmanherrera.dev</span>
+          <span>{domain}</span>
         </a>
       </nav>
     </header>
@@ -184,7 +190,7 @@ const nightAudit = projects.items.find(
             ))}
           </div>
 
-          <div class="mt-space-md pt-space-xs border-t border-outline-variant/30">
+          <div class="mt-space-md pt-space-xs border-t border-outline-variant/30 print:hidden">
             <a
               href={nightAudit.links[0]?.url}
               target="_blank"
@@ -325,16 +331,16 @@ const nightAudit = projects.items.find(
     </section>
 
     <!-- FOOTER CV -->
-    <footer class="pt-space-md border-t border-outline-variant/40 text-center font-mono text-label-micro text-on-surface-variant">
-      <span>{t(cv.ui.updatedLabel, lang)}: {cv.updated} · © 2026 Osman Herrera</span>
+    <footer class="cv-footer pt-space-md border-t border-outline-variant/40 text-center font-mono text-label-micro text-on-surface-variant">
+      <span>{t(cv.ui.updatedLabel, lang)}: {cv.updated} · {t(footer.copyright, lang)}</span>
     </footer>
   </div>
 </BaseLayout>
 
 <style>
   @media print {
-    :global(header),
-    :global(footer),
+    :global(.site-header),
+    :global(.site-footer),
     :global(#mobile-menu),
     .no-print {
       display: none !important;
@@ -356,24 +362,95 @@ const nightAudit = projects.items.find(
       max-width: 100% !important;
       padding: 0 !important;
       margin: 0 !important;
+      background: #ffffff !important;
+      color: #18181b !important;
     }
 
-    .cv-card {
-      background: #ffffff !important;
-      border: 1px solid #e4e4e7 !important;
-      box-shadow: none !important;
+    /* El header propio del CV debe ser visible en print */
+    .print-page header.cv-header {
+      display: block !important;
+      border-color: #d1d5db !important;
+      padding-bottom: 12px !important;
+      margin-bottom: 16px !important;
+    }
+
+    /* Todos los textos oscuros y legibles sobre papel blanco */
+    .print-page,
+    .print-page * {
       color: #18181b !important;
+      text-shadow: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Títulos principales y negritas en negro */
+    .print-page h1,
+    .print-page h2,
+    .print-page h3,
+    .print-page h4,
+    .print-page strong,
+    .print-page b {
+      color: #000000 !important;
+    }
+
+    /* Título del CV */
+    .print-page h1 {
+      font-size: 26pt !important;
+      line-height: 1.1 !important;
+    }
+
+    /* Acento de kicker / etiquetas / subtítulo en teal oscuro legible */
+    .print-page .text-primary-container,
+    .print-page [class*="text-primary-container"],
+    .print-page h2 {
+      color: #0f766e !important;
+    }
+
+    /* Textos secundarios / fechas / ubicaciones en gris oscuro legible */
+    .print-page .text-on-surface-variant,
+    .print-page [class*="text-on-surface-variant"],
+    .print-page [class*="text-outline"] {
+      color: #374151 !important;
+    }
+
+    /* Quitar cortes angulados chamfer para impresión */
+    :global(.print-page .chamfer) {
+      clip-path: none !important;
+    }
+
+    /* Forzar fondo blanco y borde fino en todas las tarjetas de la página (Experiencia, Proyectos, etc.) */
+    .print-page .cv-card,
+    .print-page :global(.cv-card),
+    .print-page :global([class*="bg-surface"]),
+    .print-page :global([class*="bg-background"]),
+    .print-page :global(article),
+    .print-page :global(.chamfer) {
+      background: #ffffff !important;
+      background-color: #ffffff !important;
+      border-color: #e5e7eb !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
     }
 
-    :global(.chamfer) {
-      clip-path: none !important;
+    /* Chips en impresión: fondo gris suave con borde fino y texto oscuro */
+    .print-page :global(span[class*="border"]),
+    .print-page :global(.chip) {
+      background: #f3f4f6 !important;
+      border-color: #d1d5db !important;
+      color: #111827 !important;
     }
 
-    a {
+    /* Ocultar marcas de esquina de Card en impresión */
+    .print-page :global(svg[class*="pointer-events-none"]),
+    .print-page :global([class*="corner-mark"]) {
+      display: none !important;
+    }
+
+    /* Enlaces impresos limpios */
+    .print-page a {
       color: #18181b !important;
       text-decoration: none !important;
+      border-color: #d1d5db !important;
+      background: transparent !important;
     }
   }
 </style>

@@ -143,8 +143,26 @@ try {
   await printPage.emulateMedia({ media: 'print' });
   await printPage.waitForTimeout(300);
 
+  const cvHeaderVisible = await printPage.isVisible('header.cv-header');
+  const siteHeaderVisible = await printPage.isVisible('.site-header');
+  const siteFooterVisible = await printPage.isVisible('.site-footer');
+  const h1Text = (await printPage.textContent('h1'))?.trim();
+
+  console.log(`[Print Assertions] cv-header visible: ${cvHeaderVisible}, site-header visible: ${siteHeaderVisible}, site-footer visible: ${siteFooterVisible}, h1: "${h1Text}"`);
+
+  if (!cvHeaderVisible) {
+    throw new Error('Fallo crítico: header.cv-header está oculto en modo print!');
+  }
+  if (siteHeaderVisible || siteFooterVisible) {
+    throw new Error('Fallo: .site-header o .site-footer siguen visibles en modo print!');
+  }
+
   const printScreenshotPath = path.join(outputDir, 'cv-print-preview.png');
   await printPage.screenshot({ path: printScreenshotPath, fullPage: true });
+
+  // Captura específica de la primera página de impresión (encabezado visible)
+  const firstPagePath = path.join(outputDir, 'cv-print-first-page.png');
+  await printPage.screenshot({ path: firstPagePath, fullPage: false });
 
   const pdfPath = path.join(outputDir, 'cv-osman-herrera.pdf');
   const pdfBuffer = await printPage.pdf({

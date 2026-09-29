@@ -12,7 +12,7 @@ const { lang } = Astro.props;
 const privacyPath = localizedPath(siteConfig.footer.privacyLink.targetRoute, lang);
 ---
 
-<footer class="w-full bg-surface-container-lowest py-space-xl border-t border-outline-variant/30">
+<footer class="site-footer print:hidden w-full bg-surface-container-lowest py-space-xl border-t border-outline-variant/30">
   <div class="max-w-7xl mx-auto px-margin flex flex-col md:flex-row items-center justify-between gap-space-md text-center md:text-left">
     <div class="flex flex-wrap items-center justify-center md:justify-start gap-space-xs font-label-micro text-label-micro text-on-surface-variant uppercase tracking-wider">
       <span class="text-primary-fixed">{t(siteConfig.footer.copyright, lang)}</span>

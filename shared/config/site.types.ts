@@ -277,6 +277,7 @@ export interface CvBriefProject {
 export interface CvUiTexts {
   viewCvBtn: Localized;
   printPdfBtn: Localized;
+  contactNavAria: Localized;
   profileSection: Localized;
   whatIDoSection: Localized;
   experienceSection: Localized;
