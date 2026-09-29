@@ -41,12 +41,25 @@ import type { SiteConfig } from './site.types';
 
 const CONTACT_EMAIL = 'contact@osmanherrera.dev';
 
-export const siteConfig: SiteConfig = {
-  theme: {
-    // Naranja arriba → morado a la mitad → rojo al final (se interpola gradualmente)
-    scrollColors: ['#ff5e00', '#663399'],
-  },
+const TECHNOLOGIES = [
+  'CSS',
+  'HTML',
+  'JavaScript',
+  'TypeScript',
+  'Angular',
+  'NodeJS',
+  'GitHub',
+  'Git',
+  'MongoDB',
+  'Photoshop',
+  'Illustrator',
+  'JWT',
+  'Python',
+  'n8n',
+  'Docker',
+];
 
+export const siteConfig: SiteConfig = {
   routes: ROUTES,
 
   seo: {
@@ -72,8 +85,8 @@ export const siteConfig: SiteConfig = {
       en: 'AVAILABLE FOR REMOTE WORK',
     },
     locationLabel: {
-      es: 'Tegucigalpa, Honduras • UTC-6',
-      en: 'Tegucigalpa, Honduras • UTC-6',
+      es: 'UBICACIÓN',
+      en: 'LOCATION',
     },
     vectorWorkBtn: {
       es: 'VECTOR WORK',
@@ -87,10 +100,6 @@ export const siteConfig: SiteConfig = {
       es: 'Cambiar idioma a Inglés',
       en: 'Switch language to Spanish',
     },
-    viewCertificate: {
-      es: 'Ver Certificado →',
-      en: 'View Certificate →',
-    },
     menuOpenAria: {
       es: 'Abrir menú de navegación',
       en: 'Open navigation menu',
@@ -98,10 +107,6 @@ export const siteConfig: SiteConfig = {
     menuCloseAria: {
       es: 'Cerrar menú de navegación',
       en: 'Close navigation menu',
-    },
-    allFilterLabel: {
-      es: 'Todos',
-      en: 'All',
     },
     viewDetails: {
       es: 'Ver detalles',
@@ -134,8 +139,8 @@ export const siteConfig: SiteConfig = {
       en: 'EXP_REF // PROFESSIONAL DOSSIER',
     },
     location: {
-      es: 'Tegucigalpa, Honduras • UTC-6',
-      en: 'Tegucigalpa, Honduras • UTC-6',
+      es: 'SIGUATEPEQUE, HN · GMT-6',
+      en: 'SIGUATEPEQUE, HN · GMT-6',
     },
     stats: [
       {
@@ -147,8 +152,8 @@ export const siteConfig: SiteConfig = {
         label: { es: 'Proyectos Completados', en: 'Completed Projects' },
       },
       {
-        value: '15',
-        label: { es: 'Tecnologías Dominadas', en: 'Technologies Mastered' },
+        value: String(TECHNOLOGIES.length),
+        label: { es: 'Tecnologías', en: 'Technologies' },
       },
     ],
     title: {
@@ -249,23 +254,7 @@ export const siteConfig: SiteConfig = {
       es: 'Habilidades Técnicas',
       en: 'Technical Skills',
     },
-    technologies: [
-      'CSS',
-      'HTML',
-      'JavaScript',
-      'TypeScript',
-      'Angular',
-      'NodeJS',
-      'GitHub',
-      'Git',
-      'MongoDB',
-      'Photoshop',
-      'Illustrator',
-      'JWT',
-      'Python',
-      'n8n',
-      'Docker',
-    ],
+    technologies: TECHNOLOGIES,
   },
 
   projects: {
@@ -294,7 +283,7 @@ export const siteConfig: SiteConfig = {
         badge: { es: 'EN PRODUCCIÓN', en: 'IN PRODUCTION' },
         title: {
           es: 'Fundación Prolancho — Sitio web',
-          en: 'Prolancho Foundation — Website',
+          en: 'Fundación Prolancho — Website',
         },
         description: {
           es: 'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en AWS EC2 con Ubuntu, NGINX y PM2.',
@@ -319,10 +308,9 @@ export const siteConfig: SiteConfig = {
       {
         id: 'fundacion-prolancho-reclutamiento',
         category: 'modulos',
-        badge: { es: 'MÓDULO INTERNO', en: 'INTERNAL MODULE' },
         title: {
           es: 'Fundación Prolancho — Módulo de Reclutamiento',
-          en: 'Prolancho Foundation — Recruitment Module',
+          en: 'Fundación Prolancho — Recruitment Module',
         },
         description: {
           es: 'TODO: confirmar',
@@ -342,7 +330,6 @@ export const siteConfig: SiteConfig = {
       {
         id: 'francisherrera-com',
         category: 'web',
-        badge: { es: 'CLIENTE', en: 'CLIENT' },
         title: {
           es: 'francisherrera.com',
           en: 'francisherrera.com',
@@ -379,7 +366,7 @@ export const siteConfig: SiteConfig = {
         links: [
           {
             label: { es: 'Explorar Galería', en: 'Explore Gallery' },
-            url: '/vectorwork/',
+            route: 'vectorwork',
             icon: '/assets/icons/website.svg',
           },
         ],
@@ -395,7 +382,7 @@ export const siteConfig: SiteConfig = {
     },
     education: [
       {
-        platform: 'UNIVERSIDAD',
+        platform: { es: 'UNIVERSIDAD', en: 'UNIVERSITY' },
         title: {
           es: 'Técnico Universitario en Desarrollo de Aplicaciones Computacionales',
           en: 'Associate Degree in Computer Application Development',
@@ -457,7 +444,7 @@ export const siteConfig: SiteConfig = {
           es: ['Desarrollador ', { text: 'web', highlight: true }],
           en: ['Web ', { text: 'Developer', highlight: true }],
         },
-        company: 'Fundación Prolancho',
+        company: { es: 'Fundación Prolancho', en: 'Fundación Prolancho' },
         period: '2023 - 2026',
         description: {
           es: 'Desarrollo del sitio web con Angular 15 en frontend y NodeJS para API backend. Base de datos MongoDB con Cloudinary para gestión de imágenes. Autenticación con JWT y validación de credenciales para panel administrativo. Alojado en AWS EC2 con Ubuntu, NGINX y PM2.',
@@ -490,19 +477,22 @@ export const siteConfig: SiteConfig = {
             ' & Product Coordinator',
           ],
         },
-        company: 'Empresa de Diseño y Estampado',
+        company: {
+          es: 'Empresa de Diseño y Estampado',
+          en: 'Design & Screen Printing Company',
+        },
         period: '2012 - 2023',
         description: {
           es: 'Diseño y creación de ilustraciones profesionales. Separación de colores para serigrafía y sublimación. Coordinación de personal, cumplimiento de objetivos de producción, y lanzamiento de nuevos productos con fechas puntuales basados en metas establecidas.',
           en: 'Design and creation of professional illustrations. Color separation for screen printing and sublimation. Staff coordination, meeting production targets, and launching new products on punctual schedules based on established goals.',
         },
         technologies: [
-          'Diseño Gráfico',
+          { es: 'Diseño Gráfico', en: 'Graphic Design' },
           'Photoshop',
-          'Ilustrator',
-          'Gestión de Equipos',
-          'Serigrafía',
-          'Sublimación',
+          'Illustrator',
+          { es: 'Gestión de Equipos', en: 'Team Management' },
+          { es: 'Serigrafía', en: 'Screen Printing' },
+          { es: 'Sublimación', en: 'Sublimation' },
         ],
         links: [
           {

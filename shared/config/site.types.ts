@@ -41,23 +41,24 @@ export interface Certificate {
 }
 
 export interface EducationCard {
-  platform: string;
+  platform: Localized;
   title: Localized;
   detail: Localized;
 }
 
 export interface ExperienceLink {
   label: Localized;
-  url: string;
+  url?: string;
+  route?: RouteKey;
   icon: string;
 }
 
 export interface Experience {
   role: Localized<RichText>;
-  company: string;
+  company: Localized;
   period: string;
   description: Localized;
-  technologies: string[];
+  technologies: (string | Localized)[];
   links: ExperienceLink[];
 }
 
@@ -118,18 +119,12 @@ export interface UiTexts {
   vectorWorkBtn: Localized;
   langToggle: Localized;
   langToggleAria: Localized;
-  viewCertificate: Localized;
   menuOpenAria: Localized;
   menuCloseAria: Localized;
-  allFilterLabel: Localized;
   viewDetails: Localized;
 }
 
 export interface SiteConfig {
-  theme: {
-    /** Colores hex del acento (--variant), repartidos de arriba a abajo del scroll */
-    scrollColors: string[];
-  };
   routes: Record<RouteKey, Localized<string>>;
   seo: Record<Lang, SeoItem>;
   ui: UiTexts;

@@ -29,3 +29,12 @@ Ningún punto bloquea la fase 2. Corrige los puntos 1 a 5 en el primer commit de
 
 ## TODO para el usuario
 Ninguno en esta fase.
+
+## Re-revisión (a943558)
+1. ✅ El hash aparece en el reporte. Nota: al hacer `--amend` el hash cambia, así que desde la fase 2 el hash ya no se escribe en el reporte (ver `fase-02.review.md`, punto 12).
+2. ✅ Scripts declarados en `## Correcciones`.
+3. ✅ `.chamfer` eliminado de `global.css`; solo queda en el preset.
+4. ✅ `@astrojs/check` está en `devDependencies`.
+5. ✅ `shared/package.json` renombrado a `@osmanherrera/shared`.
+
+Fase 1 cerrada.

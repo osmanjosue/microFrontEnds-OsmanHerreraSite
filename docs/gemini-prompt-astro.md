@@ -19,7 +19,7 @@ Reglas:
    **Plantilla de `docs/handoff/fase-NN.md`:**
    ```markdown
    # Fase N: <nombre>
-   - Commit: <hash corto>
+   - Commit: no lo escribas aquí (cambiaría el hash); indícalo en el chat al terminar
    - Estado: completa | parcial (explica qué falta)
 
    ## Cambios

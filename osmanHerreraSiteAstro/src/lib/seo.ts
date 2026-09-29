@@ -31,7 +31,7 @@ export interface SeoMetadata {
  * Genera metadatos SEO bilingües con etiquetas canónicas y alternate hreflang absolutas.
  */
 export function getSeoMetadata({ route, lang, title, description }: SeoProps): SeoMetadata {
-  const baseUrl = 'https://osmanherrera.dev';
+  const baseUrl = (import.meta.env.SITE || 'https://osmanherrera.dev').replace(/\/$/, '');
   const seoConfig = siteConfig.seo[lang];
 
   const canonicalPath = localizedPath(route, lang);
