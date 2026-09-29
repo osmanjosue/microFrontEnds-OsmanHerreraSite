@@ -24,4 +24,11 @@ La isla funciona. Recibe solo los textos resueltos en el idioma de la página, e
 - Aprobar el texto nuevo `contactForm.alerts.close`: "Cerrar notificación" / "Close notification". Solo lo usan los lectores de pantalla.
 - Módulo de reclutamiento: descripción y URL exacta. Sigue apareciendo "TODO: confirmar" en la tarjeta.
 
+## Re-revisión (6e81d62)
+Verificado en el diff (el reporte `fase-05.md` no respondió estos puntos: ver `fase-06.review.md`, punto 4):
+1. ✅ El botón solo se deshabilita mientras `isSending`; `mode: 'onTouched'`; `onError` muestra `formInvalid`.
+2. ✅ `aria-invalid` y `aria-describedby` vinculados a los `<p id="contact-*-error">`.
+3. ✅ Patrón de correo `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`.
+4. ✅ es: "No se pudo enviar el mensaje. Intenta de nuevo."
+
 <!-- VEREDICTO: APROBADA CON OBSERVACIONES -->

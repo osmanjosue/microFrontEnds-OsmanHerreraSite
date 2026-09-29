@@ -36,49 +36,15 @@ export const ROUTES: Record<RouteKey, Localized<string>> = {
 };
 
 /**
- * Obtiene el idioma activo leyendo document.documentElement.lang en el cliente.
- * Por defecto devuelve 'es'.
- */
-export function getLang(): Lang {
-  if (typeof document !== 'undefined' && document.documentElement?.lang === 'en') {
-    return 'en';
-  }
-  return 'es';
-}
-
-/**
- * Helper para resolver un valor localizado.
- * - Si se pasa lang explícito: t(value, 'es')
- * - Si no se pasa lang o se pasan variables de interpolación: t(value, { n: '01' }) lee document.documentElement.lang
+ * Helper estricto para resolver un valor localizado en el idioma especificado.
+ * Requiere explícitamente `lang` para garantizar en tiempo de compilación que ningún componente
+ * omita el idioma y renderice un idioma incorrecto silenciosamente.
  *
  * @param value Objeto con las traducciones { es, en }
- * @param langOrVars Idioma explícito ('es' | 'en') u objeto con variables para interpolar
- * @param vars Variables opcionales si se especificó el idioma primero
+ * @param lang Idioma requerido ('es' | 'en')
  */
-export function t<T>(
-  value: Localized<T>,
-  langOrVars?: Lang | Record<string, string | number>,
-  vars?: Record<string, string | number>
-): T {
-  let lang: Lang;
-  let actualVars: Record<string, string | number> | undefined;
-
-  if (typeof langOrVars === 'string') {
-    lang = langOrVars as Lang;
-    actualVars = vars;
-  } else {
-    lang = getLang();
-    actualVars = langOrVars;
-  }
-
-  const result = value ? value[lang] : ('' as unknown as T);
-  if (typeof result === 'string' && actualVars) {
-    const v = actualVars;
-    return result.replace(/\{(\w+)\}/g, (match, key) => {
-      return key in v ? String(v[key]) : match;
-    }) as unknown as T;
-  }
-  return result;
+export function t<T = string>(value: Localized<T>, lang: Lang): T {
+  return value[lang];
 }
 
 /**

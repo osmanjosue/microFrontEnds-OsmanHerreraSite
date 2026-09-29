@@ -1,7 +1,8 @@
 // ===========================================================================
 // COMPONENTE: INTRO (ENCABEZADO DE SECCIÓN Y BADGES DE AUTENTICIDAD)
 // ===========================================================================
-import { vectorConfig, t } from '@config';
+import { vectorConfig } from '@config';
+import { tc } from '../i18n-client.js';
 import { escapeHtml } from '../escape.js';
 
 /**
@@ -12,10 +13,10 @@ import { escapeHtml } from '../escape.js';
  * @returns {string} HTML del bloque de introducción
  */
 export function renderIntro() {
-  const badgeHandTraced = t(vectorConfig.ui.badgeHandTraced);
-  const badgeNoAi = t(vectorConfig.ui.badgeNoAi);
-  const pageHeading = t(vectorConfig.ui.pageHeading);
-  const pageSubtitle = t(vectorConfig.ui.pageSubtitle);
+  const badgeHandTraced = tc(vectorConfig.ui.badgeHandTraced);
+  const badgeNoAi = tc(vectorConfig.ui.badgeNoAi);
+  const pageHeading = tc(vectorConfig.ui.pageHeading);
+  const pageSubtitle = tc(vectorConfig.ui.pageSubtitle);
 
   return `
     <div class="order-1 flex flex-col gap-space-xs bg-surface-container-lowest p-space-sm sm:p-space-md rounded-lg shadow-xl relative border border-surface-container-high/40 xl:bg-transparent xl:p-0 xl:rounded-none xl:shadow-none xl:border-0 xl:pb-space-xs xl:border-b xl:border-surface-container-high/60">

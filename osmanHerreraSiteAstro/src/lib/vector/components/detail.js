@@ -1,7 +1,7 @@
 // ===========================================================================
 // COMPONENTE: DETAIL (PANEL DE INSPECCIÓN TÉCNICA Y ESPECIFICACIONES)
-// ===========================================================================
-import { vectorConfig, getLang, t } from '@config';
+import { vectorConfig } from '@config';
+import { getLang, tc } from '../i18n-client.js';
 import { getTitle, getCredit } from '../titles.js';
 import { escapeHtml } from '../escape.js';
 import { renderCompareSliderHtml } from './compare-slider.js';
@@ -35,14 +35,14 @@ export function renderDetail({
 
   // Crédito opcional del arte base
   const rawCredit = getCredit(work, titlesMap);
-  const creditPrefix = t(vectorConfig.ui.originalArtPrefix);
+  const creditPrefix = tc(vectorConfig.ui.originalArtPrefix);
   const creditHtml = rawCredit
     ? `<p class="font-label-micro text-label-micro text-on-surface-variant tracking-wider mt-0.5" data-nosnippet>${escapeHtml(creditPrefix)}<span class="font-semibold text-on-surface-variant">${escapeHtml(rawCredit)}</span></p>`
     : '';
 
   // 2. Etiqueta traducida de la categoría
   const categoryObj = vectorConfig.categories.find((c) => c.id === work.category);
-  const categoryLabel = categoryObj ? t(categoryObj.label) : work.category;
+  const categoryLabel = categoryObj ? tc(categoryObj.label) : work.category;
   const safeCategory = escapeHtml(categoryLabel.toUpperCase());
 
   // 3. Métricas numéricas precalculadas (desde stats.json)
@@ -52,12 +52,12 @@ export function renderDetail({
   const hasRasters =
     pieceStats && typeof pieceStats.rasters === 'number' && pieceStats.rasters > 0;
   const rasterChipHtml = hasRasters
-    ? `<span class="px-space-xs py-0.5 rounded border border-secondary/40 bg-secondary/10 text-secondary font-label-caps text-label-caps font-bold tracking-wider cursor-help" title="${escapeHtml(t(vectorConfig.ui.vectorRasterTooltip))}">${escapeHtml(t(vectorConfig.ui.vectorRasterChip))}</span>`
+    ? `<span class="px-space-xs py-0.5 rounded border border-secondary/40 bg-secondary/10 text-secondary font-label-caps text-label-caps font-bold tracking-wider cursor-help" title="${escapeHtml(tc(vectorConfig.ui.vectorRasterTooltip))}">${escapeHtml(tc(vectorConfig.ui.vectorRasterChip))}</span>`
     : '';
 
   // 4. Botones PREV / NEXT
-  const prevLabel = t(vectorConfig.ui.prev);
-  const nextLabel = t(vectorConfig.ui.next);
+  const prevLabel = tc(vectorConfig.ui.prev);
+  const nextLabel = tc(vectorConfig.ui.next);
 
   // 4. Métricas numéricas precalculadas (desde stats.json)
   const pathsFormatted =
@@ -89,7 +89,7 @@ export function renderDetail({
     typeof work.hours === 'number'
       ? `
     <div class="col-span-2 sm:col-span-1 bg-surface-container-low p-space-xs rounded flex flex-col">
-      <span class="font-label-micro text-label-micro text-on-surface-variant uppercase">${escapeHtml(t(vectorConfig.ui.metrics.hours))}</span>
+      <span class="font-label-micro text-label-micro text-on-surface-variant uppercase">${escapeHtml(tc(vectorConfig.ui.metrics.hours))}</span>
       <span class="font-stat-display text-stat-display text-secondary">${escapeHtml(work.hours.toLocaleString(currentLang))} ${escapeHtml(hoursUnit)}</span>
     </div>
   `
@@ -114,8 +114,8 @@ export function renderDetail({
   const challengeHasTitle = typeof challengeTemplate === 'string' && challengeTemplate.includes('{title}');
   const resultHasTitle = typeof resultTemplate === 'string' && resultTemplate.includes('{title}');
 
-  const briefText = t(work.brief, { title: rawTitle });
-  const challengeText = t(work.challenge, { title: rawTitle });
+  const briefText = tc(work.brief, { title: rawTitle });
+  const challengeText = tc(work.challenge, { title: rawTitle });
 
   const rawTechniqueList = work.technique
     ? (Array.isArray(work.technique) ? work.technique : (work.technique[currentLang] || work.technique.es || []))
@@ -130,7 +130,7 @@ export function renderDetail({
     })
     .join('');
 
-  const resultText = t(work.result, { title: rawTitle });
+  const resultText = tc(work.result, { title: rawTitle });
 
   // 7. Herramientas usadas
   const toolsList = Array.isArray(work.tools) ? work.tools.join(' · ') : '';
@@ -149,12 +149,12 @@ export function renderDetail({
           </div>
 
           <!-- Controles de navegación de pieza (PREV / NEXT) -->
-          <div class="flex items-center gap-1 sm:gap-space-xs shrink-0" role="toolbar" aria-label="${escapeHtml(t(vectorConfig.ui.navPiecesToolbar))}">
+          <div class="flex items-center gap-1 sm:gap-space-xs shrink-0" role="toolbar" aria-label="${escapeHtml(tc(vectorConfig.ui.navPiecesToolbar))}">
             <button
               id="btn-prev"
               type="button"
               class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary font-label-caps text-label-caps flex items-center gap-1 transition-colors cursor-pointer"
-              title="${escapeHtml(t(vectorConfig.ui.prevTitle))}"
+              title="${escapeHtml(tc(vectorConfig.ui.prevTitle))}"
             >
               <span class="material-symbols-outlined text-[14px]">arrow_back</span>
               <span>${escapeHtml(prevLabel)}</span> <span class="text-outline-variant font-normal hidden sm:inline">(←)</span>
@@ -163,7 +163,7 @@ export function renderDetail({
               id="btn-next"
               type="button"
               class="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary font-label-caps text-label-caps flex items-center gap-1 transition-colors cursor-pointer"
-              title="${escapeHtml(t(vectorConfig.ui.nextTitle))}"
+              title="${escapeHtml(tc(vectorConfig.ui.nextTitle))}"
             >
               <span>${escapeHtml(nextLabel)}</span> <span class="text-outline-variant font-normal hidden sm:inline">(→)</span>
               <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
@@ -179,20 +179,20 @@ export function renderDetail({
 
         <!-- Telemetría y métricas del SVG -->
         <div class="grid ${metricsCols} gap-space-xs pt-space-xs">
-          <div class="bg-surface-container-low p-space-xs rounded flex flex-col cursor-help" title="${escapeHtml(t(vectorConfig.ui.anchorsTooltip))}">
-            <span class="font-label-micro text-label-micro text-on-surface-variant uppercase">${escapeHtml(t(vectorConfig.ui.metrics.anchors))}</span>
-            <span class="font-stat-display text-stat-display text-primary-container" aria-label="${escapeHtml(t(vectorConfig.ui.anchorsTooltip))}">${anchorsFormatted !== '—' ? `≈${escapeHtml(anchorsFormatted)}` : '—'}</span>
+          <div class="bg-surface-container-low p-space-xs rounded flex flex-col cursor-help" title="${escapeHtml(tc(vectorConfig.ui.anchorsTooltip))}">
+            <span class="font-label-micro text-label-micro text-on-surface-variant uppercase">${escapeHtml(tc(vectorConfig.ui.metrics.anchors))}</span>
+            <span class="font-stat-display text-stat-display text-primary-container" aria-label="${escapeHtml(tc(vectorConfig.ui.anchorsTooltip))}">${anchorsFormatted !== '—' ? `≈${escapeHtml(anchorsFormatted)}` : '—'}</span>
           </div>
           <div class="bg-surface-container-low p-space-xs rounded flex flex-col">
-            <span class="font-label-micro text-label-micro text-on-surface-variant uppercase">${escapeHtml(t(vectorConfig.ui.metrics.paths))}</span>
+            <span class="font-label-micro text-label-micro text-on-surface-variant uppercase">${escapeHtml(tc(vectorConfig.ui.metrics.paths))}</span>
             <span class="font-stat-display text-stat-display text-primary">${escapeHtml(pathsFormatted)}</span>
           </div>
           <div class="bg-surface-container-low p-space-xs rounded flex flex-col">
-            <span class="font-label-micro text-label-micro text-on-surface-variant uppercase">${escapeHtml(t(vectorConfig.ui.metrics.colors))}</span>
+            <span class="font-label-micro text-label-micro text-on-surface-variant uppercase">${escapeHtml(tc(vectorConfig.ui.metrics.colors))}</span>
             <span class="font-stat-display text-stat-display text-secondary">${escapeHtml(colorsFormatted)}</span>
           </div>
           <div class="bg-surface-container-low p-space-xs rounded flex flex-col">
-            <span class="font-label-micro text-label-micro text-on-surface-variant uppercase">${escapeHtml(t(vectorConfig.ui.metrics.artboard))}</span>
+            <span class="font-label-micro text-label-micro text-on-surface-variant uppercase">${escapeHtml(tc(vectorConfig.ui.metrics.artboard))}</span>
             <span class="font-stat-display text-stat-display text-primary-fixed">${escapeHtml(artboardVal)}</span>
           </div>
           ${hoursMetric}
@@ -208,7 +208,7 @@ export function renderDetail({
         <div class="bg-surface-container-low p-space-xs sm:p-space-sm rounded border border-surface-container-high/60 flex flex-col gap-0.5 chamfer">
           <div class="flex items-center gap-space-xs">
             <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-            <span class="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">${escapeHtml(t(vectorConfig.ui.cards.brief))}</span>
+            <span class="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">${escapeHtml(tc(vectorConfig.ui.cards.brief))}</span>
           </div>
           <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed"${briefHasTitle ? ' data-nosnippet' : ''}>${escapeHtml(briefText)}</p>
         </div>
@@ -217,7 +217,7 @@ export function renderDetail({
         <div class="bg-surface-container-low p-space-xs sm:p-space-sm rounded border border-surface-container-high/60 flex flex-col gap-0.5 chamfer">
           <div class="flex items-center gap-space-xs">
             <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-            <span class="font-label-caps text-label-caps text-secondary uppercase font-bold tracking-wider">${escapeHtml(t(vectorConfig.ui.cards.challenge))}</span>
+            <span class="font-label-caps text-label-caps text-secondary uppercase font-bold tracking-wider">${escapeHtml(tc(vectorConfig.ui.cards.challenge))}</span>
           </div>
           <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed"${challengeHasTitle ? ' data-nosnippet' : ''}>${escapeHtml(challengeText)}</p>
         </div>
@@ -226,7 +226,7 @@ export function renderDetail({
         <div class="bg-surface-container-low p-space-xs sm:p-space-sm rounded border border-surface-container-high/60 flex flex-col gap-0.5 chamfer">
           <div class="flex items-center gap-space-xs">
             <span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></span>
-            <span class="font-label-caps text-label-caps text-primary-fixed-dim uppercase font-bold tracking-wider">${escapeHtml(t(vectorConfig.ui.cards.technique))}</span>
+            <span class="font-label-caps text-label-caps text-primary-fixed-dim uppercase font-bold tracking-wider">${escapeHtml(tc(vectorConfig.ui.cards.technique))}</span>
           </div>
           <ul class="font-body-sm text-body-sm text-on-surface-variant flex flex-col gap-0.5 pl-3 list-disc">
             ${techniqueListHtml}
@@ -237,7 +237,7 @@ export function renderDetail({
         <div class="bg-surface-container-low p-space-xs sm:p-space-sm rounded border border-surface-container-high/60 flex flex-col gap-0.5 chamfer">
           <div class="flex items-center gap-space-xs">
             <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-            <span class="font-label-caps text-label-caps text-primary-container uppercase font-bold tracking-wider">${escapeHtml(t(vectorConfig.ui.cards.result))}</span>
+            <span class="font-label-caps text-label-caps text-primary-container uppercase font-bold tracking-wider">${escapeHtml(tc(vectorConfig.ui.cards.result))}</span>
           </div>
           <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed"${resultHasTitle ? ' data-nosnippet' : ''}>${escapeHtml(resultText)}</p>
         </div>
@@ -247,7 +247,7 @@ export function renderDetail({
       <div class="mt-auto pt-space-xs border-t border-surface-container-high/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm">
         <div class="flex items-center gap-space-xs text-on-surface-variant font-label-micro text-label-micro flex-wrap">
           <span class="material-symbols-outlined text-[16px] text-primary">terminal</span>
-          <span>${escapeHtml(t(vectorConfig.ui.toolsLabel))} ${escapeHtml(toolsList)}</span>
+          <span>${escapeHtml(tc(vectorConfig.ui.toolsLabel))} ${escapeHtml(toolsList)}</span>
         </div>
       </div>
     </section>

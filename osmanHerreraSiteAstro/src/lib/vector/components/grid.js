@@ -1,7 +1,7 @@
 // ===========================================================================
 // COMPONENTE: GRID (PANEL DE INVENTARIO Y FILTRO TÁCTICO)
-// ===========================================================================
-import { vectorConfig, t } from '@config';
+import { vectorConfig } from '@config';
+import { tc } from '../i18n-client.js';
 import { getDefaultTitle } from '../titles.js';
 import { assetUrl } from '../assets-url.js';
 import { escapeHtml } from '../escape.js';
@@ -30,7 +30,7 @@ export function renderGrid({
   const totalCount = works.length;
   // Índice de la pieza activa formateado a 2 dígitos
   const activeNumberStr = String(Math.max(1, activeIndexInFilter + 1)).padStart(2, '0');
-  const counterText = t(vectorConfig.ui.worksCounter, {
+  const counterText = tc(vectorConfig.ui.worksCounter, {
     total: String(totalCount).padStart(2, '0'),
   });
 
@@ -50,7 +50,7 @@ export function renderGrid({
 
       // El usuario solicita explícitamente:
       // "La etiqueta de categoría debe mostrar el label traducido de categories, no el id."
-      const translatedLabel = t(cat.label);
+      const translatedLabel = tc(cat.label);
       const displayText = `${translatedLabel} (${count})`;
 
       const btnClasses = isSelected
@@ -84,8 +84,8 @@ export function renderGrid({
         ? 'ring-2 ring-primary-container shadow-[0_0_18px_rgba(0,240,255,0.45)]'
         : 'hover:ring-1 hover:ring-primary-container';
 
-      const selectedBadgeText = t(vectorConfig.ui.selectedBadge, { n: indexNum });
-      const previewText = t(vectorConfig.ui.previewBadge);
+      const selectedBadgeText = tc(vectorConfig.ui.selectedBadge, { n: indexNum });
+      const previewText = tc(vectorConfig.ui.previewBadge);
 
       return `
         <button
@@ -149,7 +149,7 @@ export function renderGrid({
           <span class="font-stat-display text-stat-display text-primary-container">${escapeHtml(activeNumberStr)}</span>
           <span class="font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap">${escapeHtml(counterText)}</span>
         </div>
-        <div class="flex items-center gap-space-xs flex-wrap" role="toolbar" aria-label="${escapeHtml(t(vectorConfig.ui.categoryFilterToolbar))}">
+        <div class="flex items-center gap-space-xs flex-wrap" role="toolbar" aria-label="${escapeHtml(tc(vectorConfig.ui.categoryFilterToolbar))}">
           ${categoriesHtml}
         </div>
       </div>
@@ -159,7 +159,7 @@ export function renderGrid({
         class="grid grid-cols-4 sm:grid-cols-5 xl:grid-cols-4 gap-space-xs max-h-[740px] overflow-y-auto pr-0.5 select-none"
         id="specimen-grid"
         role="region"
-        aria-label="${escapeHtml(t(vectorConfig.ui.inventoryLabel))}"
+        aria-label="${escapeHtml(tc(vectorConfig.ui.inventoryLabel))}"
       >
         ${specimensHtml}
       </div>

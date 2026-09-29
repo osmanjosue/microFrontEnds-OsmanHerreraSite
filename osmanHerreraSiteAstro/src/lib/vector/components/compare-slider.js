@@ -1,7 +1,8 @@
 // ===========================================================================
 // COMPONENTE: COMPARE SLIDER (COMPARADOR VECTOR / RASTER CON POINTER EVENTS)
 // ===========================================================================
-import { vectorConfig, t } from '@config';
+import { vectorConfig } from '@config';
+import { tc } from '../i18n-client.js';
 import { getDefaultTitle } from '../titles.js';
 import { assetUrl } from '../assets-url.js';
 import { escapeHtml } from '../escape.js';
@@ -45,18 +46,18 @@ export function renderCompareSliderHtml({
   const vectorUrl = escapeHtml(assetUrl(work.vector));
   const outlineUrl = escapeHtml(assetUrl(work.outline));
 
-  const colorLabel = t(vectorConfig.ui.colorMode);
-  const outlineLabel = t(vectorConfig.ui.outlineMode);
-  const dragLabel = t(vectorConfig.ui.dragToCompare);
-  const originalBadge = t(vectorConfig.ui.originalBadge);
-  const vectorBadge = t(vectorConfig.ui.vectorBadge);
-  const outlineBadge = t(vectorConfig.ui.outlineBadge);
-  const resolutionBadge = t(vectorConfig.ui.resolutionBadge);
+  const colorLabel = tc(vectorConfig.ui.colorMode);
+  const outlineLabel = tc(vectorConfig.ui.outlineMode);
+  const dragLabel = tc(vectorConfig.ui.dragToCompare);
+  const originalBadge = tc(vectorConfig.ui.originalBadge);
+  const vectorBadge = tc(vectorConfig.ui.vectorBadge);
+  const outlineBadge = tc(vectorConfig.ui.outlineBadge);
+  const resolutionBadge = tc(vectorConfig.ui.resolutionBadge);
 
-  const viewModeToolbar = t(vectorConfig.ui.viewModeToolbar);
-  const viewOutlineTitle = t(vectorConfig.ui.viewOutlineTitle);
-  const sliderRegionLabel = t(vectorConfig.ui.sliderRegionLabel);
-  const sliderRangeAria = t(vectorConfig.ui.sliderRangeAria);
+  const viewModeToolbar = tc(vectorConfig.ui.viewModeToolbar);
+  const viewOutlineTitle = tc(vectorConfig.ui.viewOutlineTitle);
+  const sliderRegionLabel = tc(vectorConfig.ui.sliderRegionLabel);
+  const sliderRangeAria = tc(vectorConfig.ui.sliderRangeAria);
 
   const isColor = mode === 'color';
   const colorBtnClasses = isColor
@@ -266,8 +267,8 @@ export function attachSliderEvents(containerEl, { onPositionChange, onModeChange
     }
     if (vectorBadgeText) {
       vectorBadgeText.textContent = isColor
-        ? t(vectorConfig.ui.vectorBadge)
-        : t(vectorConfig.ui.outlineBadge);
+        ? tc(vectorConfig.ui.vectorBadge)
+        : tc(vectorConfig.ui.outlineBadge);
     }
   }
 

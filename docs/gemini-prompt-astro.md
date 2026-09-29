@@ -48,6 +48,16 @@ Reglas:
 5. **Una sola fuente de datos, bilingüe.** Todo texto visible del sitio sale de `shared/config/` (ver fase 2), nunca escrito a mano en componentes. Cada texto existe en español e inglés.
 6. **No inventes datos.** El diseño de Stitch trae contenido de relleno (lista abajo). Si falta un dato, pon `'TODO: confirmar'` en ambos idiomas y menciónalo en tu reporte. **Sí puedes traducir** al inglés los textos reales existentes, pero debes listarlos en "Traducciones a revisar".
 
+7. **Ciclo automático con el revisor.** Después de cada commit de fase o de correcciones, ejecuta en la terminal:
+   ```
+   python C:\Users\05man\.claude\skills\delegar\orquestador.py --repo . --ide
+   ```
+   El script ejecuta la revisión de Claude y puede tardar hasta 25 minutos: **espera a que termine**, no lo canceles. Al final imprime un bloque `=== ORQUESTADOR ===` con una de dos líneas:
+   - `SIGUIENTE: …` → sigue esa instrucción al pie de la letra en esta misma sesión (corregir o ejecutar la fase siguiente) y, al hacer commit, vuelve a ejecutar el script.
+   - `DETENTE: …` → detente y muéstrale el mensaje al usuario.
+
+   No ejecutes la fase 8 por tu cuenta. En las pruebas del formulario, simula la API: no envíes correos reales.
+
 ## Contexto
 Hoy el sitio son 3 apps separadas, unidas solo por Nginx en producción:
 - `osmanHerreraSite/`: Angular, servido en `/angular/`.

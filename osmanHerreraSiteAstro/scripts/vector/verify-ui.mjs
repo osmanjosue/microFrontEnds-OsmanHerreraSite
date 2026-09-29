@@ -52,10 +52,6 @@ async function verifyViewport(urlPath, width, height, filename, options = {}) {
   await page.goto(fullUrl, { waitUntil: 'networkidle' });
   await page.waitForTimeout(600);
 
-  const screenshotPath = path.join(screenshotsDir, filename);
-  await page.screenshot({ path: screenshotPath, fullPage: false });
-  console.log(`[Playwright Headless] Captura guardada: ${filename} (${width}x${height}) en ${urlPath}`);
-
   // Verificar desborde horizontal
   const overflow = await page.evaluate(() => {
     return {
@@ -73,6 +69,47 @@ async function verifyViewport(urlPath, width, height, filename, options = {}) {
   if (overflow.hasHorizontalOverflow) {
     throw new Error(`Desborde horizontal detectado en ${width}px en ${urlPath}!`);
   }
+
+  // Verificar dimensiones mínimas del visor comparador y carga de la imagen original
+  const viewportMetrics = await page.evaluate(() => {
+    const vp = document.querySelector('.slider-viewport');
+    const origImg = document.querySelector('#raster-layer img');
+    const vpRect = vp ? vp.getBoundingClientRect() : null;
+    return {
+      hasViewport: Boolean(vp),
+      vpWidth: vpRect ? vpRect.width : 0,
+      vpHeight: vpRect ? vpRect.height : 0,
+      hasOrigImg: Boolean(origImg),
+      naturalWidth: origImg ? origImg.naturalWidth : 0,
+      naturalHeight: origImg ? origImg.naturalHeight : 0,
+      origVisible: origImg
+        ? origImg.offsetWidth > 0 &&
+          origImg.offsetHeight > 0 &&
+          window.getComputedStyle(origImg).display !== 'none' &&
+          window.getComputedStyle(origImg).visibility !== 'hidden'
+        : false,
+    };
+  });
+
+  console.log(
+    `[Playwright Headless ${width}px] .slider-viewport: ${viewportMetrics.vpWidth.toFixed(1)}x${viewportMetrics.vpHeight.toFixed(1)}px, original img naturalWidth: ${viewportMetrics.naturalWidth}, visible: ${viewportMetrics.origVisible}`
+  );
+
+  if (!viewportMetrics.hasViewport || viewportMetrics.vpWidth < 200 || viewportMetrics.vpHeight < 200) {
+    throw new Error(
+      `El visor .slider-viewport no cumple las dimensiones mínimas (>200px) en ${width}px en ${urlPath}: ${viewportMetrics.vpWidth}x${viewportMetrics.vpHeight}px`
+    );
+  }
+
+  if (!viewportMetrics.hasOrigImg || viewportMetrics.naturalWidth <= 0 || !viewportMetrics.origVisible) {
+    throw new Error(
+      `La imagen original en el visor no cargó correctamente en ${width}px en ${urlPath} (naturalWidth: ${viewportMetrics.naturalWidth}, visible: ${viewportMetrics.origVisible})`
+    );
+  }
+
+  const screenshotPath = path.join(screenshotsDir, filename);
+  await page.screenshot({ path: screenshotPath, fullPage: false });
+  console.log(`[Playwright Headless] Captura guardada: ${filename} (${width}x${height}) en ${urlPath}`);
 
   // Comprobaciones funcionales detalladas si isDetailed === true
   if (options.isDetailed) {

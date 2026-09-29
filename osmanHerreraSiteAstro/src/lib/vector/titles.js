@@ -1,7 +1,5 @@
-// ===========================================================================
-// GESTIÓN DE TÍTULOS DE PIEZAS (PROTEGIDOS DE INDEXACIÓN)
-// ===========================================================================
-import { vectorConfig, getLang, t } from '@config';
+import { vectorConfig } from '@config';
+import { getLang, tc } from './i18n-client.js';
 
 let titlesPromise = null;
 let cachedTitles = null;
@@ -68,7 +66,7 @@ export function loadTitles() {
  */
 export function getDefaultTitle(index) {
   const numberStr = String(index + 1).padStart(2, '0');
-  return t(vectorConfig.ui.defaultTitle, { n: numberStr });
+  return tc(vectorConfig.ui.defaultTitle, { n: numberStr });
 }
 
 /**

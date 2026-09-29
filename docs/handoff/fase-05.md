@@ -129,3 +129,9 @@ Respuestas a las observaciones menores de `docs/handoff/fase-04.review.md` y act
     - Descripción actualizada: `Alojado en Hetzner con Ubuntu Server, NGINX y PM2.` (es) y `Hosted on Hetzner with Ubuntu Server, NGINX, and PM2.` (en).
     - Se preservó el certificado del curso oficial de AWS.
     - Se actualizó el placeholder `prolancho-web.svg` para reflejar `HETZNER`.
+
+### Correcciones de fase-05.review.md (aplicadas en commit 6e81d62)
+1. **Botón de envío deshabilitado inicialmente:** Modificado en `ContactForm.tsx` para que el botón de submit esté habilitado por defecto y únicamente se desactive mientras `isSending === true`.
+2. **Modo de validación y alerta preventiva:** `useForm` configurado con `mode: 'onTouched'` para no mostrar errores antes de interactuar. Al intentar enviar con errores de validación, se despliega la alerta en línea con `texts.errors.formInvalid` y se enfoca el primer campo inválido.
+3. **Accesibilidad de campos (`aria-invalid` y `aria-describedby`):** Atributos `aria-invalid` y `aria-describedby` añadidos a los inputs de nombre, correo y mensaje vinculados con los IDs de sus mensajes de error.
+4. **Validación estricta de correo y texto en español:** Regex de email actualizada a `/^[^\s@]+@[^\s@]+\.[^\s@]+$/` exigiendo punto y dominio. Texto `contactForm.alerts.error.es` actualizado a `"No se pudo enviar el mensaje. Intenta de nuevo."`.
