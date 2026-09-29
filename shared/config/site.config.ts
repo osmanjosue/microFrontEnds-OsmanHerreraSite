@@ -646,7 +646,7 @@ export const siteConfig: SiteConfig = {
         en: 'Message sent successfully',
       },
       error: {
-        es: 'No se pudo enviar el mensaje',
+        es: 'No se pudo enviar el mensaje. Intenta de nuevo.',
         en: 'Your message couldn\'t be sent. Please try again.',
       },
       close: {

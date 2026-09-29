@@ -63,9 +63,9 @@ export const ContactForm: React.FC<ContactFormProps> = ({ texts }) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormData>({
-    mode: 'onChange',
+    mode: 'onTouched',
   });
 
   const onSubmit = async (data: FormData) => {
@@ -107,9 +107,16 @@ export const ContactForm: React.FC<ContactFormProps> = ({ texts }) => {
     }
   };
 
+  const onError = () => {
+    setStatusMessage({
+      type: 'error',
+      text: texts.errors.formInvalid,
+    });
+  };
+
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit, onError)}
       className="space-y-space-md"
       noValidate
     >
@@ -152,13 +159,15 @@ export const ContactForm: React.FC<ContactFormProps> = ({ texts }) => {
           type="text"
           placeholder={texts.name.placeholder}
           disabled={isSending}
+          aria-invalid={!!errors.nombre}
+          aria-describedby={errors.nombre ? 'contact-name-error' : undefined}
           className="w-full bg-surface-container-low border border-outline-variant/60 px-space-md py-space-sm text-on-surface font-body-md placeholder:text-on-surface-variant/40 focus:border-primary-container focus:outline-none focus:ring-1 focus:ring-primary-container focus:shadow-[0_0_12px_rgba(0,240,255,0.25)] transition-all chamfer disabled:opacity-60"
           {...register('nombre', {
             required: texts.errors.nameRequired,
           })}
         />
         {errors.nombre && (
-          <p className="font-label-micro text-label-micro text-error mt-1 flex items-center gap-1">
+          <p id="contact-name-error" className="font-label-micro text-label-micro text-error mt-1 flex items-center gap-1">
             <span className="material-symbols-outlined text-xs" aria-hidden="true">error</span>
             <span>{errors.nombre.message}</span>
           </p>
@@ -178,17 +187,19 @@ export const ContactForm: React.FC<ContactFormProps> = ({ texts }) => {
           type="email"
           placeholder={texts.email.placeholder}
           disabled={isSending}
+          aria-invalid={!!errors.correoElectronico}
+          aria-describedby={errors.correoElectronico ? 'contact-email-error' : undefined}
           className="w-full bg-surface-container-low border border-outline-variant/60 px-space-md py-space-sm text-on-surface font-body-md placeholder:text-on-surface-variant/40 focus:border-primary-container focus:outline-none focus:ring-1 focus:ring-primary-container focus:shadow-[0_0_12px_rgba(0,240,255,0.25)] transition-all chamfer disabled:opacity-60"
           {...register('correoElectronico', {
             required: texts.errors.emailRequired,
             pattern: {
-              value: /^\S+@\S+$/i,
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
               message: texts.errors.emailPattern,
             },
           })}
         />
         {errors.correoElectronico && (
-          <p className="font-label-micro text-label-micro text-error mt-1 flex items-center gap-1">
+          <p id="contact-email-error" className="font-label-micro text-label-micro text-error mt-1 flex items-center gap-1">
             <span className="material-symbols-outlined text-xs" aria-hidden="true">error</span>
             <span>{errors.correoElectronico.message}</span>
           </p>
@@ -208,6 +219,8 @@ export const ContactForm: React.FC<ContactFormProps> = ({ texts }) => {
           rows={5}
           placeholder={texts.message.placeholder}
           disabled={isSending}
+          aria-invalid={!!errors.content}
+          aria-describedby={errors.content ? 'contact-message-error' : undefined}
           className="w-full bg-surface-container-low border border-outline-variant/60 px-space-md py-space-sm text-on-surface font-body-md placeholder:text-on-surface-variant/40 focus:border-primary-container focus:outline-none focus:ring-1 focus:ring-primary-container focus:shadow-[0_0_12px_rgba(0,240,255,0.25)] transition-all chamfer resize-y min-h-[120px] disabled:opacity-60"
           {...register('content', {
             required: texts.errors.messageRequired,
@@ -218,7 +231,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ texts }) => {
           })}
         />
         {errors.content && (
-          <p className="font-label-micro text-label-micro text-error mt-1 flex items-center gap-1">
+          <p id="contact-message-error" className="font-label-micro text-label-micro text-error mt-1 flex items-center gap-1">
             <span className="material-symbols-outlined text-xs" aria-hidden="true">error</span>
             <span>{errors.content.message}</span>
           </p>
@@ -229,7 +242,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ texts }) => {
       <div className="pt-space-xs">
         <button
           type="submit"
-          disabled={!isValid || isSending}
+          disabled={isSending}
           className="chamfer bg-primary-container text-on-primary-fixed font-bold hover:shadow-[0_0_24px_rgba(0,240,255,0.65)] hover:bg-primary-fixed py-space-md px-space-xl font-label-caps text-label-caps uppercase tracking-wider transition-all disabled:opacity-40 disabled:cursor-not-allowed w-full flex items-center justify-center gap-space-sm cursor-pointer select-none"
         >
           {isSending ? (
