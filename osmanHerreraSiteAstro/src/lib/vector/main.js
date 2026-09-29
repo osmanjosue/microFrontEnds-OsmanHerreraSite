@@ -40,7 +40,7 @@ const works = vectorConfig.works;
 const state = {
   activeCategory: 'all',
   activeSlug: works[0]?.slug || 'pieza-01',
-  mode: 'color', // 'color' | 'outline'
+  mode: 'outline', // 'color' | 'outline' (OUTLINE por defecto: las miniaturas ya muestran el color)
   sliderPos: 50,
   titles: {},
 };

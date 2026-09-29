@@ -135,7 +135,28 @@ async function verifyViewport(urlPath, width, height, filename, options = {}) {
       throw new Error('La categoría "apparel" con 0 piezas no debería mostrarse');
     }
 
-    // 3. Probar cambio a modo OUTLINE (crossfade y badge OUTLINE)
+    // 3. Modo por defecto: OUTLINE al ingresar (las miniaturas ya muestran el color)
+    const leerModo = () =>
+      page.evaluate(() => ({
+        outlinePressed: document.querySelector('#mode-outline-btn')?.getAttribute('aria-pressed'),
+        outOpacity100: document.querySelector('#outline-image')?.classList.contains('opacity-100'),
+        badgeText: document.querySelector('#vector-badge-text')?.textContent.trim() ?? '',
+      }));
+    const modoInicial = await leerModo();
+    console.log(`[Playwright Headless] Modo inicial -> ${JSON.stringify(modoInicial)}`);
+    if (modoInicial.outlinePressed !== 'true' || !modoInicial.outOpacity100 || modoInicial.badgeText !== 'OUTLINE') {
+      throw new Error(`Se esperaba OUTLINE como modo inicial: ${JSON.stringify(modoInicial)}`);
+    }
+
+    // Cambiar a COLOR y verificar el badge VECTOR
+    await page.click('#mode-color-btn');
+    await page.waitForTimeout(400);
+    const modoColor = await leerModo();
+    if (modoColor.outlinePressed !== 'false' || modoColor.badgeText !== 'VECTOR') {
+      throw new Error(`Se esperaba COLOR tras el clic: ${JSON.stringify(modoColor)}`);
+    }
+
+    // 4. Volver a modo OUTLINE (crossfade y badge OUTLINE)
     await page.click('#mode-outline-btn');
     await page.waitForTimeout(400);
 
