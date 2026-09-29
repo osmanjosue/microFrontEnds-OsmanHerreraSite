@@ -2,7 +2,7 @@
   "prompt": "docs/gemini-prompt-astro.md",
   "rama": "feat/astro-apex-dossier",
   "hasta": 7,
-  "protegidas": ["osmanHerreraSite", "osmanHerreraSiteReact", "osmanHerreraSiteVector", "shared/content"],
+  "protegidas": [],
   "max_intentos": 3,
   "timeout_min": 60,
   "timeout_revision_min": 25

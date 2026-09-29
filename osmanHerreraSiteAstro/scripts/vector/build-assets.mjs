@@ -14,23 +14,25 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
-import { analyzeSvg, validateSvgPiece } from './svg-analyzer.mjs';
+import { validateSvgPiece } from './svg-analyzer.mjs';
 import { vectorConfig } from '../../../shared/config/vector.config.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const astroRoot = path.resolve(__dirname, '../..');
-const monorepoRoot = path.resolve(astroRoot, '..');
 
-const sourceDir = path.join(monorepoRoot, 'osmanHerreraSiteVector', 'source');
+const sourceDir = path.join(__dirname, 'source');
 const publicWorksDir = path.join(astroRoot, 'public', 'vectorwork', 'works');
 const statsFilePath = path.join(astroRoot, 'src', 'lib', 'vector', 'stats.json');
 
-// Parsear argumento --only
+// Parsear argumento --only y --dry-run
 const args = process.argv.slice(2);
 let onlySlug = null;
+let dryRun = false;
 for (let i = 0; i < args.length; i++) {
-  if (args[i] === '--only' && args[i + 1]) {
+  if (args[i] === '--dry-run') {
+    dryRun = true;
+  } else if (args[i] === '--only' && args[i + 1]) {
     onlySlug = args[i + 1];
     i++;
   } else if (args[i].startsWith('--only=')) {
@@ -254,6 +256,24 @@ async function main() {
     // Densidad para renderizar nítido a 2400px en sharp (librsvg)
     const density = Math.max(72, Math.round((2400 / longSide) * 72));
 
+    if (dryRun) {
+      console.log(`  [DRY RUN] Pieza "${slug}" encontrada y validada con éxito.`);
+      results.push({
+        slug,
+        paths: stats.paths,
+        anchors: stats.anchors,
+        colors: stats.colors,
+        rasters: stats.rasters,
+        artboard: `${stats.artboard[0]}×${stats.artboard[1]}`,
+        vectorSize: 'dry-run',
+        thumbSize: 'dry-run',
+        outlineSize: 'dry-run',
+        origSize: 'dry-run',
+        Validación: validation.status,
+      });
+      continue;
+    }
+
     // Directorio de salida
     const outDir = path.join(publicWorksDir, slug);
     if (!fs.existsSync(outDir)) {
@@ -392,9 +412,13 @@ async function main() {
     sortedStatsData[slug] = statsData[slug];
   }
 
-  // Guardar src/content/stats.json
-  fs.writeFileSync(statsFilePath, JSON.stringify(sortedStatsData, null, 2), 'utf8');
-  console.log(`\n✔ src/content/stats.json actualizado con ${Object.keys(sortedStatsData).length} pieza(s).`);
+  // Guardar src/lib/vector/stats.json
+  if (!dryRun) {
+    fs.writeFileSync(statsFilePath, JSON.stringify(sortedStatsData, null, 2), 'utf8');
+    console.log(`\n✔ stats.json actualizado con ${Object.keys(sortedStatsData).length} pieza(s).`);
+  } else {
+    console.log(`\n[DRY RUN] Se encontraron y validaron ${results.length} pieza(s). No se modificaron archivos en disco.`);
+  }
 
   // Imprimir tabla resumen
   console.log('\n--- TABLA RESUMEN DE ASSETS GENERADOS ---');

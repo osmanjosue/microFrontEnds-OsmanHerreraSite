@@ -36,9 +36,7 @@ yarn-error.log*
 **/out/
 **/build/
 
-# Específicos de Angular, Vite y Astro (Cachés de desarrollo)
-**/.angular/
-**/.vite/
+# Cachés de desarrollo
 **/.astro/
 .cache/
 .sourcemaps/
@@ -56,9 +54,7 @@ yarn-error.log*
 **/src/assets/temp/
 
 # Vector Work: fuentes editables, artes y títulos reales NUNCA en git (repo público)
-osmanHerreraSiteVector/source/*
-osmanHerreraSiteVector/public/works/*
-osmanHerreraSiteVector/public/data/titles.json
+osmanHerreraSiteAstro/scripts/vector/source/*
 osmanHerreraSiteAstro/public/vectorwork/works/*
 osmanHerreraSiteAstro/public/vectorwork/data/titles.json
 osmanHerreraSiteAstro/scripts/vector/.screenshots/

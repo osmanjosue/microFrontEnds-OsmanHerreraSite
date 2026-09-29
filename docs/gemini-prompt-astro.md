@@ -221,14 +221,52 @@ En `src/components/sections/`, un `.astro` por sección, con IDs `hero`, `techno
   - `error_page 404` hacia una página 404 bilingüe (`src/pages/404.astro`, con textos del config).
 - **No toques el servidor.** Solo la documentación.
 
-## Fase 8: limpieza (solo cuando yo lo apruebe)
-- Quita `osmanHerreraSite`, `osmanHerreraSiteReact` y `osmanHerreraSiteVector` de `workspaces` y borra sus carpetas. Borra también `shared/content/`, que queda reemplazado por `shared/config/`, y `ANGULAR_DESIGN_REPLICA.md` si ya no aplica. El historial queda en git.
-- Crea `osmanHerreraSiteAstro/README.md` con:
-  - estructura y comandos;
-  - **cómo editar textos y traducciones en `shared/config/site.config.ts`**;
-  - cómo agregar un proyecto al portafolio;
-  - cómo agregar una pieza vectorial (fusiona la guía del README de Vector Work);
-  - por qué existe la dependencia `cookie`.
+## Fase 8: limpieza (aprobada por el usuario)
+**Rama:** crea `chore/fase-8-limpieza` desde `main` actualizado (`git checkout main && git pull && git checkout -b chore/fase-8-limpieza`). El sitio nuevo **todavía no está desplegado**: no toques `main` directamente. **En esta fase no ejecutes el orquestador (regla 7).** Al terminar, detente y el usuario pedirá la revisión.
+
+**0. Preservar archivos locales fuera de git (ANTES de borrar nada). Es obligatorio:**
+- `osmanHerreraSiteVector/source/` (~37 MB) contiene los originales PNG y SVG de Illustrator de cada pieza. **Están ignorados por git y no existen en ningún otro lugar.** Si se borran, se pierden para siempre.
+  1. **Muévelos** (no los copies ni los borres) a `osmanHerreraSiteAstro/scripts/vector/source/`.
+  2. Verifica que la cantidad de archivos y el tamaño coinciden antes y después.
+  3. Agrega `osmanHerreraSiteAstro/scripts/vector/source/*` al `.gitignore`.
+  4. Actualiza `sourceDir` en `osmanHerreraSiteAstro/scripts/vector/build-assets.mjs:25`.
+  5. Comprueba que `npm run assets -- --dry-run`, o el modo de validación que exista, encuentra las 8 piezas.
+- `osmanHerreraSiteVector/public/works/` y `public/data/titles.json` ya están copiados en `osmanHerreraSiteAstro/public/vectorwork/` y son idénticos (verificado). Confírmalo con `diff -rq` antes de borrar.
+- Lista en el reporte cualquier otro archivo ignorado de las carpetas a borrar (`git ls-files --others --ignored --exclude-standard <carpeta>`, sin contar `node_modules` ni `dist`) y qué hiciste con él. Los `.env` de React solo tienen la URL de la API y se pueden descartar.
+
+**1. Borrar:**
+- `osmanHerreraSite/`, `osmanHerreraSiteReact/`, `osmanHerreraSiteVector/` y `shared/content/`. Usa `git rm -r` para lo versionado y luego elimina las carpetas vacías.
+- `ANGULAR_DESIGN_REPLICA.md` y `osmanHerreraSite.code-workspace`, si solo sirven a las apps viejas.
+- En `shared/config/vector.config.ts`: `ui.availability` y cualquier otra clave que solo usaba el header viejo de Vector Work. Busca las claves que ya no se referencian desde `src/`.
+
+**2. Actualizar referencias:**
+- `package.json` raíz:
+  - quita esas carpetas de `workspaces`;
+  - quita los scripts `dev:angular`, `dev:react`, `dev:vector`, `start:*` y `build:angular/react/vector`;
+  - deja `dev`, `build`, `dev:backend`, `build:backend`, `start:backend`, `build:all` y `assets:test`;
+  - ejecuta `npm install` para regenerar `package-lock.json`.
+- `.gitignore`: quita las entradas de las apps borradas.
+- `osmanHerreraSiteAstro/scripts/vector/verify-all-ui.mjs:76-77`: quita la verificación de los `dist` de React y Angular.
+- Comentarios que citan archivos borrados (`src/components/ui/RichText.astro:5`, `src/views/PrivacyView.astro:5`, `shared/tailwind.preset.js:5`, `shared/config/*`). Déjalos como referencia histórica en pasado ("Portado de …") o elimínalos.
+- `osmanHerreraSiteBackend`:
+  - `src/public/` es un build viejo de Angular servido con `express.static` (`src/app.ts:55`);
+  - `package.json:7-8` apunta a rutas locales de la app vieja.
+
+  Si `docs/nginx-astro.md` solo envía `/api/` al backend, elimina `src/public/`, la línea de `express.static` y esas dos entradas de `package.json`. Quita del CORS los orígenes `localhost:5173` y `localhost:4200`. **No cambies nada más del backend.** Verifica con `npm run build:backend`.
+- `docs/handoff/orquestador.json`: cambia `protegidas` a `[]`, porque las rutas ya no existen.
+
+**3. Documentación:** crea `osmanHerreraSiteAstro/README.md` con:
+- estructura y comandos;
+- **cómo editar textos y traducciones en `shared/config/site.config.ts`**;
+- cómo agregar un proyecto al portafolio (incluidas las capturas: 1440×900 → WebP 1200×750 en `public/assets/images/projects/`);
+- cómo agregar una pieza vectorial (fusiona la guía del README de Vector Work, con la nueva ruta de `source/`);
+- por qué existe la dependencia `cookie`.
+
+Actualiza también las referencias a `/vectorwork/` en `docs/nginx-astro.md` si alguna apuntaba al README viejo.
+
+**4. Verificación:**
+- `npm install`, `npm run build:all`, `npx astro check` (0 errors), `npm run assets:test` y `npm run dev`: comprobar las 6 rutas y la 404.
+- `git grep -nE "osmanHerreraSite(React|Vector)?/|shared/content"`: solo pueden quedar menciones en `docs/handoff/` y `docs/gemini-prompt-astro.md`.
 - Deja `docs/handoff/` tal cual: es el registro de la migración.
 
 ## Criterios de aceptación globales
