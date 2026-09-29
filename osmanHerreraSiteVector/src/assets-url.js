@@ -11,11 +11,20 @@
  * @returns {string} URL absoluta o relativa lista para usarse
  */
 export function assetUrl(path) {
-  if (!path) return '';
-
   const env = import.meta?.env || {};
 
-  if (env.DEV && typeof path === 'string' && path.startsWith('/')) {
+  if (typeof path !== 'string') {
+    if (path && env.DEV) {
+      console.warn(
+        `[assetUrl] Se esperaba un string como ruta de asset, pero se recibió: ${typeof path}`
+      );
+    }
+    return '';
+  }
+
+  if (!path) return '';
+
+  if (env.DEV && path.startsWith('/')) {
     console.warn(
       `[assetUrl] La ruta "${path}" empieza con "/". Usa el formato corto sin barra inicial (ej: "works/...").`
     );

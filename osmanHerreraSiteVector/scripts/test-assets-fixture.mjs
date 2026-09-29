@@ -336,11 +336,11 @@ async function runFixtureTest() {
 }
 
 // ---------------------------------------------------------------------------
-// 3. TESTS DE VALIDACIONES PREVIAS (10 REGLAS DE CONTROL DE CALIDAD)
+// 3. TESTS DE VALIDACIONES PREVIAS (13 REGLAS DE CONTROL DE CALIDAD)
 // ---------------------------------------------------------------------------
 function runValidationTests() {
   console.log('\n═════════════════════════════════════════════════════════════════');
-  console.log('  TESTS DE VALIDACIÓN: 10 REGLAS PREVIAS DE CONTROL DE CALIDAD');
+  console.log('  TESTS DE VALIDACIÓN: 13 REGLAS PREVIAS DE CONTROL DE CALIDAD');
   console.log('═════════════════════════════════════════════════════════════════\n');
 
   const vResults = [];
@@ -515,6 +515,38 @@ function runValidationTests() {
     Esperado: 'AVISOS (pieza-NN no está en vector.config.js)',
     Obtenido: `${v12.status} (${v12.warnings.find((w) => w.includes('no está en vector.config.js')) || 'sin mensaje'})`,
     Resultado: v12Pass ? '✔ PASS' : '✖ FAIL',
+  });
+
+  // V13: Clave outline objeto -> ERROR; con outlineOptions -> OK
+  const v13Bad = validateSvgPiece({
+    slug: 'demo-01',
+    svgContent: '<svg viewBox="0 0 100 100"><rect width="10" height="10"/></svg>',
+    pieceConfig: {
+      outline: { anchors: 'on' },
+    },
+  });
+  const v13BadPass =
+    v13Bad.status === 'ERROR' &&
+    v13Bad.errors.some((e) =>
+      e.includes('Usa `outline` para la ruta de la imagen y `outlineOptions` para las opciones.')
+    );
+
+  const v13Good = validateSvgPiece({
+    slug: 'demo-01',
+    svgContent: '<svg viewBox="0 0 100 100"><rect width="10" height="10"/></svg>',
+    pieceConfig: {
+      outline: 'works/demo-01/outline.webp',
+      outlineOptions: { anchors: 'on' },
+    },
+  });
+  const v13GoodPass = v13Good.status === 'OK' && v13Good.errors.length === 0;
+
+  const v13Pass = v13BadPass && v13GoodPass;
+  vResults.push({
+    Regla: '13. outline objeto vs outlineOptions',
+    Esperado: 'ERROR si outline es objeto, OK si outline es string con outlineOptions',
+    Obtenido: `Bad: ${v13Bad.status} (${v13Bad.errors[0] || 'sin mensaje'}) | Good: ${v13Good.status}`,
+    Resultado: v13Pass ? '✔ PASS' : '✖ FAIL',
   });
 
   console.table(vResults);

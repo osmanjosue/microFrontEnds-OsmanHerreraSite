@@ -646,6 +646,8 @@ export function validateSvgPiece({
   originalMeta,
   originalFileName,
   inConfig = true,
+  pieceConfig,
+  outline,
 }) {
   const errors = [];
   const warnings = [];
@@ -662,6 +664,14 @@ export function validateSvgPiece({
   if (inConfig === false) {
     warnings.push(
       `${slug} no está en vector.config.js: no aparecerá en la web hasta agregar su entrada.`
+    );
+  }
+
+  // Regla 13: La clave outline debe ser la ruta de la imagen (string) y no un objeto de opciones
+  const outlineVal = outline !== undefined ? outline : pieceConfig?.outline;
+  if (outlineVal !== undefined && typeof outlineVal !== 'string') {
+    errors.push(
+      'Usa `outline` para la ruta de la imagen y `outlineOptions` para las opciones.'
     );
   }
 

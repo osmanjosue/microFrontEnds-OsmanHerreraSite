@@ -178,6 +178,8 @@ async function main() {
       originalMeta,
       originalFileName,
       inConfig,
+      pieceConfig,
+      outline: pieceConfig.outline,
     });
 
     const isError = validation.status === 'ERROR';
@@ -282,8 +284,8 @@ async function main() {
       defStroke = 3;
     }
 
-    // Override opcional en vector.config.js: { outline: { anchors, anchorSize, stroke, rasters } }
-    const outlineCfg = pieceConfig.outline || {};
+    // Override opcional en vector.config.js: { outlineOptions: { anchors, anchorSize, stroke, rasters } }
+    const outlineCfg = pieceConfig.outlineOptions || {};
     const anchorsMode = outlineCfg.anchors || 'auto';
     const drawAnchors =
       anchorsMode === 'on' ? true : anchorsMode === 'off' ? false : defAnchors === 'on';

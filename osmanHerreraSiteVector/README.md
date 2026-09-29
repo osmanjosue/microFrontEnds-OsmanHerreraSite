@@ -10,8 +10,8 @@ Servido bajo la ruta `/vectorwork/` del sitio personal `osmanherrera.dev`.
 
 **Vector Work** es un micro-frontend interactivo diseñado bajo la estética *Apex Dossier / Cyber Precision* (modo oscuro, paletas cian y ámbar, tipografías técnicas *Space Grotesk* y *JetBrains Mono*).
 - **Comparador visual interactivo (antes/después):** Slider fluido con soporte para ratón, gestos táctiles y teclado (flechas ←/→) que permite contrastar el arte original rasterizado con su recreación vectorial de alta fidelidad.
-- **Modos de visualización COLOR y OUTLINE:** Alternancia en tiempo real. En modo **OUTLINE**, los rellenos se transparentan, los trazados vectoriales se resaltan en cian (`#00f0ff`) y se dibujan los puntos de ancla reales (`#ffb703`) sobre fondo negro carbón (`#0d0e13`).
-- **Telemetría y especificaciones técnicas:** Panel de inspección que muestra métricas calculadas del archivo SVG fuente (número exacto de trazados, anclas Bézier, paleta cromática y dimensiones del artboard) junto con tarjetas de proceso (Brief, Reto, Técnica y Resultado).
+- **Modos de visualización COLOR y OUTLINE:** Alternancia en tiempo real. En modo **OUTLINE**, los rellenos se transparentan, los trazados vectoriales se resaltan en cian (`#00f0ff`) y se dibujan los puntos de ancla reales (`#ffb703`) sobre fondo negro carbón (`#0d0e13`) según la densidad de nodos del arte (ver umbrales en sección 5).
+- **Telemetría y especificaciones técnicas:** Panel de inspección que muestra métricas calculadas del archivo SVG fuente (número exacto de trazados, conteo aproximado de anclas Bézier mostrado con "≈", paleta cromática y dimensiones del artboard) junto con tarjetas de proceso (Brief, Reto, Técnica y Resultado).
 - **Protección de propiedad intelectual:** El SVG editable **nunca se publica en la web** ni se expone en el DOM. La aplicación web sirve exclusivamente imágenes rasterizadas optimizadas en formato WebP HD (2400 px) y números precalculados offline.
 
 ---
@@ -20,7 +20,7 @@ Servido bajo la ruta `/vectorwork/` del sitio personal `osmanherrera.dev`.
 
 ### Requisitos previos
 - Node.js 18+ (recomendado Node 20+)
-- Sharp y svgpath (instalados en las dependencias del workspace)
+- Dependencias del pipeline y scripts (instaladas en las dependencias del workspace): `sharp`, `svgpath`, `@xmldom/xmldom`, `color-name` y `playwright` (para `verify-ui`)
 
 ### Comandos de desarrollo
 ```bash
@@ -36,76 +36,126 @@ El servidor Vite arrancará en `http://localhost:5175/`.
 ### Configuración local de títulos
 Para ver los títulos reales y créditos de las piezas en desarrollo sin exponerlos en git:
 ```bash
-# Copia la plantilla de ejemplo
+# Copia la plantilla de ejemplo (en Bash o en PowerShell mediante alias):
 cp osmanHerreraSiteVector/public/data/titles.example.json osmanHerreraSiteVector/public/data/titles.json
+
+# O de forma explícita en PowerShell:
+Copy-Item osmanHerreraSiteVector/public/data/titles.example.json osmanHerreraSiteVector/public/data/titles.json
 ```
 Si `titles.json` no existe o no está disponible, la aplicación recurre automáticamente a títulos genéricos por defecto (ej. *Estudio vectorial #01* / *Vector Study #01*).
 
+### Notas del entorno local
+- **Piezas demo en desarrollo:** En entorno de desarrollo (`npm run dev`) se cargan todas las piezas, incluidas las marcadas con `demo: true` para facilitar pruebas locales. En compilaciones de producción (`npm run build:vector`), las demos se excluyen automáticamente del catálogo.
+- **Limitación en `vite preview`:** Al ejecutar `vite preview`, la interfaz no mostrará imágenes de artes WebP ni títulos reales, dado que la carpeta `dist/` no incluye `works/` ni `data/` por motivos de seguridad. En el servidor VPS de producción, dichos archivos se sirven directamente desde `/var/www/vectorwork-assets/` a través de los alias configurados en Nginx.
+- **Navegación entre micro-frontends:** Los enlaces de navegación cruzada hacia otras aplicaciones (`/react/`, `/angular/`, `/vectorwork/`) solo operan de manera integrada detrás del proxy inverso de Nginx configurado en el servidor web.
+- **Liberación de puertos locales (5175):** Si el puerto 5175 ya se encuentra ocupado por otra instancia o terminal en segundo plano, Vite asignará automáticamente el siguiente puerto disponible (5176, 5177...). Para liberar el puerto 5175 cerrando el proceso anterior:
+  ```powershell
+  # 1. Encontrar el ProcessId (PID) que ocupa el puerto 5175:
+  Get-NetTCPConnection -LocalPort 5175 | Select-Object -ExpandProperty OwningProcess
+
+  # 2. Detener el proceso con el PID obtenido:
+  Stop-Process -Id <PID>
+  ```
+
 ---
 
-## 3. Guía paso a paso: Agregar una nueva pieza
+## 3. Guía paso a paso: Agregar una nueva pieza (Checklist de 9 pasos)
 
-Sigue estos 7 pasos para incorporar una nueva ilustración al catálogo:
+Sigue rigurosamente esta lista de verificación de 9 pasos para incorporar una nueva ilustración al catálogo sin comprometer datos privados ni romper la compilación:
 
-### Paso 1: Colocar los archivos fuente en `source/`
-- `source/pieza-NN.svg`: Archivo vectorial exportado desde Illustrator (nombres neutros, en minúsculas, sin espacios ni caracteres especiales; ej: `pieza-01.svg`, `pieza-02.svg`).
-- `source/pieza-NN-original.(png|jpg|jpeg|webp)`: Arte original rasterizado de referencia.
-> **Nota sobre piezas reales y demos:**
-> Las piezas con `demo: true` se excluyen automáticamente en compilaciones de producción (`import.meta.env.DEV || !w.demo`).
-> **Regla de orden en `vector.config.js`:** Las piezas reales deben colocarse **SIEMPRE ANTES** que las demos en el arreglo `works`. Dado que el número `#NN` y el título por defecto (*Estudio vectorial #NN*) se calculan según el índice de la pieza en la lista disponible, situar las piezas reales al inicio garantiza que su numeración (#01, #02...) se conserve intacta tanto en desarrollo como en producción.
+### Paso 1: Preparar en Adobe Illustrator
+- Ajusta la mesa de trabajo (Artboard) a la proporción exacta de la imagen raster de referencia.
+- Ubica la referencia en `(0, 0)` durante el calcado y elimínala SIEMPRE antes de exportar: cualquier `<image>` que quede en el SVG se renderizará dentro de `vector.webp` (el umbral del 50 % es solo la regla de detección automática del script para detener el proceso, no una tolerancia).
+- Convierte todas las fuentes a contornos (*Type → Create Outlines* o `Ctrl+Shift+O`) y limpia trazados vacíos (*Object → Path → Clean Up*).
+- Exporta en formato SVG con **Use Artboards**, **Presentation Attributes**, **Convert to Outlines**, **Minimal IDs** y **Responsive** activado.
+- Consulta todos los requisitos técnicos detallados en la [Sección 5: Preparación del arte en Adobe Illustrator](#5-preparación-del-arte-en-adobe-illustrator).
 
-### Paso 2: Registrar la pieza en `src/content/vector.config.js`
-Agrega una entrada en el arreglo `works`:
+### Paso 2: Copiar archivos a `source/`
+Copia los dos archivos fuente en la carpeta local `osmanHerreraSiteVector/source/`:
+- `source/pieza-NN.svg`: Vector exportado (ej: `pieza-02.svg`), usando siempre dos dígitos, minúsculas, sin espacios ni nombres propios de personajes/marcas.
+- `source/pieza-NN-original.(png|jpg|jpeg|webp)`: Imagen de referencia con su resolución real y el sufijo estricto `-original` (ej: `pieza-02-original.png`).
+
+### Paso 3: Registrar en `src/content/vector.config.js`
+> **DÓNDE PEGAR:** Inserta la nueva entrada en el arreglo `works` **inmediatamente después de la última pieza real y ANTES de las demos** (`demo-01..03`). Las piezas reales deben colocarse siempre primero para que su numeración (#01, #02...) e índice permanezcan estables tanto en desarrollo como en producción.
+> **ADVERTENCIA DE PRIVACIDAD:** Este archivo es **100% público** y se compila dentro del bundle JS. **NUNCA** coloques nombres de personajes con copyright ni nombres de artistas aquí; utiliza el comodín `{title}` en los textos.
+
 ```javascript
 {
-  slug: 'pieza-01',
-  category: 'characters', // 'characters' | 'creatures' | 'logos' | 'apparel'
-  original: 'works/pieza-01/original.webp', // Formato corto relativo, sin barra inicial
-  vector: 'works/pieza-01/vector.webp',
-  outline: 'works/pieza-01/outline.webp',
-  hours: 18, // Horas dedicadas (opcional)
-  vectorBackground: '#ffffff', // Fondo opcional para aplanar el vector (por defecto transparente)
-  outline: {
-    anchors: 'auto', // 'auto' | 'on' | 'off'
-    anchorSize: 16,  // Tamaño de anclas en píxeles en salida de 2400px (opcional)
-    stroke: 6,       // Grosor de línea en salida de 2400px (opcional)
-    rasters: 'dim',  // 'dim' (atenuada al 25% en escala de grises, por defecto) | 'hide' (oculta en outline)
-  },
+  slug: 'pieza-02',
+  category: 'characters',
+  original: 'works/pieza-02/original.webp', // Ruta corta relativa sin barra inicial
+  vector: 'works/pieza-02/vector.webp',
+  outline: 'works/pieza-02/outline.webp',   // Solo string con la ruta (NUNCA un objeto)
+  hours: 14,
+  // vectorBackground: '#ffffff', // Opcional: fondo si el SVG requiere aplanado
+  // outlineOptions: {            // Opcional: opciones del visor OUTLINE
+  //   anchors: 'auto',          // 'auto' | 'on' | 'off'
+  //   anchorSize: 16,           // Tamaño de anclas en píxeles (salida 2400px)
+  //   stroke: 6,                // Grosor de trazado en píxeles (salida 2400px)
+  //   rasters: 'dim',           // 'dim' (atenuada al 25% en escala de grises) | 'hide'
+  // },
   brief: {
     es: 'Recreación vectorial para impresión a gran formato de {title}.',
     en: 'Vector recreation for large-format printing of {title}.',
   },
   challenge: {
-    es: 'Imagen raster inicial de baja resolución con bordes difusos y degradados complejos.',
-    en: 'Low-resolution initial raster image with blurry edges and complex gradients.',
+    es: 'Imagen raster inicial de baja resolución con entintado denso y texturas finas.',
+    en: 'Low-resolution initial raster image with dense inking and fine textures.',
   },
   technique: {
     es: [
       'Trazado manual con herramienta pluma minimizando puntos de ancla',
-      'Luces y sombras recreadas con formas sólidas y degradados lineales limpios',
-      'Organización modular por capas de color',
+      'Separación de sombras y luces en capas independientes',
+      'Paleta cromática reducida a tintas planas',
     ],
     en: [
       'Manual pen tool tracing minimizing anchor count on curves',
-      'Highlights and shadows built with solid geometry and clean linear gradients',
-      'Modular color layer organization',
+      'Highlights and shadows separated into independent layers',
+      'Color palette reduced to flat spot inks',
     ],
   },
   result: {
-    es: 'Arte final 100% escalable y listo para producción sin artefactos de compresión.',
-    en: '100% scalable final artwork ready for production without compression artifacts.',
+    es: 'Arte final 100% escalable y listo para serigrafía e impresión de alta calidad.',
+    en: '100% scalable final artwork ready for silkscreen and high-grade printing.',
   },
   tools: ['Illustrator', 'Photoshop'],
 }
 ```
 
-### Paso 3: Asignar título real y crédito en `public/data/titles.json`
-Edita localmente `public/data/titles.json` (archivo protegido e ignorado por git):
+#### Descripción de campos en `vector.config.js`
+| Campo | Tipo | Obligatorio | Descripción |
+|---|---|---|---|
+| `slug` | `string` | Sí | Identificador único en formato `pieza-NN` (dos dígitos, minúsculas, sin espacios). |
+| `category` | `string` | Sí | Categoría (`'characters'` \| `'creatures'` \| `'logos'` \| `'apparel'`). |
+| `original` | `string` | Sí | Ruta relativa a la imagen original (`'works/pieza-NN/original.webp'`). |
+| `vector` | `string` | Sí | Ruta relativa a la imagen vectorial (`'works/pieza-NN/vector.webp'`). |
+| `outline` | `string` | Sí | Ruta relativa al outline (`'works/pieza-NN/outline.webp'`). **Solo string.** |
+| `hours` | `number` | No | Horas de trabajo dedicadas al trazado. |
+| `vectorBackground` | `string` | No | Color CSS de fondo si el vector tiene transparencias y se desea aplanar (ej. `'#ffffff'`). |
+| `outlineOptions` | `object` | No | Opciones del visor OUTLINE (`anchors`, `anchorSize`, `stroke`, `rasters`). |
+| `brief` | `{ es, en }` | Sí | Resumen del encargo (soporta `{title}` para interpolación en runtime). |
+| `challenge` | `{ es, en }` | Sí | Reto técnico que presentaba el arte original o la resolución. |
+| `technique` | `{ es, en }` | Sí | Lista de decisiones técnicas y metodológicas tomadas durante el trazado. |
+| `result` | `{ es, en }` | Sí | Resultado final y destino de producción del arte. |
+| `tools` | `string[]` | Sí | Herramientas utilizadas (ej. `['Illustrator', 'Photoshop']`). |
+| `demo` | `boolean` | No | Solo para piezas de muestra (`true`). Las piezas reales omiten este campo. |
+
+### Paso 4: Configurar `public/data/titles.json`
+Edita localmente `osmanHerreraSiteVector/public/data/titles.json` (archivo privado ignorado en git). Añade la entrada para la pieza nueva entre las existentes:
+
 ```json
 {
   "pieza-01": {
-    "es": "Nombre Real en Español",
-    "en": "Real Name in English",
+    "es": "Nombre Real Pieza 01",
+    "en": "Real Name Piece 01",
+    "credit": {
+      "es": "Ilustración original por Artista 1",
+      "en": "Original illustration by Artist 1"
+    }
+  },
+  "pieza-02": {
+    "es": "Nombre Real Pieza 02",
+    "en": "Real Name Piece 02",
     "credit": {
       "es": "Ilustración original por Nombre del Artista",
       "en": "Original illustration by Artist Name"
@@ -113,36 +163,78 @@ Edita localmente `public/data/titles.json` (archivo protegido e ignorado por git
   }
 }
 ```
-*El campo `credit` es opcional. Si se define, se muestra debajo del título principal con el prefijo traducido y marcado con `data-nosnippet`.*
 
-### Paso 4: Construir los assets y validar la pieza
-Ejecuta el script de construcción filtrando por la pieza:
+> **Reglas estrictas de sintaxis JSON:**
+> 1. Usa exclusivamente **comillas dobles** `"` para todas las claves y textos (las comillas simples son inválidas en JSON).
+> 2. Separa cada objeto con una **coma**, pero **NO dejes una coma final (*trailing comma*)** después de la última propiedad o del último objeto.
+> 3. **Prohibido incluir comentarios:** JSON estándar no admite líneas con `//` ni bloques `/* */`.
+> 4. **Comportamiento ante error de sintaxis:** Si `titles.json` contiene errores de sintaxis, la aplicación no lanzará una excepción visible en pantalla, sino que recurrirá silenciosamente a los títulos genéricos por defecto (*Estudio vectorial #NN*).
+
+### Paso 5: Generar assets y verificar validaciones
+Ejecuta el script generador indicando el slug de la nueva pieza:
 ```bash
-npm run assets -w osmanHerreraSiteVector -- --only pieza-01
+npm run assets -w osmanHerreraSiteVector -- --only pieza-02
 ```
-Revisa la consola: el script analizará el SVG, calculará trazados y anclas, generará los WebP a 2400 px, actualizará `src/content/stats.json` y emitirá el reporte de validación (OK / AVISOS / ERROR).
 
-### Paso 5: Verificar en desarrollo
-Inicia el entorno de desarrollo y comprueba:
-- Coincidencia y alineación perfecta 1:1 entre el arte original y el vector al deslizar el comparador.
-- Fidelidad de colores y correcta renderización del modo OUTLINE.
+**Diagnóstico del resultado:**
+- **OK:** Todos los assets WebP (`vector.webp`, `outline.webp`, `original.webp`) se generaron en `public/works/pieza-NN/` y las métricas numéricas se calcularon en `src/content/stats.json`. Pasa al siguiente paso.
+- **AVISOS:** Se generaron los WebP pero el analizador detectó detalles a revisar (ej: formas degeneradas, texto sin contornear o imagen secundaria). Revisa el desglose; si se trata de técnica mixta intencional, puedes continuar; si no, corrígelo en Illustrator y repite.
+- **ERROR:** El proceso se detiene y **NO genera assets** (ej: falta viewBox, proporción desalineada con el original > 0.5%, imagen original incrustada al 50%+ o clave `outline` definida como objeto). Corrige el problema indicado y vuelve a ejecutar.
 
-### Paso 6: Subir los assets al VPS vía SCP
-Sube los archivos generados a la carpeta de assets del servidor (usando PowerShell o Windows OpenSSH):
+### Paso 6: Revisar en el entorno local
+Inicia el servidor de desarrollo y abre la pieza directamente con su hash:
+```bash
+npm run dev -w osmanHerreraSiteVector
+```
+Navega a `http://localhost:5175/#pieza-02` y comprueba:
+1. **Alineación 1:1:** Al arrastrar el slider de división, los bordes del original y del vector deben coincidir con precisión milimétrica sin saltos.
+2. **Fidelidad de color:** Trazo, degradados y opacidades fieles al original.
+3. **Modo OUTLINE:** Al activar OUTLINE, los trazados deben verse en cian `#00f0ff` con nodos ámbar según la densidad de la pieza (ver umbrales en la sección 5; en piezas de más de 20 000 nodos no se dibujan), y cualquier trama raster debe quedar atenuada en gris.
+4. **Bilingüismo:** Cambia entre **ES** y **EN** en la cabecera; comprueba que el título real (proveniente de `titles.json`), los créditos y las 4 tarjetas técnicas se traduzcan correctamente.
+
+### Paso 7: Commit seguro a Git (PowerShell)
+Dado que el repositorio es público, versiona únicamente los metadatos necesarios y verifica la ausencia total de nombres privados:
+
 ```powershell
-# Subir la carpeta de la pieza (vector.webp, outline.webp, original.webp)
-scp -r osmanHerreraSiteVector/public/works/pieza-01 USUARIO@SERVIDOR:/var/www/vectorwork-assets/works/
+# 1. Agregar solo los dos archivos de configuración y métricas:
+git add osmanHerreraSiteVector/src/content/vector.config.js osmanHerreraSiteVector/src/content/stats.json
 
-# Subir el diccionario de títulos reales actualizado
-scp osmanHerreraSiteVector/public/data/titles.json USUARIO@SERVIDOR:/var/www/vectorwork-assets/data/
+# 2. Comprobar que ningún archivo privado o imagen esté en staging (debe salir VACÍO):
+git diff --cached --name-only | Select-String "titles\.json$|source/pieza|works/pieza"
+
+# 3. Comprobar que ningún texto del commit contenga nombres de personajes ni artistas (debe salir VACÍO):
+git grep --cached -il -e "NOMBRE-PERSONAJE" -e "NOMBRE-ARTISTA"
+
+# 4. Crear el commit:
+git commit -m "Agrega pieza-NN a Vector Work"
 ```
+*(En el comando `git grep`, sustituye `"NOMBRE-PERSONAJE"` y `"NOMBRE-ARTISTA"` por los nombres reales de la ilustración para garantizar que no se hayan escrito en `vector.config.js`).*
 
-### Paso 7: Reemplazo o actualización de arte publicado
-Si con posterioridad necesitas reemplazar un arte ya publicado en producción:
-1. Renombra el archivo en tu exportación o agrega versión (ej: `vector-v2.webp`).
-2. Actualiza la ruta correspondiente en `src/content/vector.config.js`.
-3. Vuelve a generar y subir el archivo.
-*Esto invalida de inmediato la caché del navegador (`max-age=2592000`) de los usuarios que ya hayan visto la versión anterior.*
+### Paso 8: Publicar en el VPS (Orden estricto)
+Sube los archivos al servidor remoto **EN ESTE ORDEN EXACTO**:
+
+1. **Subir los WebP generados:**
+   ```powershell
+   scp -r osmanHerreraSiteVector/public/works/pieza-02 USUARIO@SERVIDOR:/var/www/vectorwork-assets/works/
+   ```
+2. **Subir el diccionario de títulos reales:**
+   ```powershell
+   scp osmanHerreraSiteVector/public/data/titles.json USUARIO@SERVIDOR:/var/www/vectorwork-assets/data/
+   ```
+3. **Compilar y subir la aplicación web:**
+   ```powershell
+   npm run build:vector
+   scp -r osmanHerreraSiteVector/dist USUARIO@SERVIDOR:/RUTA/AL/SITIO/osmanHerreraSiteVector/
+   ```
+
+> **Por qué este orden:** La entrada de la pieza en `vector.config.js` se compila directamente dentro del bundle JS (`dist/assets/index-[hash].js`), por lo que la pieza no existirá en la web de producción hasta ejecutar el paso 3. Si subieras 3 antes que 1, los visitantes verían la pieza con enlaces rotos durante los segundos que tarde en transferirse la carpeta de imágenes.
+
+### Paso 9: Reemplazar un arte ya publicado
+Si con posterioridad necesitas sustituir o actualizar los trazados de una pieza ya publicada en producción:
+1. Exporta el nuevo arte y genera los WebP versionando los nombres o actualizando el archivo (ej: `vector-v2.webp`).
+2. Actualiza la ruta en `src/content/vector.config.js` (`vector: 'works/pieza-NN/vector-v2.webp'`).
+3. Vuelve a generar los assets y sigue el orden de subida del Paso 8.
+*El cambio de ruta invalida de inmediato la caché del navegador (`max-age=2592000`) para todos los usuarios.*
 
 ---
 
@@ -211,7 +303,7 @@ Antes de presionar OK, pulsa **Show Code** y comprueba:
 - Que no existan etiquetas `<image` grandes (significaría que olvidaste borrar la imagen original).
 
 ### Limitaciones conocidas del pipeline
-1. **Rasters incrustados (texturas de técnica mixta) y Mallas de degradado (*Gradient Meshes*):** No computan en el conteo de trazados Bézier ni en anclas. En modo OUTLINE se renderizan atenuadas al 25% de opacidad y escala de grises para priorizar la estructura vectorial (o pueden ocultarse declarando `outline: { rasters: 'hide' }` en la configuración de la pieza).
+1. **Rasters incrustados (texturas de técnica mixta) y Mallas de degradado (*Gradient Meshes*):** No computan en el conteo de trazados Bézier ni en anclas. En modo OUTLINE se renderizan atenuadas al 25% de opacidad y escala de grises para priorizar la estructura vectorial (o pueden ocultarse declarando `outlineOptions: { rasters: 'hide' }` en la configuración de la pieza).
 2. **Efectos de Illustrator y modos de fusión complejos:** Efectos rasterizados (sombras paralelas, desenfoques gaussianos) o modos de fusión no estándar pueden presentar diferencias sutiles al renderizarse vía *librsvg* en Sharp.
 3. **Piezas extremadamente densas:** El outline se ajusta según la densidad de nodos para mantener un rendimiento visual óptimo:
    - **≤ 3 000 nodos:** Cuadros de ancla de 16 px, trazo de 6 px.
@@ -219,13 +311,13 @@ Antes de presionar OK, pulsa **Show Code** y comprueba:
    - **> 20 000 nodos:** Sin anclas (solo trazados de 2 px para evitar saturación de pantalla).
 
 ### Tabla de validaciones automáticas del script
-El script `npm run assets` realiza 10 comprobaciones antes de procesar cada pieza:
+El script `npm run assets` realiza 13 comprobaciones antes de procesar cada pieza:
 
 | N° | Tipo | Condición | Diagnóstico y Acción requerida |
 |---|---|---|---|
 | 1 | **ERROR** | No tiene `viewBox` | Omitida. En Illustrator, exporta marcando *Responsive* y *Use Artboards*. |
 | 2 | **ERROR** | Proporción viewBox vs original difiere > 0.5% | Omitida. Las dimensiones de la mesa de trabajo no guardan la misma proporción que el original. Ajusta la mesa en Illustrator. |
-| 3 | **ERROR** | Una `<image>` cubre ≥ 50% del artboard | Omitida. La imagen original quedó incrustada en el SVG. Bórrala y vuelve a exportar. |
+| 3 | **ERROR** | Una `<image>` cubre ≥ 50% del artboard | Omitida. La imagen original de referencia quedó incrustada en el SVG. Bórrala y vuelve a exportar. |
 | 4 | **AVISO** | `<image>` cubren < 50% | Informativo. Pieza con técnica mixta (p. ej. tramas de semitonos). Se mostrará el chip **VECTOR + TRAMA RASTER** y la trama atenuada en OUTLINE. |
 | 5 | **AVISO** | `<image>` duplicadas (mismo hash) | Informativo. Texturas repetidas aumentan el peso en KB innecesariamente. |
 | 6 | **AVISO** | Contiene `<text` | Hay texto editable. Conviértelo a contornos (*Create Outlines*). |
@@ -233,6 +325,9 @@ El script `npm run assets` realiza 10 comprobaciones antes de procesar cada piez
 | 8 | **AVISO** | Contiene `data-name=` | Exportado con *Object IDs = Layer Names*. Se recomienda *Minimal*. |
 | 9 | **AVISO** | Formas degeneradas (ancho/alto 0) | Elementos vacíos ignorados. Ejecuta *Object → Path → Clean Up*. |
 | 10 | **ERROR** | Nombre no cumple `pieza-NN`/`demo-NN` o tiene espacios | Omitida. Renombra los archivos siguiendo el patrón requerido sin espacios. |
+| 11 | **AVISO** | Archivo original sin sufijo `-original` | Informativo. Renombra `source/pieza-NN.ext` a `pieza-NN-original.ext`. |
+| 12 | **AVISO** | Pieza en `source/` que no está en `vector.config.js` | Informativo. La pieza no aparecerá en la web hasta agregar su entrada en `works`. |
+| 13 | **ERROR** | Clave `outline` no es string (objeto de opciones) | Omitida. Usa `outline` para la ruta de la imagen WebP y `outlineOptions` para las opciones del comparador. |
 
 ---
 
@@ -254,7 +349,7 @@ En el arte vectorial profesional y de serigrafía o merchandising textil, es hab
    - Dado que *librsvg* no aplica `filter: grayscale()` de CSS (la trama saldría con su color original atenuado), en `build-assets.mjs`, al generar el SVG temporal del outline, cada `<image href="data:...">` incrustada se decodifica, se transforma físicamente a escala de grises real con Sharp (`.grayscale()`), se vuelve a codificar en base64 y se reemplaza en el SVG; la opacidad tenue del 25% se gestiona vía CSS (`opacity: 0.25`). Si la etiqueta `<image>` utiliza un enlace externo (no data URI), se preserva únicamente la opacidad y se emite un aviso. Esto garantiza una inspección fidedigna de la composición sin que los colores del raster interfieran con los trazados vectoriales cian (`#00f0ff`) ni los nodos Bézier (`#ffb703`).
    - **Override configurable por pieza:** Si deseas ocultar por completo las imágenes raster en el modo OUTLINE de una pieza específica, puedes declararlo en `vector.config.js`:
      ```javascript
-     outline: {
+     outlineOptions: {
        rasters: 'hide', // 'dim' (por defecto: atenuada al 25% en escala de grises real) | 'hide' (oculta en outline)
      }
      ```
@@ -370,7 +465,7 @@ npm run assets:test -w osmanHerreraSiteVector
 Verifica:
 - 11 casos unitarios del parser de SVG (deduplicación z, matrices compactas de Illustrator, arcos sin descomposición, relleno implícito negro, herencia de fill/stroke, formas degeneradas e imágenes raster).
 - Comparativa 100% fidedigna de métricas contra el fixture real de Illustrator.
-- Validación de las 10 reglas previas de control de calidad.
+- Validación de las 13 reglas previas de control de calidad.
 
 ### Verificación de interfaz con Playwright headless
 Para comprobar la renderización visual en viewports responsive sin abrir ventanas de navegador:
