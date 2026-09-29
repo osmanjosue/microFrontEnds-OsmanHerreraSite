@@ -23,3 +23,5 @@ La isla funciona. Recibe solo los textos resueltos en el idioma de la página, e
 ## TODO para el usuario
 - Aprobar el texto nuevo `contactForm.alerts.close`: "Cerrar notificación" / "Close notification". Solo lo usan los lectores de pantalla.
 - Módulo de reclutamiento: descripción y URL exacta. Sigue apareciendo "TODO: confirmar" en la tarjeta.
+
+<!-- VEREDICTO: APROBADA CON OBSERVACIONES -->

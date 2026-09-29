@@ -59,3 +59,5 @@ Verificación: `npx astro check` 0 errors / 0 warnings; `npm run build` 4 págin
 14. [menor] `site.types.ts` (`technologies: (string | Localized)[]`): agregar en `@config` un helper `tText(value: string | Localized, lang)` para que los componentes no repitan la comprobación `typeof`.
 
 Fase 2 cerrada. Puede avanzar a la fase 3, incluyendo los puntos 13 y 14.
+
+<!-- VEREDICTO: APROBADA CON OBSERVACIONES -->

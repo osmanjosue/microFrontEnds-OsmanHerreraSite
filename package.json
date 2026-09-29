@@ -30,7 +30,7 @@
     "build:backend": "npm run build --prefix osmanHerreraSiteBackend",
     "build:vector": "npm run build --prefix osmanHerreraSiteVector",
     "build:astro": "npm run build --prefix osmanHerreraSiteAstro",
-    "assets:test": "npm run assets:test --prefix osmanHerreraSiteVector",
+    "assets:test": "npm run assets:test --prefix osmanHerreraSiteAstro",
     "build:all": "npm run build:angular && npm run build:react && npm run build:backend && npm run build:vector"
   },
   "repository": {

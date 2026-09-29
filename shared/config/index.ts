@@ -5,3 +5,4 @@
 export * from './i18n';
 export * from './site.types';
 export * from './site.config';
+export * from './vector.config';

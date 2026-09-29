@@ -92,3 +92,5 @@ Revisé la captura: los iconos se ven, los placeholders cargan y el chaflán de 
 16. [info] Los placeholders SVG repiten dentro de la imagen el título y las tecnologías de cada proyecto, y el texto está solo en español. Como se reemplazarán por capturas reales, no hace falta tocarlos.
 
 Fase 4 cerrada, sujeta a que el usuario apruebe los textos nuevos. Puede avanzar a la fase 5.
+
+<!-- VEREDICTO: APROBADA CON OBSERVACIONES -->

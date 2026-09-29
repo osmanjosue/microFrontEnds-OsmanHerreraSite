@@ -59,3 +59,11 @@ yarn-error.log*
 osmanHerreraSiteVector/source/*
 osmanHerreraSiteVector/public/works/*
 osmanHerreraSiteVector/public/data/titles.json
+osmanHerreraSiteAstro/public/vectorwork/works/*
+osmanHerreraSiteAstro/public/vectorwork/data/titles.json
+osmanHerreraSiteAstro/scripts/vector/.screenshots/
+osmanHerreraSiteAstro/scripts/vector/fixtures/out/
+
+# Estado y logs del orquestador Gemini <-> Claude
+.handoff-loop/
+

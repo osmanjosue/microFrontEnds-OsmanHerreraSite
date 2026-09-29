@@ -1,0 +1,28 @@
+---
+// ===========================================================================
+// VISTA: VECTOR WORK (DE RASTER A VECTOR)
+// ===========================================================================
+import { type Lang, vectorConfig, t } from '@config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const title = t(vectorConfig.ui.pageTitle, lang);
+const description = t(vectorConfig.ui.metaDescription, lang);
+---
+
+<BaseLayout lang={lang} route="vectorwork" title={title} description={description}>
+  <div class="w-full bg-surface min-h-[calc(100vh-8rem)]">
+    <div id="vector-app" class="w-full px-3 sm:px-margin py-space-sm sm:py-space-md max-w-[1720px] mx-auto">
+      <!-- Vector Work App se renderiza aquí dinámicamente -->
+    </div>
+  </div>
+
+  <script>
+    import '../lib/vector/main.js';
+  </script>
+</BaseLayout>

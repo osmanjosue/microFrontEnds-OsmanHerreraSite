@@ -40,3 +40,5 @@ El layout, el header, el footer y los componentes UI cumplen la fase; los puntos
 5. ✅ `linkHref(link: ExperienceLink, …)`, sin respaldo `'#'`.
 6. ✅ `StatTile` usa `CornerMarks` con `corners={['tl']}`.
 7. ✅ `privacyPolicy.kicker` está en el config.
+
+<!-- VEREDICTO: APROBADA CON OBSERVACIONES -->
