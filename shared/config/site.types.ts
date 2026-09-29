@@ -203,6 +203,7 @@ export interface SiteConfig {
     };
   };
   privacyPolicy: {
+    kicker: Localized;
     title: Localized<RichText>;
     owner: string;
     backLabel: Localized;

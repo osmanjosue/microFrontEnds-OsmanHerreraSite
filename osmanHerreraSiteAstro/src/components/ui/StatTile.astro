@@ -2,6 +2,7 @@
 // ===========================================================================
 // COMPONENTE UI: STAT TILE (INDICADOR DE MÉTRICAS TELEMÉTRICAS)
 // ===========================================================================
+import CornerMarks from './CornerMarks.astro';
 
 interface Props {
   value: string;
@@ -32,7 +33,8 @@ const colorClasses = {
     className,
   ]}
 >
-  <div class="absolute top-2 left-2 w-2 h-2 border-t-2 border-l-2 border-primary-container/40"></div>
+  <!-- Marca L de esquina superior-izquierda reutilizando CornerMarks (obs. 6) -->
+  <CornerMarks corners={['tl']} size="w-2 h-2" offset="2" />
   <div class="flex items-baseline justify-between mb-space-xs">
     <span class:list={['font-stat-display text-stat-display font-bold tracking-tight', colorClasses[color]]}>
       {value}

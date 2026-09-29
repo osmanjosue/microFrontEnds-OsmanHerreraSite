@@ -71,6 +71,8 @@ const vectorPath = localizedPath(siteConfig.vectorWorkLink.targetRoute, lang);
           id="mobile-menu-btn"
           class="md:hidden p-2 text-on-surface hover:text-primary-container focus:outline-none"
           aria-label={t(siteConfig.ui.menuOpenAria, lang)}
+          data-open-label={t(siteConfig.ui.menuOpenAria, lang)}
+          data-close-label={t(siteConfig.ui.menuCloseAria, lang)}
           aria-expanded="false"
         >
           <span class="material-symbols-outlined text-2xl" id="mobile-menu-icon">menu</span>
@@ -150,13 +152,17 @@ const vectorPath = localizedPath(siteConfig.vectorWorkLink.targetRoute, lang);
   if (btn && menu && icon) {
     btn.addEventListener('click', () => {
       const isHidden = menu.classList.contains('hidden');
+      const openLabel = btn.dataset.openLabel ?? '';
+      const closeLabel = btn.dataset.closeLabel ?? '';
       if (isHidden) {
         menu.classList.remove('hidden');
         btn.setAttribute('aria-expanded', 'true');
+        btn.setAttribute('aria-label', closeLabel);
         icon.textContent = 'close';
       } else {
         menu.classList.add('hidden');
         btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', openLabel);
         icon.textContent = 'menu';
       }
     });

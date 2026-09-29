@@ -1,6 +1,7 @@
 // ===========================================================================
 // UTILIDADES Y TIPOS DE INTERNACIONALIZACIÓN (I18N)
 // ===========================================================================
+import type { ExperienceLink } from './site.types';
 
 export const LANGS = ['es', 'en'] as const;
 export type Lang = (typeof LANGS)[number];
@@ -54,11 +55,12 @@ export function localizedPath(route: RouteKey, lang: Lang): string {
 
 /**
  * Devuelve la URL externa o la ruta interna localizada para un ExperienceLink.
+ * El tipo ExperienceLink es una unión estricta: garantiza que siempre
+ * esté presente `url` o `route`, nunca ninguno de los dos.
  */
-export function linkHref(link: { url?: string; route?: RouteKey }, lang: Lang): string {
-  if (link.url) return link.url;
-  if (link.route) return localizedPath(link.route, lang);
-  return '#';
+export function linkHref(link: ExperienceLink, lang: Lang): string {
+  if ('url' in link && link.url) return link.url;
+  return localizedPath((link as { route: RouteKey }).route, lang);
 }
 
 /**

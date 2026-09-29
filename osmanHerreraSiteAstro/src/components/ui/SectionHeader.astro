@@ -6,11 +6,17 @@
 interface Props {
   kicker?: string;
   title: string;
+  /** Número de sección (1, 2, …). Si se pasa, el título se formatea como "NN // TÍTULO". */
+  index?: number;
   subtitle?: string;
   class?: string;
 }
 
-const { kicker, title, subtitle, class: className = '' } = Astro.props;
+const { kicker, title, index, subtitle, class: className = '' } = Astro.props;
+
+// Formatea "01 // TÍTULO" cuando se pasa index; de lo contrario, solo el título.
+const displayTitle =
+  index !== undefined ? `${String(index).padStart(2, '0')} // ${title}` : title;
 ---
 
 <div class:list={['flex flex-col sm:flex-row sm:items-end justify-between gap-space-sm pb-space-xs', className]}>
@@ -21,7 +27,7 @@ const { kicker, title, subtitle, class: className = '' } = Astro.props;
       </span>
     )}
     <h2 class="font-headline-lg text-headline-lg text-primary font-bold">
-      {title}
+      {displayTitle}
     </h2>
     {subtitle && (
       <p class="font-body-md text-on-surface-variant max-w-2xl mt-1">

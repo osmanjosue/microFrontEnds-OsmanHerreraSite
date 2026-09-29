@@ -112,6 +112,23 @@ export default {
         '.chamfer': {
           'clip-path': 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%)',
         },
+        // Variante con borde: usa posición relativa + ::before para dibujar la diagonal
+        // sin clip-path (que cortaría el borde). El color del borde se hereda de currentColor.
+        '.chamfer-border': {
+          position: 'relative',
+          'clip-path': 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%)',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: '0',
+            right: '0',
+            width: '14px',
+            height: '1px',
+            background:
+              'linear-gradient(225deg, transparent 50%, currentColor 50%)',
+            'pointer-events': 'none',
+          },
+        },
       });
     }),
   ],

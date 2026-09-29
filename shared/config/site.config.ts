@@ -605,6 +605,10 @@ export const siteConfig: SiteConfig = {
   },
 
   privacyPolicy: {
+    kicker: {
+      es: 'LEGAL // INFORMACIÓN LEGAL',
+      en: 'LEGAL // LEGAL INFORMATION',
+    },
     title: {
       es: ['Política de ', { text: 'Privacidad', highlight: true }],
       en: ['Privacy ', { text: 'Policy', highlight: true }],
