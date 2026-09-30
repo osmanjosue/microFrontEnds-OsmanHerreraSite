@@ -59,7 +59,7 @@ export default defineConfig({
   site: 'https://osmanherrera.dev',
   i18n: {
     locales: ['es', 'en'],
-    defaultLocale: 'es',
+    defaultLocale: 'en',
     routing: {
       prefixDefaultLocale: false,
     },

@@ -104,7 +104,7 @@ export function renderCompareSliderHtml({
       <!-- Contenedor del Viewport Interactivo -->
       <div class="w-full flex justify-center items-center">
         <div
-          class="slider-viewport relative mx-auto w-full max-w-full bg-surface rounded overflow-hidden select-none touch-none cursor-ew-resize border border-surface-container-high/60"
+          class="slider-viewport relative mx-auto w-full max-w-full bg-surface rounded overflow-hidden select-none touch-pan-y cursor-ew-resize border border-surface-container-high/60"
           id="split-slider-container"
           role="region"
           aria-label="${escapeHtml(sliderRegionLabel)}"
@@ -362,12 +362,37 @@ export function attachSliderEvents(containerEl, { onPositionChange, onModeChange
     updateSlider(e.clientX);
   };
 
+  // Táctil sobre el arte (fuera de la barra): el viewport usa touch-action: pan-y,
+  // así que el scroll vertical lo hace el navegador. La barra solo se mueve si el
+  // gesto es claramente horizontal; no salta al punto tocado al empezar un scroll.
+  const TOUCH_SLOP = 8;
+  let touchStart = null;
+
+  const onTouchDownOnArt = (e) => {
+    touchStart = { x: e.clientX, y: e.clientY };
+  };
+
   const onPointerMove = (e) => {
+    if (touchStart) {
+      const dx = Math.abs(e.clientX - touchStart.x);
+      const dy = Math.abs(e.clientY - touchStart.y);
+      if (dx < TOUCH_SLOP && dy < TOUCH_SLOP) return;
+      if (dy >= dx) {
+        touchStart = null; // gesto vertical: es scroll, se ignora
+        return;
+      }
+      touchStart = null;
+      isDragging = true;
+      try {
+        sliderHandle.setPointerCapture(e.pointerId);
+      } catch {}
+    }
     if (!isDragging) return;
     updateSlider(e.clientX);
   };
 
   const onPointerUp = (e) => {
+    touchStart = null;
     if (!isDragging) return;
     isDragging = false;
     try {
@@ -380,7 +405,11 @@ export function attachSliderEvents(containerEl, { onPositionChange, onModeChange
     'pointerdown',
     (e) => {
       if (e.target !== sliderHandle && !sliderHandle.contains(e.target)) {
-        onPointerDown(e);
+        if (e.pointerType === 'touch') {
+          onTouchDownOnArt(e);
+        } else {
+          onPointerDown(e);
+        }
       }
     },
     { signal }
@@ -391,6 +420,7 @@ export function attachSliderEvents(containerEl, { onPositionChange, onModeChange
 
   sliderHandle.addEventListener('pointerup', onPointerUp, { signal });
   sliderHandle.addEventListener('pointercancel', onPointerUp, { signal });
+  sliderContainer.addEventListener('pointercancel', onPointerUp, { signal });
   window.addEventListener('pointerup', onPointerUp, { signal });
 
   // Sincronización del input range para accesibilidad

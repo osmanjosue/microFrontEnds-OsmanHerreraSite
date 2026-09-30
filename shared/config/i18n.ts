@@ -5,7 +5,7 @@ import type { ExperienceLink } from './site.types';
 
 export const LANGS = ['es', 'en'] as const;
 export type Lang = (typeof LANGS)[number];
-export const DEFAULT_LANG: Lang = 'es';
+export const DEFAULT_LANG: Lang = 'en';
 
 /**
  * Tipo genérico para valores que deben existir en todos los idiomas soportados.
@@ -19,23 +19,24 @@ export type RouteKey = 'home' | 'privacy' | 'vectorwork' | 'cv';
 /**
  * Tabla de rutas del sitio por idioma.
  * Define la correspondencia exacta entre las URLs en español e inglés.
+ * El inglés es el idioma por defecto (sin prefijo); el español vive bajo /es/.
  */
 export const ROUTES: Record<RouteKey, Localized<string>> = {
   home: {
-    es: '/',
-    en: '/en/',
+    es: '/es/',
+    en: '/',
   },
   privacy: {
-    es: '/politicadeprivacidad',
-    en: '/en/privacy-policy',
+    es: '/es/politicadeprivacidad/',
+    en: '/privacy-policy/',
   },
   vectorwork: {
-    es: '/vectorwork/',
-    en: '/en/vectorwork/',
+    es: '/es/vectorwork/',
+    en: '/vectorwork/',
   },
   cv: {
-    es: '/cv/',
-    en: '/en/cv/',
+    es: '/es/cv/',
+    en: '/cv/',
   },
 };
 

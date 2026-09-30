@@ -2,12 +2,12 @@
 // ===========================================================================
 // PÁGINA 404 BILINGÜE — ERROR 404 // RECURSO NO LOCALIZADO
 // ===========================================================================
-// Presenta la información de error 404 en español e inglés simultáneamente,
+// Presenta la información de error 404 en inglés (idioma por defecto) y español,
 // permitiendo al usuario volver al inicio en su idioma preferido.
 // Todos los textos provienen de siteConfig.notFound en shared/config/site.config.ts.
 // ===========================================================================
 
-import { siteConfig } from '@config';
+import { siteConfig, localizedPath } from '@config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
 import Card from '../components/ui/Card.astro';
@@ -17,10 +17,10 @@ const { notFound } = siteConfig;
 ---
 
 <BaseLayout
-  lang="es"
+  lang="en"
   route="home"
-  title={notFound.metaTitle.es}
-  description={notFound.metaDescription.es}
+  title={notFound.metaTitle.en}
+  description={notFound.metaDescription.en}
   noindex={true}
 >
   <section class="min-h-[70vh] flex items-center justify-center px-margin py-space-xl">
@@ -29,11 +29,11 @@ const { notFound } = siteConfig;
       <div class="flex items-center gap-space-xs flex-wrap justify-center">
         <Chip variant="tactical">
           <span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
-          <span>{notFound.kicker.es}</span>
+          <span>{notFound.kicker.en}</span>
         </Chip>
         <span class="text-outline-variant text-label-caps">//</span>
         <Chip variant="common">
-          <span>{notFound.kicker.en}</span>
+          <span>{notFound.kicker.es}</span>
         </Chip>
       </div>
 
@@ -46,48 +46,48 @@ const { notFound } = siteConfig;
 
       <!-- TARJETAS BILINGÜES EN REJILLA RESPONSIVA -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md w-full text-left">
-        <!-- SECCIÓN EN ESPAÑOL -->
+        <!-- SECCIÓN EN INGLÉS (IDIOMA POR DEFECTO) -->
         <Card chamfer class="p-space-md flex flex-col justify-between space-y-space-md border-surface-container-high/60">
           <div class="space-y-space-xs">
             <div class="flex items-center justify-between">
               <span class="font-label-caps text-label-caps text-primary-container font-bold tracking-wider">
-                {notFound.langLabel.es}
+                {notFound.langLabel.en}
               </span>
               <span class="w-2 h-2 rounded-full bg-primary-container"></span>
             </div>
             <h1 class="font-headline-md text-headline-md text-primary font-bold">
-              {notFound.title.es}
-            </h1>
-            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-              {notFound.description.es}
-            </p>
-          </div>
-          <div>
-            <Button href="/" variant="primary" icon="arrow_back">
-              {notFound.homeLink.es}
-            </Button>
-          </div>
-        </Card>
-
-        <!-- SECCIÓN EN INGLÉS (ACCESIBLE CON lang="en") -->
-        <Card chamfer lang="en" class="p-space-md flex flex-col justify-between space-y-space-md border-surface-container-high/60">
-          <div class="space-y-space-xs">
-            <div class="flex items-center justify-between">
-              <span class="font-label-caps text-label-caps text-secondary font-bold tracking-wider">
-                {notFound.langLabel.en}
-              </span>
-              <span class="w-2 h-2 rounded-full bg-secondary"></span>
-            </div>
-            <h2 class="font-headline-md text-headline-md text-primary font-bold">
               {notFound.title.en}
-            </h2>
+            </h1>
             <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
               {notFound.description.en}
             </p>
           </div>
           <div>
-            <Button href="/en/" variant="ghost" icon="arrow_forward">
+            <Button href={localizedPath('home', 'en')} variant="primary" icon="arrow_back">
               {notFound.homeLink.en}
+            </Button>
+          </div>
+        </Card>
+
+        <!-- SECCIÓN EN ESPAÑOL (ACCESIBLE CON lang="es") -->
+        <Card chamfer lang="es" class="p-space-md flex flex-col justify-between space-y-space-md border-surface-container-high/60">
+          <div class="space-y-space-xs">
+            <div class="flex items-center justify-between">
+              <span class="font-label-caps text-label-caps text-secondary font-bold tracking-wider">
+                {notFound.langLabel.es}
+              </span>
+              <span class="w-2 h-2 rounded-full bg-secondary"></span>
+            </div>
+            <h2 class="font-headline-md text-headline-md text-primary font-bold">
+              {notFound.title.es}
+            </h2>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              {notFound.description.es}
+            </p>
+          </div>
+          <div>
+            <Button href={localizedPath('home', 'es')} variant="ghost" icon="arrow_forward">
+              {notFound.homeLink.es}
             </Button>
           </div>
         </Card>

@@ -32,14 +32,16 @@ osmanHerreraSiteAstro/
 │   ├── lib/
 │   │   ├── contact/             # Cliente de envío hacia la API de correo
 │   │   └── vector/              # Visor interactivo de Vector Work (slider, grid, stats)
-│   ├── pages/                   # Enrutamiento estático bilingüe de Astro
-│   │   ├── [lang]/              # Rutas dinámicas bilingües (/ y /en/)
-│   │   ├── 404.astro            # Página 404 estática con fallback bilingüe
-│   │   ├── index.astro          # Raíz en español
-│   │   ├── politicadeprivacidad.astro # Política de privacidad (ES)
-│   │   └── vectorwork/          # Catálogo Vector Work (/vectorwork/)
+│   ├── pages/                   # Enrutamiento estático bilingüe (inglés por defecto)
+│   │   ├── 404.astro            # Página 404 estática bilingüe (inglés primero)
+│   │   ├── index.astro          # Home en inglés (/)
+│   │   ├── privacy-policy.astro # Política de privacidad (/privacy-policy/)
+│   │   ├── cv/                  # CV en inglés (/cv/, noindex)
+│   │   ├── vectorwork/          # Vector Work en inglés (/vectorwork/)
+│   │   └── es/                  # Versión en español: /es/, /es/politicadeprivacidad/,
+│   │                            #   /es/cv/ y /es/vectorwork/
 │   ├── styles/                  # global.css y tokens Apex Dossier
-│   └── views/                   # HomeView, VectorView, PrivacyView
+│   └── views/                   # HomeView, VectorView, PrivacyView, CvView
 ├── astro.config.mjs             # Configuración de Astro e internacionalización
 ├── package.json                 # Scripts y dependencias del workspace
 └── tsconfig.json                # Configuración de TypeScript con alias @shared y @config

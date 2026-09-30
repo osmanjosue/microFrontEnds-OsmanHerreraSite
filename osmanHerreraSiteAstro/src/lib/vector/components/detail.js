@@ -136,7 +136,7 @@ export function renderDetail({
   const toolsList = Array.isArray(work.tools) ? work.tools.join(' · ') : '';
 
   return `
-    <section class="order-2 xl:col-span-7 flex flex-col gap-space-md bg-surface-container-lowest p-space-sm sm:p-space-md rounded-lg shadow-xl relative border border-surface-container-high/40 max-w-full overflow-hidden">
+    <section id="vector-detail" class="order-3 scroll-mt-20 xl:col-span-7 flex flex-col gap-space-md bg-surface-container-lowest p-space-sm sm:p-space-md rounded-lg shadow-xl relative border border-surface-container-high/40 max-w-full overflow-hidden">
       <!-- Barra superior de metadatos de la pieza -->
       <div class="flex flex-col gap-space-xs pb-space-sm border-b border-surface-container-high/60">
         <div class="flex flex-wrap items-center justify-between gap-2">
