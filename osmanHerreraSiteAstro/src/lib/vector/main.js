@@ -1,7 +1,7 @@
 // ===========================================================================
 // PUNTO DE ENTRADA PRINCIPAL MIGRADO — VECTOR WORK EN ASTRO
 // ===========================================================================
-import { vectorConfig } from '@config';
+import { vectorConfig, localizedPath } from '@config';
 import { loadTitles } from './titles.js';
 import { assetUrl, assetsOrigin } from './assets-url.js';
 import { renderIntro } from './components/intro.js';
@@ -12,18 +12,20 @@ import { attachSliderEvents } from './components/compare-slider.js';
 // ===========================================================================
 // 1. REDIRECCIÓN DE COMPATIBILIDAD POR PARÁMETRO ?lang=
 // ===========================================================================
-// Si llega ?lang=en a /vectorwork/, redirige a /en/vectorwork/ conservando el #hash
-// Si llega ?lang=es a /en/vectorwork/, redirige a /vectorwork/
+// El inglés es el idioma por defecto (/vectorwork/) y el español vive en /es/vectorwork/.
+// Si llega ?lang=es fuera de /es/, redirige a la versión en español conservando el #hash;
+// si llega ?lang=en dentro de /es/, redirige a la versión en inglés.
 if (typeof window !== 'undefined' && window.location) {
   const searchParams = new URLSearchParams(window.location.search);
   const paramLang = searchParams.get('lang')?.toLowerCase().slice(0, 2);
   const pathname = window.location.pathname;
   const hash = window.location.hash || '';
+  const isSpanishPath = pathname.startsWith('/es/');
 
-  if (paramLang === 'en' && !pathname.startsWith('/en/')) {
-    window.location.replace('/en/vectorwork/' + hash);
-  } else if (paramLang === 'es' && pathname.startsWith('/en/')) {
-    window.location.replace('/vectorwork/' + hash);
+  if (paramLang === 'es' && !isSpanishPath) {
+    window.location.replace(localizedPath('vectorwork', 'es') + hash);
+  } else if (paramLang === 'en' && isSpanishPath) {
+    window.location.replace(localizedPath('vectorwork', 'en') + hash);
   }
 }
 
