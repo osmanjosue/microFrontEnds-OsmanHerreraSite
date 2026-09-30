@@ -138,7 +138,7 @@ export function renderGrid({
     .join('');
 
   return `
-    <aside class="order-3 flex flex-col gap-space-sm bg-surface-container-lowest p-space-sm sm:p-space-md rounded-lg shadow-xl relative border border-surface-container-high/40 xl:bg-transparent xl:p-0 xl:rounded-none xl:shadow-none xl:border-0">
+    <aside class="order-2 flex flex-col gap-space-sm bg-surface-container-lowest p-space-sm sm:p-space-md rounded-lg shadow-xl relative border border-surface-container-high/40 xl:bg-transparent xl:p-0 xl:rounded-none xl:shadow-none xl:border-0">
       <!-- Decoradores tácticos en móvil (< xl) -->
       <div class="xl:hidden absolute top-1.5 left-1.5 w-2 h-2 border-l border-t border-primary/40 pointer-events-none"></div>
       <div class="xl:hidden absolute top-1.5 right-1.5 w-2 h-2 border-r border-t border-primary/40 pointer-events-none"></div>

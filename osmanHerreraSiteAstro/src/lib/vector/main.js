@@ -213,6 +213,13 @@ function attachEventListeners() {
       const slug = btn.getAttribute('data-slug');
       if (slug) {
         setActiveSlug(slug);
+        // En móvil la grilla va antes del detalle: llevar al usuario al arte elegido
+        if (window.matchMedia('(max-width: 1279px)').matches) {
+          const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          document
+            .getElementById('vector-detail')
+            ?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        }
       }
     });
   });
